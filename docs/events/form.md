@@ -1,21 +1,21 @@
-# 表单事件
+# 表單事件
 
-## 表单事件的种类
+## 表單事件的種類
 
 ### input 事件
 
-`input`事件当`<input>`、`<select>`、`<textarea>`的值发生变化时触发。对于复选框（`<input type=checkbox>`）或单选框（`<input type=radio>`），用户改变选项时，也会触发这个事件。另外，对于打开`contenteditable`属性的元素，只要值发生变化，也会触发`input`事件。
+`input`事件當`<input>`、`<select>`、`<textarea>`的值發生變化時觸發。對於複選框（`<input type=checkbox>`）或單選框（`<input type=radio>`），使用者改變選項時，也會觸發這個事件。另外，對於開啟`contenteditable`屬性的元素，只要值發生變化，也會觸發`input`事件。
 
-`input`事件的一个特点，就是会连续触发，比如用户每按下一次按键，就会触发一次`input`事件。
+`input`事件的一個特點，就是會連續觸發，比如使用者每按下一次按鍵，就會觸發一次`input`事件。
 
-`input`事件对象继承了`InputEvent`接口。
+`input`事件物件繼承了`InputEvent`介面。
 
-该事件跟`change`事件很像，不同之处在于`input`事件在元素的值发生变化后立即发生，而`change`在元素失去焦点时发生，而内容此时可能已经变化多次。也就是说，如果有连续变化，`input`事件会触发多次，而`change`事件只在失去焦点时触发一次。
+該事件跟`change`事件很像，不同之處在於`input`事件在元素的值發生變化後立即發生，而`change`在元素失去焦點時發生，而內容此時可能已經變化多次。也就是說，如果有連續變化，`input`事件會觸發多次，而`change`事件只在失去焦點時觸發一次。
 
 下面是`<select>`元素的例子。
 
 ```javascript
-/* HTML 代码如下
+/* HTML 程式碼如下
 <select id="mySelect">
   <option value="1">1</option>
   <option value="2">2</option>
@@ -31,14 +31,14 @@ var mySelect = document.querySelector('#mySelect');
 mySelect.addEventListener('input', inputHandler);
 ```
 
-上面代码中，改变下拉框选项时，会触发`input`事件，从而执行回调函数`inputHandler`。
+上面程式碼中，改變下拉框選項時，會觸發`input`事件，從而執行回撥函式`inputHandler`。
 
 ### select 事件
 
-`select`事件当在`<input>`、`<textarea>`里面选中文本时触发。
+`select`事件當在`<input>`、`<textarea>`裡面選中文字時觸發。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <input id="test" type="text" value="Select me!" />
 
 var elem = document.getElementById('test');
@@ -47,20 +47,20 @@ elem.addEventListener('select', function (e) {
 }, false);
 ```
 
-选中的文本可以通过`event.target`元素的`selectionDirection`、`selectionEnd`、`selectionStart`和`value`属性拿到。
+選中的文字可以透過`event.target`元素的`selectionDirection`、`selectionEnd`、`selectionStart`和`value`屬性拿到。
 
 ### change 事件
 
-`change`事件当`<input>`、`<select>`、`<textarea>`的值发生变化时触发。它与`input`事件的最大不同，就是不会连续触发，只有当全部修改完成时才会触发，另一方面`input`事件必然伴随`change`事件。具体来说，分成以下几种情况。
+`change`事件當`<input>`、`<select>`、`<textarea>`的值發生變化時觸發。它與`input`事件的最大不同，就是不會連續觸發，只有當全部修改完成時才會觸發，另一方面`input`事件必然伴隨`change`事件。具體來說，分成以下幾種情況。
 
-- 激活单选框（radio）或复选框（checkbox）时触发。
-- 用户提交时触发。比如，从下列列表（select）完成选择，在日期或文件输入框完成选择。
-- 当文本框或`<textarea>`元素的值发生改变，并且丧失焦点时触发。
+- 啟用單選框（radio）或複選框（checkbox）時觸發。
+- 使用者提交時觸發。比如，從下列列表（select）完成選擇，在日期或檔案輸入框完成選擇。
+- 當文字框或`<textarea>`元素的值發生改變，並且喪失焦點時觸發。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <select size="1" onchange="changeEventHandler(event);">
 //   <option>chocolate</option>
 //   <option>strawberry</option>
@@ -72,11 +72,11 @@ function changeEventHandler(event) {
 }
 ```
 
-如果比较一下上面`input`事件的例子，你会发现对于`<select>`元素来说，`input`和`change`事件基本是等价的。
+如果比較一下上面`input`事件的例子，你會發現對於`<select>`元素來說，`input`和`change`事件基本是等價的。
 
 ### invalid 事件
 
-用户提交表单时，如果表单元素的值不满足校验条件，就会触发`invalid`事件。
+使用者提交表單時，如果表單元素的值不滿足校驗條件，就會觸發`invalid`事件。
 
 ```html
 <form>
@@ -85,40 +85,40 @@ function changeEventHandler(event) {
 </form>
 ```
 
-上面代码中，输入框是必填的。如果不填，用户点击按钮提交时，就会触发输入框的`invalid`事件，导致提交被取消。
+上面程式碼中，輸入框是必填的。如果不填，使用者點選按鈕提交時，就會觸發輸入框的`invalid`事件，導致提交被取消。
 
 ### reset 事件，submit 事件
 
-这两个事件发生在表单对象`<form>`上，而不是发生在表单的成员上。
+這兩個事件發生在表單物件`<form>`上，而不是發生在表單的成員上。
 
-`reset`事件当表单重置（所有表单成员变回默认值）时触发。
+`reset`事件當表單重置（所有表單成員變回預設值）時觸發。
 
-`submit`事件当表单数据向服务器提交时触发。注意，`submit`事件的发生对象是`<form>`元素，而不是`<button>`元素，因为提交的是表单，而不是按钮。
+`submit`事件當表單資料向伺服器提交時觸發。注意，`submit`事件的發生物件是`<form>`元素，而不是`<button>`元素，因為提交的是表單，而不是按鈕。
 
-## InputEvent 接口
+## InputEvent 介面
 
-`InputEvent`接口主要用来描述`input`事件的实例。该接口继承了`Event`接口，还定义了一些自己的实例属性和实例方法。
+`InputEvent`介面主要用來描述`input`事件的例項。該介面繼承了`Event`介面，還定義了一些自己的例項屬性和例項方法。
 
-浏览器原生提供`InputEvent()`构造函数，用来生成实例对象。
+瀏覽器原生提供`InputEvent()`建構函式，用來生成例項物件。
 
 ```javascript
 new InputEvent(type, options)
 ```
 
-`InputEvent`构造函数可以接受两个参数。第一个参数是字符串，表示事件名称，该参数是必需的。第二个参数是一个配置对象，用来设置事件实例的属性，该参数是可选的。配置对象的字段除了`Event`构造函数的配置属性，还可以设置下面的字段，这些字段都是可选的。
+`InputEvent`建構函式可以接受兩個引數。第一個引數是字串，表示事件名稱，該引數是必需的。第二個引數是一個配置物件，用來設定事件例項的屬性，該引數是可選的。配置物件的欄位除了`Event`建構函式的配置屬性，還可以設定下面的欄位，這些欄位都是可選的。
 
-- `inputType`：字符串，表示发生变更的类型（详见下文）。
-- `data`：字符串，表示插入的字符串。如果没有插入的字符串（比如删除操作），则返回`null`或空字符串。
-- `dataTransfer`：返回一个 DataTransfer 对象实例，该属性通常只在输入框接受富文本输入时有效。
+- `inputType`：字串，表示發生變更的型別（詳見下文）。
+- `data`：字串，表示插入的字串。如果沒有插入的字串（比如刪除操作），則返回`null`或空字串。
+- `dataTransfer`：返回一個 DataTransfer 物件例項，該屬性通常只在輸入框接受富文字輸入時有效。
 
-`InputEvent`的实例属性主要就是上面三个属性，这三个实例属性都是只读的。
+`InputEvent`的例項屬性主要就是上面三個屬性，這三個例項屬性都是隻讀的。
 
 **（1）InputEvent.data**
 
-`InputEvent.data`属性返回一个字符串，表示变动的内容。
+`InputEvent.data`屬性返回一個字串，表示變動的內容。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <input type="text" id="myInput">
 var input = document.getElementById('myInput');
 input.addEventListener('input', myFunction, false);
@@ -128,19 +128,19 @@ function myFunction(e) {
 }
 ```
 
-上面代码中，如果手动在输入框里面输入`abc`，控制台会先输出`a`，再在下一行输出`b`，再在下一行输出`c`。然后选中`abc`，一次性将它们删除，控制台会输出`null`或一个空字符串。
+上面程式碼中，如果手動在輸入框裡面輸入`abc`，控制檯會先輸出`a`，再在下一行輸出`b`，再在下一行輸出`c`。然後選中`abc`，一次性將它們刪除，控制檯會輸出`null`或一個空字串。
 
 **（2）InputEvent.inputType**
 
-`InputEvent.inputType`属性返回一个字符串，表示字符串发生变更的类型。
+`InputEvent.inputType`屬性返回一個字串，表示字串發生變更的型別。
 
-对于常见情况，Chrome 浏览器的返回值如下。完整列表可以参考[文档](https://w3c.github.io/input-events/index.html#dom-inputevent-inputtype)。
+對於常見情況，Chrome 瀏覽器的返回值如下。完整列表可以參考[文件](https://w3c.github.io/input-events/index.html#dom-inputevent-inputtype)。
 
-- 手动插入文本：`insertText`
-- 粘贴插入文本：`insertFromPaste`
-- 向后删除：`deleteContentBackward`
-- 向前删除：`deleteContentForward`
+- 手動插入文字：`insertText`
+- 貼上插入文字：`insertFromPaste`
+- 向後刪除：`deleteContentBackward`
+- 向前刪除：`deleteContentForward`
 
 **（3）InputEvent.dataTransfer**
 
-`InputEvent.dataTransfer`属性返回一个 DataTransfer 实例。该属性只在文本框接受粘贴内容（insertFromPaste）或拖拽内容（`insertFromDrop`）时才有效。
+`InputEvent.dataTransfer`屬性返回一個 DataTransfer 例項。該屬性只在文字框接受貼上內容（insertFromPaste）或拖拽內容（`insertFromDrop`）時才有效。

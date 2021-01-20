@@ -1,48 +1,48 @@
 # 同源限制
 
-浏览器安全的基石是“同源政策”（[same-origin policy](https://en.wikipedia.org/wiki/Same-origin_policy)）。很多开发者都知道这一点，但了解得不全面。
+瀏覽器安全的基石是“同源政策”（[same-origin policy](https://en.wikipedia.org/wiki/Same-origin_policy)）。很多開發者都知道這一點，但瞭解得不全面。
 
 ## 概述
 
-### 含义
+### 含義
 
-1995年，同源政策由 Netscape 公司引入浏览器。目前，所有浏览器都实行这个政策。
+1995年，同源政策由 Netscape 公司引入瀏覽器。目前，所有瀏覽器都實行這個政策。
 
-最初，它的含义是指，A 网页设置的 Cookie，B 网页不能打开，除非这两个网页“同源”。所谓“同源”指的是“三个相同”。
+最初，它的含義是指，A 網頁設定的 Cookie，B 網頁不能開啟，除非這兩個網頁“同源”。所謂“同源”指的是“三個相同”。
 
-> - 协议相同
+> - 協議相同
 > - 域名相同
-> - 端口相同（这点可以忽略，详见下文）
+> - 埠相同（這點可以忽略，詳見下文）
 
-举例来说，`http://www.example.com/dir/page.html`这个网址，协议是`http://`，域名是`www.example.com`，端口是`80`（默认端口可以省略），它的同源情况如下。
+舉例來說，`http://www.example.com/dir/page.html`這個網址，協議是`http://`，域名是`www.example.com`，埠是`80`（預設埠可以省略），它的同源情況如下。
 
 - `http://www.example.com/dir2/other.html`：同源
 - `http://example.com/dir/other.html`：不同源（域名不同）
 - `http://v2.www.example.com/dir/other.html`：不同源（域名不同）
-- `http://www.example.com:81/dir/other.html`：不同源（端口不同）
-- `https://www.example.com/dir/page.html`：不同源（协议不同）
+- `http://www.example.com:81/dir/other.html`：不同源（埠不同）
+- `https://www.example.com/dir/page.html`：不同源（協議不同）
 
-注意，标准规定端口不同的网址不是同源（比如8000端口和8001端口不是同源），但是浏览器没有遵守这条规定。实际上，同一个网域的不同端口，是可以互相读取 Cookie 的。
+注意，標準規定埠不同的網址不是同源（比如8000埠和8001埠不是同源），但是瀏覽器沒有遵守這條規定。實際上，同一個網域的不同埠，是可以互相讀取 Cookie 的。
 
 ### 目的
 
-同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据。
+同源政策的目的，是為了保證使用者資訊的安全，防止惡意的網站竊取資料。
 
-设想这样一种情况：A 网站是一家银行，用户登录以后，A 网站在用户的机器上设置了一个 Cookie，包含了一些隐私信息。用户离开 A 网站以后，又去访问 B 网站，如果没有同源限制，B 网站可以读取 A 网站的 Cookie，那么隐私就泄漏了。更可怕的是，Cookie 往往用来保存用户的登录状态，如果用户没有退出登录，其他网站就可以冒充用户，为所欲为。因为浏览器同时还规定，提交表单不受同源政策的限制。
+設想這樣一種情況：A 網站是一家銀行，使用者登入以後，A 網站在使用者的機器上設定了一個 Cookie，包含了一些隱私資訊。使用者離開 A 網站以後，又去訪問 B 網站，如果沒有同源限制，B 網站可以讀取 A 網站的 Cookie，那麼隱私就洩漏了。更可怕的是，Cookie 往往用來儲存使用者的登入狀態，如果使用者沒有退出登入，其他網站就可以冒充使用者，為所欲為。因為瀏覽器同時還規定，提交表單不受同源政策的限制。
 
-由此可见，同源政策是必需的，否则 Cookie 可以共享，互联网就毫无安全可言了。
+由此可見，同源政策是必需的，否則 Cookie 可以共享，網際網路就毫無安全可言了。
 
-### 限制范围
+### 限制範圍
 
-随着互联网的发展，同源政策越来越严格。目前，如果非同源，共有三种行为受到限制。
+隨著網際網路的發展，同源政策越來越嚴格。目前，如果非同源，共有三種行為受到限制。
 
-> （1） 无法读取非同源网页的 Cookie、LocalStorage 和 IndexedDB。
+> （1） 無法讀取非同源網頁的 Cookie、LocalStorage 和 IndexedDB。
 >
-> （2） 无法接触非同源网页的 DOM。
+> （2） 無法接觸非同源網頁的 DOM。
 >
-> （3） 无法向非同源地址发送 AJAX 请求（可以发送，但浏览器会拒绝接受响应）。
+> （3） 無法向非同源地址傳送 AJAX 請求（可以傳送，但瀏覽器會拒絕接受響應）。
 
-另外，通过 JavaScript 脚本可以拿到其他窗口的`window`对象。如果是非同源的网页，目前允许一个窗口可以接触其他网页的`window`对象的九个属性和四个方法。
+另外，透過 JavaScript 指令碼可以拿到其他視窗的`window`物件。如果是非同源的網頁，目前允許一個視窗可以接觸其他網頁的`window`物件的九個屬性和四個方法。
 
 - window.closed
 - window.frames
@@ -58,50 +58,50 @@
 - window.focus()
 - window.postMessage()
 
-上面的九个属性之中，只有`window.location`是可读写的，其他八个全部都是只读。而且，即使是`location`对象，非同源的情况下，也只允许调用`location.replace()`方法和写入`location.href`属性。
+上面的九個屬性之中，只有`window.location`是可讀寫的，其他八個全部都是隻讀。而且，即使是`location`物件，非同源的情況下，也只允許呼叫`location.replace()`方法和寫入`location.href`屬性。
 
-虽然这些限制是必要的，但是有时很不方便，合理的用途也受到影响。下面介绍如何规避上面的限制。
+雖然這些限制是必要的，但是有時很不方便，合理的用途也受到影響。下面介紹如何規避上面的限制。
 
 ## Cookie
 
-Cookie 是服务器写入浏览器的一小段信息，只有同源的网页才能共享。如果两个网页一级域名相同，只是次级域名不同，浏览器允许通过设置`document.domain`共享 Cookie。
+Cookie 是伺服器寫入瀏覽器的一小段資訊，只有同源的網頁才能共享。如果兩個網頁一級域名相同，只是次級域名不同，瀏覽器允許透過設定`document.domain`共享 Cookie。
 
-举例来说，A 网页的网址是`http://w1.example.com/a.html`，B 网页的网址是`http://w2.example.com/b.html`，那么只要设置相同的`document.domain`，两个网页就可以共享 Cookie。因为浏览器通过`document.domain`属性来检查是否同源。
+舉例來說，A 網頁的網址是`http://w1.example.com/a.html`，B 網頁的網址是`http://w2.example.com/b.html`，那麼只要設定相同的`document.domain`，兩個網頁就可以共享 Cookie。因為瀏覽器透過`document.domain`屬性來檢查是否同源。
 
 ```javascript
-// 两个网页都需要设置
+// 兩個網頁都需要設定
 document.domain = 'example.com';
 ```
 
-注意，A 和 B 两个网页都需要设置`document.domain`属性，才能达到同源的目的。因为设置`document.domain`的同时，会把端口重置为`null`，因此如果只设置一个网页的`document.domain`，会导致两个网址的端口不同，还是达不到同源的目的。
+注意，A 和 B 兩個網頁都需要設定`document.domain`屬性，才能達到同源的目的。因為設定`document.domain`的同時，會把埠重置為`null`，因此如果只設置一個網頁的`document.domain`，會導致兩個網址的埠不同，還是達不到同源的目的。
 
-现在，A 网页通过脚本设置一个 Cookie。
+現在，A 網頁透過指令碼設定一個 Cookie。
 
 ```javascript
 document.cookie = "test1=hello";
 ```
 
-B 网页就可以读到这个 Cookie。
+B 網頁就可以讀到這個 Cookie。
 
 ```javascript
 var allCookie = document.cookie;
 ```
 
-注意，这种方法只适用于 Cookie 和 iframe 窗口，LocalStorage 和 IndexedDB 无法通过这种方法，规避同源政策，而要使用下文介绍 PostMessage API。
+注意，這種方法只適用於 Cookie 和 iframe 視窗，LocalStorage 和 IndexedDB 無法透過這種方法，規避同源政策，而要使用下文介紹 PostMessage API。
 
-另外，服务器也可以在设置 Cookie 的时候，指定 Cookie 的所属域名为一级域名，比如`.example.com`。
+另外，伺服器也可以在設定 Cookie 的時候，指定 Cookie 的所屬域名為一級域名，比如`.example.com`。
 
 ```http
 Set-Cookie: key=value; domain=.example.com; path=/
 ```
 
-这样的话，二级域名和三级域名不用做任何设置，都可以读取这个 Cookie。
+這樣的話，二級域名和三級域名不用做任何設定，都可以讀取這個 Cookie。
 
-## iframe 和多窗口通信
+## iframe 和多視窗通訊
 
-`iframe`元素可以在当前网页之中，嵌入其他网页。每个`iframe`元素形成自己的窗口，即有自己的`window`对象。`iframe`窗口之中的脚本，可以获得父窗口和子窗口。但是，只有在同源的情况下，父窗口和子窗口才能通信；如果跨域，就无法拿到对方的 DOM。
+`iframe`元素可以在當前網頁之中，嵌入其他網頁。每個`iframe`元素形成自己的視窗，即有自己的`window`物件。`iframe`視窗之中的指令碼，可以獲得父視窗和子視窗。但是，只有在同源的情況下，父視窗和子窗口才能通訊；如果跨域，就無法拿到對方的 DOM。
 
-比如，父窗口运行下面的命令，如果`iframe`窗口不是同源，就会报错。
+比如，父視窗執行下面的命令，如果`iframe`視窗不是同源，就會報錯。
 
 ```javascript
 document
@@ -111,38 +111,38 @@ document
 // Uncaught DOMException: Blocked a frame from accessing a cross-origin frame.
 ```
 
-上面命令中，父窗口想获取子窗口的 DOM，因为跨域导致报错。
+上面命令中，父視窗想獲取子視窗的 DOM，因為跨域導致報錯。
 
-反之亦然，子窗口获取主窗口的 DOM 也会报错。
+反之亦然，子視窗獲取主視窗的 DOM 也會報錯。
 
 ```javascript
 window.parent.document.body
-// 报错
+// 報錯
 ```
 
-这种情况不仅适用于`iframe`窗口，还适用于`window.open`方法打开的窗口，只要跨域，父窗口与子窗口之间就无法通信。
+這種情況不僅適用於`iframe`視窗，還適用於`window.open`方法開啟的視窗，只要跨域，父視窗與子視窗之間就無法通訊。
 
-如果两个窗口一级域名相同，只是二级域名不同，那么设置上一节介绍的`document.domain`属性，就可以规避同源政策，拿到 DOM。
+如果兩個視窗一級域名相同，只是二級域名不同，那麼設定上一節介紹的`document.domain`屬性，就可以規避同源政策，拿到 DOM。
 
-对于完全不同源的网站，目前有两种方法，可以解决跨域窗口的通信问题。
+對於完全不同源的網站，目前有兩種方法，可以解決跨域視窗的通訊問題。
 
-> - 片段识别符（fragment identifier）
-> - 跨文档通信API（Cross-document messaging）
+> - 片段識別符（fragment identifier）
+> - 跨文件通訊API（Cross-document messaging）
 
-### 片段识别符
+### 片段識別符
 
-片段标识符（fragment identifier）指的是，URL 的`#`号后面的部分，比如`http://example.com/x.html#fragment`的`#fragment`。如果只是改变片段标识符，页面不会重新刷新。
+片段識別符號（fragment identifier）指的是，URL 的`#`號後面的部分，比如`http://example.com/x.html#fragment`的`#fragment`。如果只是改變片段識別符號，頁面不會重新重新整理。
 
-父窗口可以把信息，写入子窗口的片段标识符。
+父視窗可以把資訊，寫入子視窗的片段識別符號。
 
 ```javascript
 var src = originURL + '#' + data;
 document.getElementById('myIFrame').src = src;
 ```
 
-上面代码中，父窗口把所要传递的信息，写入 iframe 窗口的片段标识符。
+上面程式碼中，父視窗把所要傳遞的資訊，寫入 iframe 視窗的片段識別符號。
 
-子窗口通过监听`hashchange`事件得到通知。
+子視窗透過監聽`hashchange`事件得到通知。
 
 ```javascript
 window.onhashchange = checkMessage;
@@ -153,7 +153,7 @@ function checkMessage() {
 }
 ```
 
-同样的，子窗口也可以改变父窗口的片段标识符。
+同樣的，子視窗也可以改變父視窗的片段識別符號。
 
 ```javascript
 parent.location.href = target + '#' + hash;
@@ -161,43 +161,43 @@ parent.location.href = target + '#' + hash;
 
 ### window.postMessage()
 
-上面的这种方法属于破解，HTML5 为了解决这个问题，引入了一个全新的API：跨文档通信 API（Cross-document messaging）。
+上面的這種方法屬於破解，HTML5 為了解決這個問題，引入了一個全新的API：跨文件通訊 API（Cross-document messaging）。
 
-这个 API 为`window`对象新增了一个`window.postMessage`方法，允许跨窗口通信，不论这两个窗口是否同源。举例来说，父窗口`aaa.com`向子窗口`bbb.com`发消息，调用`postMessage`方法就可以了。
+這個 API 為`window`物件新增了一個`window.postMessage`方法，允許跨視窗通訊，不論這兩個視窗是否同源。舉例來說，父視窗`aaa.com`向子視窗`bbb.com`發訊息，呼叫`postMessage`方法就可以了。
 
 ```javascript
-// 父窗口打开一个子窗口
+// 父視窗開啟一個子視窗
 var popup = window.open('http://bbb.com', 'title');
-// 父窗口向子窗口发消息
+// 父視窗向子視窗發訊息
 popup.postMessage('Hello World!', 'http://bbb.com');
 ```
 
-`postMessage`方法的第一个参数是具体的信息内容，第二个参数是接收消息的窗口的源（origin），即“协议 + 域名 + 端口”。也可以设为`*`，表示不限制域名，向所有窗口发送。
+`postMessage`方法的第一個引數是具體的資訊內容，第二個引數是接收訊息的視窗的源（origin），即“協議 + 域名 + 埠”。也可以設為`*`，表示不限制域名，向所有視窗傳送。
 
-子窗口向父窗口发送消息的写法类似。
+子視窗向父視窗傳送訊息的寫法類似。
 
 ```javascript
-// 子窗口向父窗口发消息
+// 子視窗向父視窗發訊息
 window.opener.postMessage('Nice to see you', 'http://aaa.com');
 ```
 
-父窗口和子窗口都可以通过`message`事件，监听对方的消息。
+父視窗和子視窗都可以透過`message`事件，監聽對方的訊息。
 
 ```javascript
-// 父窗口和子窗口都可以用下面的代码，
-// 监听 message 消息
+// 父視窗和子視窗都可以用下面的程式碼，
+// 監聽 message 訊息
 window.addEventListener('message', function (e) {
   console.log(e.data);
 },false);
 ```
 
-`message`事件的参数是事件对象`event`，提供以下三个属性。
+`message`事件的引數是事件物件`event`，提供以下三個屬性。
 
-> - `event.source`：发送消息的窗口
-> - `event.origin`: 消息发向的网址
-> - `event.data`: 消息内容
+> - `event.source`：傳送訊息的視窗
+> - `event.origin`: 訊息發向的網址
+> - `event.data`: 訊息內容
 
-下面的例子是，子窗口通过`event.source`属性引用父窗口，然后发送消息。
+下面的例子是，子視窗透過`event.source`屬性引用父視窗，然後傳送訊息。
 
 ```javascript
 window.addEventListener('message', receiveMessage);
@@ -206,9 +206,9 @@ function receiveMessage(event) {
 }
 ```
 
-上面代码有几个地方需要注意。首先，`receiveMessage`函数里面没有过滤信息的来源，任意网址发来的信息都会被处理。其次，`postMessage`方法中指定的目标窗口的网址是一个星号，表示该信息可以向任意网址发送。通常来说，这两种做法是不推荐的，因为不够安全，可能会被恶意利用。
+上面程式碼有幾個地方需要注意。首先，`receiveMessage`函式裡面沒有過濾資訊的來源，任意網址發來的資訊都會被處理。其次，`postMessage`方法中指定的目標視窗的網址是一個星號，表示該資訊可以向任意網址傳送。通常來說，這兩種做法是不推薦的，因為不夠安全，可能會被惡意利用。
 
-`event.origin`属性可以过滤不是发给本窗口的消息。
+`event.origin`屬性可以過濾不是發給本視窗的訊息。
 
 ```javascript
 window.addEventListener('message', receiveMessage);
@@ -224,9 +224,9 @@ function receiveMessage(event) {
 
 ### LocalStorage
 
-通过`window.postMessage`，读写其他窗口的 LocalStorage 也成为了可能。
+透過`window.postMessage`，讀寫其他視窗的 LocalStorage 也成為了可能。
 
-下面是一个例子，主窗口写入 iframe 子窗口的`localStorage`。
+下面是一個例子，主視窗寫入 iframe 子視窗的`localStorage`。
 
 ```javascript
 window.onmessage = function(e) {
@@ -238,9 +238,9 @@ window.onmessage = function(e) {
 };
 ```
 
-上面代码中，子窗口将父窗口发来的消息，写入自己的 LocalStorage。
+上面程式碼中，子視窗將父視窗發來的訊息，寫入自己的 LocalStorage。
 
-父窗口发送消息的代码如下。
+父視窗傳送訊息的程式碼如下。
 
 ```javascript
 var win = document.getElementsByTagName('iframe')[0].contentWindow;
@@ -251,7 +251,7 @@ win.postMessage(
 );
 ```
 
-加强版的子窗口接收消息的代码如下。
+加強版的子視窗接收訊息的程式碼如下。
 
 ```javascript
 window.onmessage = function(e) {
@@ -273,17 +273,17 @@ window.onmessage = function(e) {
 };
 ```
 
-加强版的父窗口发送消息代码如下。
+加強版的父視窗傳送訊息程式碼如下。
 
 ```javascript
 var win = document.getElementsByTagName('iframe')[0].contentWindow;
 var obj = { name: 'Jack' };
-// 存入对象
+// 存入物件
 win.postMessage(
   JSON.stringify({key: 'storage', method: 'set', data: obj}),
   'http://bbb.com'
 );
-// 读取对象
+// 讀取物件
 win.postMessage(
   JSON.stringify({key: 'storage', method: "get"}),
   "*"
@@ -296,9 +296,9 @@ window.onmessage = function(e) {
 
 ## AJAX
 
-同源政策规定，AJAX 请求只能发给同源的网址，否则就报错。
+同源政策規定，AJAX 請求只能發給同源的網址，否則就報錯。
 
-除了架设服务器代理（浏览器请求同源服务器，再由后者请求外部服务），有三种方法规避这个限制。
+除了架設伺服器代理（瀏覽器請求同源伺服器，再由後者請求外部服務），有三種方法規避這個限制。
 
 > - JSONP
 > - WebSocket
@@ -306,23 +306,23 @@ window.onmessage = function(e) {
 
 ### JSONP
 
-JSONP 是服务器与客户端跨源通信的常用方法。最大特点就是简单易用，没有兼容性问题，老式浏览器全部支持，服务端改造非常小。
+JSONP 是伺服器與客戶端跨源通訊的常用方法。最大特點就是簡單易用，沒有相容性問題，老式瀏覽器全部支援，服務端改造非常小。
 
 它的做法如下。
 
-第一步，网页添加一个`<script>`元素，向服务器请求一个脚本，这不受同源政策限制，可以跨域请求。
+第一步，網頁新增一個`<script>`元素，向伺服器請求一個指令碼，這不受同源政策限制，可以跨域請求。
 
 ```html
 <script src="http://api.foo.com?callback=bar"></script>
 ```
 
-注意，请求的脚本网址有一个`callback`参数（`?callback=bar`），用来告诉服务器，客户端的回调函数名称（`bar`）。
+注意，請求的指令碼網址有一個`callback`引數（`?callback=bar`），用來告訴伺服器，客戶端的回撥函式名稱（`bar`）。
 
-第二步，服务器收到请求后，拼接一个字符串，将 JSON 数据放在函数名里面，作为字符串返回（`bar({...})`）。
+第二步，伺服器收到請求後，拼接一個字串，將 JSON 資料放在函式名裡面，作為字串返回（`bar({...})`）。
 
-第三步，客户端会将服务器返回的字符串，作为代码解析，因为浏览器认为，这是`<script>`标签请求的脚本内容。这时，客户端只要定义了`bar()`函数，就能在该函数体内，拿到服务器返回的 JSON 数据。
+第三步，客戶端會將伺服器返回的字串，作為程式碼解析，因為瀏覽器認為，這是`<script>`標籤請求的指令碼內容。這時，客戶端只要定義了`bar()`函式，就能在該函式體內，拿到伺服器返回的 JSON 資料。
 
-下面看一个实例。首先，网页动态插入`<script>`元素，由它向跨域网址发出请求。
+下面看一個例項。首先，網頁動態插入`<script>`元素，由它向跨域網址發出請求。
 
 ```javascript
 function addScriptTag(src) {
@@ -341,9 +341,9 @@ function foo(data) {
 };
 ```
 
-上面代码通过动态添加`<script>`元素，向服务器`example.com`发出请求。注意，该请求的查询字符串有一个`callback`参数，用来指定回调函数的名字，这对于 JSONP 是必需的。
+上面程式碼透過動態新增`<script>`元素，向伺服器`example.com`發出請求。注意，該請求的查詢字串有一個`callback`引數，用來指定回撥函式的名字，這對於 JSONP 是必需的。
 
-服务器收到这个请求以后，会将数据放在回调函数的参数位置返回。
+伺服器收到這個請求以後，會將資料放在回撥函式的引數位置返回。
 
 ```javascript
 foo({
@@ -351,13 +351,13 @@ foo({
 });
 ```
 
-由于`<script>`元素请求的脚本，直接作为代码运行。这时，只要浏览器定义了`foo`函数，该函数就会立即调用。作为参数的 JSON 数据被视为 JavaScript 对象，而不是字符串，因此避免了使用`JSON.parse`的步骤。
+由於`<script>`元素請求的指令碼，直接作為程式碼執行。這時，只要瀏覽器定義了`foo`函式，該函式就會立即呼叫。作為引數的 JSON 資料被視為 JavaScript 物件，而不是字串，因此避免了使用`JSON.parse`的步驟。
 
 ### WebSocket
 
-WebSocket 是一种通信协议，使用`ws://`（非加密）和`wss://`（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信。
+WebSocket 是一種通訊協議，使用`ws://`（非加密）和`wss://`（加密）作為協議字首。該協議不實行同源政策，只要伺服器支援，就可以透過它進行跨源通訊。
 
-下面是一个例子，浏览器发出的 WebSocket 请求的头信息（摘自[维基百科](https://en.wikipedia.org/wiki/WebSocket)）。
+下面是一個例子，瀏覽器發出的 WebSocket 請求的頭資訊（摘自[維基百科](https://en.wikipedia.org/wiki/WebSocket)）。
 
 ```http
 GET /chat HTTP/1.1
@@ -370,9 +370,9 @@ Sec-WebSocket-Version: 13
 Origin: http://example.com
 ```
 
-上面代码中，有一个字段是`Origin`，表示该请求的请求源（origin），即发自哪个域名。
+上面程式碼中，有一個欄位是`Origin`，表示該請求的請求源（origin），即發自哪個域名。
 
-正是因为有了`Origin`这个字段，所以 WebSocket 才没有实行同源政策。因为服务器可以根据这个字段，判断是否许可本次通信。如果该域名在白名单内，服务器就会做出如下回应。
+正是因為有了`Origin`這個欄位，所以 WebSocket 才沒有實行同源政策。因為伺服器可以根據這個欄位，判斷是否許可本次通訊。如果該域名在白名單內，伺服器就會做出如下回應。
 
 ```http
 HTTP/1.1 101 Switching Protocols
@@ -384,12 +384,12 @@ Sec-WebSocket-Protocol: chat
 
 ### CORS
 
-CORS 是跨源资源分享（Cross-Origin Resource Sharing）的缩写。它是 W3C 标准，属于跨源 AJAX 请求的根本解决方法。相比 JSONP 只能发`GET`请求，CORS 允许任何类型的请求。
+CORS 是跨源資源分享（Cross-Origin Resource Sharing）的縮寫。它是 W3C 標準，屬於跨源 AJAX 請求的根本解決方法。相比 JSONP 只能發`GET`請求，CORS 允許任何型別的請求。
 
-下一章将详细介绍，如何通过 CORS 完成跨源 AJAX 请求。
+下一章將詳細介紹，如何透過 CORS 完成跨源 AJAX 請求。
 
-## 参考链接
+## 參考連結
 
 - Mozilla Developer Network, [Window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/window.postMessage)
 - Jakub Jankiewicz, [Cross-Domain LocalStorage](http://jcubic.wordpress.com/2014/06/20/cross-domain-localstorage/)
-- David Baron, [setTimeout with a shorter delay](http://dbaron.org/log/20100309-faster-timeouts): 利用 window.postMessage 可以实现0毫秒触发回调函数
+- David Baron, [setTimeout with a shorter delay](http://dbaron.org/log/20100309-faster-timeouts): 利用 window.postMessage 可以實現0毫秒觸發回撥函式

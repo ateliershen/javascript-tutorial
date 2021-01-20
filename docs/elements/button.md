@@ -1,55 +1,55 @@
 # <button> 元素
 
-`<button>`元素继承了`HTMLButtonElement`接口。它有以下的实例属性。
+`<button>`元素繼承了`HTMLButtonElement`介面。它有以下的例項屬性。
 
 **（1）HTMLButtonElement.accessKey**
 
-`HTMLButtonElement.accessKey`属性返回一个字符串，表示键盘上对应的键，通过`Alt + 这个键`可以让按钮获得焦点。该属性可读写。
+`HTMLButtonElement.accessKey`屬性返回一個字串，表示鍵盤上對應的鍵，透過`Alt + 這個鍵`可以讓按鈕獲得焦點。該屬性可讀寫。
 
 **（2）HTMLButtonElement.autofocus**
 
-`HTMLButtonElement.autofocus`属性是一个布尔值，表示页面加载过程中，按钮是否会自动获得焦点。该属性可读写。
+`HTMLButtonElement.autofocus`屬性是一個布林值，表示頁面載入過程中，按鈕是否會自動獲得焦點。該屬性可讀寫。
 
 **（3）HTMLButtonElement.disabled**
 
-`HTMLButtonElement.disabled`属性是一个布尔值，表示该按钮是否禁止点击。该属性可读写。
+`HTMLButtonElement.disabled`屬性是一個布林值，表示該按鈕是否禁止點選。該屬性可讀寫。
 
 **（4）HTMLButtonElement.form**
 
-`HTMLButtonElement.form`属性是一个表单元素，返回该按钮所在的表单。该属性只读。如果按钮不属于任何表单，该属性返回`null`。
+`HTMLButtonElement.form`屬性是一個表單元素，返回該按鈕所在的表單。該屬性只讀。如果按鈕不屬於任何表單，該屬性返回`null`。
 
 **（5）HTMLButtonElement.formAction**
 
-`HTMLButtonElement.formAction`返回一个字符串，表示表单提交的 URL。该属性可读写，一旦设置了值，点击按钮就会提交到该属性指定的 URL，而不是`<form>`元素指定的 URL。
+`HTMLButtonElement.formAction`返回一個字串，表示表單提交的 URL。該屬性可讀寫，一旦設定了值，點選按鈕就會提交到該屬性指定的 URL，而不是`<form>`元素指定的 URL。
 
 **（6）HTMLButtonElement.formEnctype**
 
-`HTMLButtonElement.formEnctype`属性是一个字符串，表示数据提交到服务器的编码类型。该属性可读写，一旦设置了值，点击按钮会按照该属性指定的编码方式，而不是`<form>`元素指定的编码方式。
+`HTMLButtonElement.formEnctype`屬性是一個字串，表示資料提交到伺服器的編碼型別。該屬性可讀寫，一旦設定了值，點選按鈕會按照該屬性指定的編碼方式，而不是`<form>`元素指定的編碼方式。
 
-该属性可以取以下的值。
+該屬性可以取以下的值。
 
-- `application/x-www-form-urlencoded`（默认值）
-- `multipart/form-data`（上传文件的编码方式）
+- `application/x-www-form-urlencoded`（預設值）
+- `multipart/form-data`（上傳檔案的編碼方式）
 - `text/plain`
 
 **（7）HTMLButtonElement.formMethod**
 
-`HTMLButtonElement.formMethod`属性是一个字符串，表示浏览器提交表单的 HTTP 方法。该属性可读写，一旦设置了值，点击后就会采用该属性指定的 HTTP 方法，而不是`<form>`元素指定的编码方法。
+`HTMLButtonElement.formMethod`屬性是一個字串，表示瀏覽器提交表單的 HTTP 方法。該屬性可讀寫，一旦設定了值，點選後就會採用該屬性指定的 HTTP 方法，而不是`<form>`元素指定的編碼方法。
 
 **（8）HTMLButtonElement.formNoValidate**
 
-`HTMLButtonElement.formNoValidate`属性是一个布尔值，表示点击按钮提交表单时，是否要跳过表单校验的步骤。该属性可读写，一旦设置会覆盖`<form>`元素的`novalidate`属性。
+`HTMLButtonElement.formNoValidate`屬性是一個布林值，表示點選按鈕提交表單時，是否要跳過表單校驗的步驟。該屬性可讀寫，一旦設定會覆蓋`<form>`元素的`novalidate`屬性。
 
 **（9）HTMLButtonElement.formTarget**
 
-`HTMLButtonElement.formTarget`属性是一个字符串，指定了提交了表单以后，哪个窗口展示服务器返回的内容。该属性可读写，一旦设置会覆盖`<form>`元素的`target`属性。
+`HTMLButtonElement.formTarget`屬性是一個字串，指定了提交了表單以後，哪個視窗展示伺服器返回的內容。該屬性可讀寫，一旦設定會覆蓋`<form>`元素的`target`屬性。
 
 **（10）HTMLButtonElement.labels**
 
-`HTMLButtonElement.labels`返回`NodeList`实例，表示那些绑定按钮的`<label>`元素。该属性只读。
+`HTMLButtonElement.labels`返回`NodeList`例項，表示那些繫結按鈕的`<label>`元素。該屬性只讀。
 
 ```javascript
-/* HTML 代码如下
+/* HTML 程式碼如下
   <label id="label1" for="test">Label 1</label>
   <button id="test">Button</button>
   <label id="label2" for="test">Label 2</label>
@@ -64,36 +64,36 @@ for(var i = 0; i < button.labels.length; i++) {
 // "Label 2"
 ```
 
-上面代码中，两个`<label>`元素绑定`<button>`元素。`button.labels`返回这两个`<label>`元素。
+上面程式碼中，兩個`<label>`元素繫結`<button>`元素。`button.labels`返回這兩個`<label>`元素。
 
 **（11）HTMLButtonElement.name**
 
-`HTMLButtonElement.name`属性是一个字符串，表示按钮元素的`name`属性。如果没有设置`name`属性，则返回空字符串。该属性可读写。
+`HTMLButtonElement.name`屬性是一個字串，表示按鈕元素的`name`屬性。如果沒有設定`name`屬性，則返回空字串。該屬性可讀寫。
 
 **（12）HTMLButtonElement.tabIndex**
 
-`HTMLButtonElement.tabIndex`是一个整数，代表按钮元素的 Tab 键顺序。该属性可读写。
+`HTMLButtonElement.tabIndex`是一個整數，代表按鈕元素的 Tab 鍵順序。該屬性可讀寫。
 
 **（13）HTMLButtonElement.type**
 
-`HTMLButtonElement.type`属性是一个字符串，表示按钮的行为。该属性可读写，可能取以下的值。
+`HTMLButtonElement.type`屬性是一個字串，表示按鈕的行為。該屬性可讀寫，可能取以下的值。
 
-- `submit`：默认值，表示提交表单。
-- `reset`：重置表单。
-- `button`：没有任何默认行为。
+- `submit`：預設值，表示提交表單。
+- `reset`：重置表單。
+- `button`：沒有任何預設行為。
 
 **（14）HTMLButtonElement.validationMessage**
 
-`HTMLButtonElement.validationMessage`属性是一个字符串，表示没有通过校验时显示的提示信息。该属性只读。
+`HTMLButtonElement.validationMessage`屬性是一個字串，表示沒有透過校驗時顯示的提示資訊。該屬性只讀。
 
 **（15）HTMLButtonElement.validity**
 
-`HTMLButtonElement.validity`属性返回该按钮的校验状态（`ValidityState`）。该属性只读。
+`HTMLButtonElement.validity`屬性返回該按鈕的校驗狀態（`ValidityState`）。該屬性只讀。
 
 **（16）HTMLButtonElement.value**
 
-`HTMLButtonElement.value`属性返回该按钮绑定的值。该属性可读写。
+`HTMLButtonElement.value`屬性返回該按鈕繫結的值。該屬性可讀寫。
 
 **（17）HTMLButtonElement.willValidate**
 
-`HTMLButtonElement.willValidate`属性是一个布尔值，表示该按钮提交表单时是否将被校验，默认为`false`。该属性只读。
+`HTMLButtonElement.willValidate`屬性是一個布林值，表示該按鈕提交表單時是否將被校驗，預設為`false`。該屬性只讀。

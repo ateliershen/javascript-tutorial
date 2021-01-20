@@ -1,23 +1,23 @@
-# NodeList 接口，HTMLCollection 接口
+# NodeList 介面，HTMLCollection 介面
 
-节点都是单个对象，有时需要一种数据结构，能够容纳多个节点。DOM 提供两种节点集合，用于容纳多个节点：`NodeList`和`HTMLCollection`。
+節點都是單個物件，有時需要一種資料結構，能夠容納多個節點。DOM 提供兩種節點集合，用於容納多個節點：`NodeList`和`HTMLCollection`。
 
-这两种集合都属于接口规范。许多 DOM 属性和方法，返回的结果是`NodeList`实例或`HTMLCollection`实例。主要区别是，`NodeList`可以包含各种类型的节点，`HTMLCollection`只能包含 HTML 元素节点。
+這兩種集合都屬於介面規範。許多 DOM 屬性和方法，返回的結果是`NodeList`例項或`HTMLCollection`例項。主要區別是，`NodeList`可以包含各種型別的節點，`HTMLCollection`只能包含 HTML 元素節點。
 
-## NodeList 接口
+## NodeList 介面
 
 ### 概述
 
-`NodeList`实例是一个类似数组的对象，它的成员是节点对象。通过以下方法可以得到`NodeList`实例。
+`NodeList`例項是一個類似陣列的物件，它的成員是節點物件。透過以下方法可以得到`NodeList`例項。
 
 - `Node.childNodes`
-- `document.querySelectorAll()`等节点搜索方法
+- `document.querySelectorAll()`等節點搜尋方法
 
 ```javascript
 document.body.childNodes instanceof NodeList // true
 ```
 
-`NodeList`实例很像数组，可以使用`length`属性和`forEach`方法。但是，它不是数组，不能使用`pop`或`push`之类数组特有的方法。
+`NodeList`例項很像陣列，可以使用`length`屬性和`forEach`方法。但是，它不是陣列，不能使用`pop`或`push`之類陣列特有的方法。
 
 ```javascript
 var children = document.body.childNodes;
@@ -28,16 +28,16 @@ children.length // 34
 children.forEach(console.log)
 ```
 
-上面代码中，NodeList 实例`children`不是数组，但是具有`length`属性和`forEach`方法。
+上面程式碼中，NodeList 例項`children`不是陣列，但是具有`length`屬性和`forEach`方法。
 
-如果`NodeList`实例要使用数组方法，可以将其转为真正的数组。
+如果`NodeList`例項要使用陣列方法，可以將其轉為真正的陣列。
 
 ```javascript
 var children = document.body.childNodes;
 var nodeArr = Array.prototype.slice.call(children);
 ```
 
-除了使用`forEach`方法遍历 NodeList 实例，还可以使用`for`循环。
+除了使用`forEach`方法遍歷 NodeList 例項，還可以使用`for`迴圈。
 
 ```javascript
 var children = document.body.childNodes;
@@ -47,7 +47,7 @@ for (var i = 0; i < children.length; i++) {
 }
 ```
 
-注意，NodeList 实例可能是动态集合，也可能是静态集合。所谓动态集合就是一个活的集合，DOM 删除或新增一个相关节点，都会立刻反映在 NodeList 实例。目前，只有`Node.childNodes`返回的是一个动态集合，其他的 NodeList 都是静态集合。
+注意，NodeList 例項可能是動態集合，也可能是靜態集合。所謂動態集合就是一個活的集合，DOM 刪除或新增一個相關節點，都會立刻反映在 NodeList 例項。目前，只有`Node.childNodes`返回的是一個動態集合，其他的 NodeList 都是靜態集合。
 
 ```javascript
 var children = document.body.childNodes;
@@ -56,22 +56,22 @@ document.body.appendChild(document.createElement('p'));
 children.length // 19
 ```
 
-上面代码中，文档增加一个子节点，NodeList 实例`children`的`length`属性就增加了1。
+上面程式碼中，文件增加一個子節點，NodeList 例項`children`的`length`屬性就增加了1。
 
 ### NodeList.prototype.length
 
-`length`属性返回 NodeList 实例包含的节点数量。
+`length`屬性返回 NodeList 例項包含的節點數量。
 
 ```javascript
 document.querySelectorAll('xxx').length
 // 0
 ```
 
-上面代码中，`document.querySelectorAll`返回一个 NodeList 集合。对于那些不存在的 HTML 标签，`length`属性返回`0`。
+上面程式碼中，`document.querySelectorAll`返回一個 NodeList 集合。對於那些不存在的 HTML 標籤，`length`屬性返回`0`。
 
 ### NodeList.prototype.forEach()
 
-`forEach`方法用于遍历 NodeList 的所有成员。它接受一个回调函数作为参数，每一轮遍历就执行一次这个回调函数，用法与数组实例的`forEach`方法完全一致。
+`forEach`方法用於遍歷 NodeList 的所有成員。它接受一個回撥函式作為引數，每一輪遍歷就執行一次這個回撥函式，用法與陣列例項的`forEach`方法完全一致。
 
 ```javascript
 var children = document.body.childNodes;
@@ -80,21 +80,21 @@ children.forEach(function f(item, i, list) {
 }, this);
 ```
 
-上面代码中，回调函数`f`的三个参数依次是当前成员、位置和当前 NodeList 实例。`forEach`方法的第二个参数，用于绑定回调函数内部的`this`，该参数可省略。
+上面程式碼中，回撥函式`f`的三個引數依次是當前成員、位置和當前 NodeList 例項。`forEach`方法的第二個引數，用於繫結回撥函式內部的`this`，該引數可省略。
 
 ### NodeList.prototype.item()
 
-`item`方法接受一个整数值作为参数，表示成员的位置，返回该位置上的成员。
+`item`方法接受一個整數值作為引數，表示成員的位置，返回該位置上的成員。
 
 ```javascript
 document.body.childNodes.item(0)
 ```
 
-上面代码中，`item(0)`返回第一个成员。
+上面程式碼中，`item(0)`返回第一個成員。
 
-如果参数值大于实际长度，或者索引不合法（比如负数），`item`方法返回`null`。如果省略参数，`item`方法会报错。
+如果引數值大於實際長度，或者索引不合法（比如負數），`item`方法返回`null`。如果省略引數，`item`方法會報錯。
 
-所有类似数组的对象，都可以使用方括号运算符取出成员。一般情况下，都是使用方括号运算符，而不使用`item`方法。
+所有類似陣列的物件，都可以使用方括號運算子取出成員。一般情況下，都是使用方括號運算子，而不使用`item`方法。
 
 ```javascript
 document.body.childNodes[0]
@@ -102,7 +102,7 @@ document.body.childNodes[0]
 
 ### NodeList.prototype.keys()，NodeList.prototype.values()，NodeList.prototype.entries()
 
-这三个方法都返回一个 ES6 的遍历器对象，可以通过`for...of`循环遍历获取每一个成员的信息。区别在于，`keys()`返回键名的遍历器，`values()`返回键值的遍历器，`entries()`返回的遍历器同时包含键名和键值的信息。
+這三個方法都返回一個 ES6 的遍歷器物件，可以透過`for...of`迴圈遍歷獲取每一個成員的資訊。區別在於，`keys()`返回鍵名的遍歷器，`values()`返回鍵值的遍歷器，`entries()`返回的遍歷器同時包含鍵名和鍵值的資訊。
 
 ```javascript
 var children = document.body.childNodes;
@@ -130,35 +130,35 @@ for (var entry of children.entries()) {
 // ...
 ```
 
-## HTMLCollection 接口
+## HTMLCollection 介面
 
 ### 概述
 
-`HTMLCollection`是一个节点对象的集合，只能包含元素节点（element），不能包含其他类型的节点。它的返回值是一个类似数组的对象，但是与`NodeList`接口不同，`HTMLCollection`没有`forEach`方法，只能使用`for`循环遍历。
+`HTMLCollection`是一個節點物件的集合，只能包含元素節點（element），不能包含其他型別的節點。它的返回值是一個類似陣列的物件，但是與`NodeList`介面不同，`HTMLCollection`沒有`forEach`方法，只能使用`for`迴圈遍歷。
 
-返回`HTMLCollection`实例的，主要是一些`Document`对象的集合属性，比如`document.links`、`document.forms`、`document.images`等。
+返回`HTMLCollection`例項的，主要是一些`Document`物件的集合屬性，比如`document.links`、`document.forms`、`document.images`等。
 
 ```javascript
 document.links instanceof HTMLCollection // true
 ```
 
-`HTMLCollection`实例都是动态集合，节点的变化会实时反映在集合中。
+`HTMLCollection`例項都是動態集合，節點的變化會實時反映在集合中。
 
-如果元素节点有`id`或`name`属性，那么`HTMLCollection`实例上面，可以使用`id`属性或`name`属性引用该节点元素。如果没有对应的节点，则返回`null`。
+如果元素節點有`id`或`name`屬性，那麼`HTMLCollection`例項上面，可以使用`id`屬性或`name`屬性引用該節點元素。如果沒有對應的節點，則返回`null`。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <img id="pic" src="http://example.com/foo.jpg">
 
 var pic = document.getElementById('pic');
 document.images.pic === pic // true
 ```
 
-上面代码中，`document.images`是一个`HTMLCollection`实例，可以通过`<img>`元素的`id`属性值，从`HTMLCollection`实例上取到这个元素。
+上面程式碼中，`document.images`是一個`HTMLCollection`例項，可以透過`<img>`元素的`id`屬性值，從`HTMLCollection`例項上取到這個元素。
 
 ### HTMLCollection.prototype.length
 
-`length`属性返回`HTMLCollection`实例包含的成员数量。
+`length`屬性返回`HTMLCollection`例項包含的成員數量。
 
 ```javascript
 document.links.length // 18
@@ -166,23 +166,23 @@ document.links.length // 18
 
 ### HTMLCollection.prototype.item()
 
-`item`方法接受一个整数值作为参数，表示成员的位置，返回该位置上的成员。
+`item`方法接受一個整數值作為引數，表示成員的位置，返回該位置上的成員。
 
 ```javascript
 var c = document.images;
 var img0 = c.item(0);
 ```
 
-上面代码中，`item(0)`表示返回0号位置的成员。由于方括号运算符也具有同样作用，而且使用更方便，所以一般情况下，总是使用方括号运算符。
+上面程式碼中，`item(0)`表示返回0號位置的成員。由於方括號運算子也具有同樣作用，而且使用更方便，所以一般情況下，總是使用方括號運算子。
 
-如果参数值超出成员数量或者不合法（比如小于0），那么`item`方法返回`null`。
+如果引數值超出成員數量或者不合法（比如小於0），那麼`item`方法返回`null`。
 
 ### HTMLCollection.prototype.namedItem()
 
-`namedItem`方法的参数是一个字符串，表示`id`属性或`name`属性的值，返回对应的元素节点。如果没有对应的节点，则返回`null`。
+`namedItem`方法的引數是一個字串，表示`id`屬性或`name`屬性的值，返回對應的元素節點。如果沒有對應的節點，則返回`null`。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <img id="pic" src="http://example.com/foo.jpg">
 
 var pic = document.getElementById('pic');

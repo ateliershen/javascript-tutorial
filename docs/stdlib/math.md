@@ -1,17 +1,17 @@
-# Math 对象
+# Math 物件
 
-`Math`是 JavaScript 的原生对象，提供各种数学功能。该对象不是构造函数，不能生成实例，所有的属性和方法都必须在`Math`对象上调用。
+`Math`是 JavaScript 的原生物件，提供各種數學功能。該物件不是建構函式，不能生成例項，所有的屬性和方法都必須在`Math`物件上呼叫。
 
-## 静态属性
+## 靜態屬性
 
-`Math`对象的静态属性，提供以下一些数学常数。
+`Math`物件的靜態屬性，提供以下一些數學常數。
 
-- `Math.E`：常数`e`。
-- `Math.LN2`：2 的自然对数。
-- `Math.LN10`：10 的自然对数。
-- `Math.LOG2E`：以 2 为底的`e`的对数。
-- `Math.LOG10E`：以 10 为底的`e`的对数。
-- `Math.PI`：常数`π`。
+- `Math.E`：常數`e`。
+- `Math.LN2`：2 的自然對數。
+- `Math.LN10`：10 的自然對數。
+- `Math.LOG2E`：以 2 為底的`e`的對數。
+- `Math.LOG10E`：以 10 為底的`e`的對數。
+- `Math.PI`：常數`π`。
 - `Math.SQRT1_2`：0.5 的平方根。
 - `Math.SQRT2`：2 的平方根。
 
@@ -26,27 +26,27 @@ Math.SQRT1_2 // 0.7071067811865476
 Math.SQRT2 // 1.4142135623730951
 ```
 
-这些属性都是只读的，不能修改。
+這些屬性都是隻讀的，不能修改。
 
-## 静态方法
+## 靜態方法
 
-`Math`对象提供以下一些静态方法。
+`Math`物件提供以下一些靜態方法。
 
-- `Math.abs()`：绝对值
+- `Math.abs()`：絕對值
 - `Math.ceil()`：向上取整
 - `Math.floor()`：向下取整
 - `Math.max()`：最大值
 - `Math.min()`：最小值
-- `Math.pow()`：幂运算
+- `Math.pow()`：冪運算
 - `Math.sqrt()`：平方根
-- `Math.log()`：自然对数
-- `Math.exp()`：`e`的指数
-- `Math.round()`：四舍五入
-- `Math.random()`：随机数
+- `Math.log()`：自然對數
+- `Math.exp()`：`e`的指數
+- `Math.round()`：四捨五入
+- `Math.random()`：隨機數
 
 ### Math.abs()
 
-`Math.abs`方法返回参数值的绝对值。
+`Math.abs`方法返回引數值的絕對值。
 
 ```javascript
 Math.abs(1) // 1
@@ -55,7 +55,7 @@ Math.abs(-1) // 1
 
 ### Math.max()，Math.min()
 
-`Math.max`方法返回参数之中最大的那个值，`Math.min`返回最小的那个值。如果参数为空, `Math.min`返回`Infinity`, `Math.max`返回`-Infinity`。
+`Math.max`方法返回引數之中最大的那個值，`Math.min`返回最小的那個值。如果引數為空, `Math.min`返回`Infinity`, `Math.max`返回`-Infinity`。
 
 ```javascript
 Math.max(2, -1, 5) // 5
@@ -66,21 +66,21 @@ Math.max() // -Infinity
 
 ### Math.floor()，Math.ceil()
 
-`Math.floor`方法返回小于或等于参数值的最大整数（地板值）。
+`Math.floor`方法返回小於或等於引數值的最大整數（地板值）。
 
 ```javascript
 Math.floor(3.2) // 3
 Math.floor(-3.2) // -4
 ```
 
-`Math.ceil`方法返回大于或等于参数值的最小整数（天花板值）。
+`Math.ceil`方法返回大於或等於引數值的最小整數（天花板值）。
 
 ```javascript
 Math.ceil(3.2) // 4
 Math.ceil(-3.2) // -3
 ```
 
-这两个方法可以结合起来，实现一个总是返回数值的整数部分的函数。
+這兩個方法可以結合起來，實現一個總是返回數值的整數部分的函式。
 
 ```javascript
 function ToInteger(x) {
@@ -96,22 +96,22 @@ ToInteger(-3.5) // -3
 ToInteger(-3.8) // -3
 ```
 
-上面代码中，不管正数或负数，`ToInteger`函数总是返回一个数值的整数部分。
+上面程式碼中，不管正數或負數，`ToInteger`函式總是返回一個數值的整數部分。
 
 ### Math.round()
 
-`Math.round`方法用于四舍五入。
+`Math.round`方法用於四捨五入。
 
 ```javascript
 Math.round(0.1) // 0
 Math.round(0.5) // 1
 Math.round(0.6) // 1
 
-// 等同于
+// 等同於
 Math.floor(x + 0.5)
 ```
 
-注意，它对负数的处理（主要是对`0.5`的处理）。
+注意，它對負數的處理（主要是對`0.5`的處理）。
 
 ```javascript
 Math.round(-1.1) // -1
@@ -121,16 +121,16 @@ Math.round(-1.6) // -2
 
 ### Math.pow()
 
-`Math.pow`方法返回以第一个参数为底数、第二个参数为指数的幂运算值。
+`Math.pow`方法返回以第一個引數為底數、第二個引數為指數的冪運算值。
 
 ```javascript
-// 等同于 2 ** 2
+// 等同於 2 ** 2
 Math.pow(2, 2) // 4
-// 等同于 2 ** 3
+// 等同於 2 ** 3
 Math.pow(2, 3) // 8
 ```
 
-下面是计算圆面积的方法。
+下面是計算圓面積的方法。
 
 ```javascript
 var radius = 20;
@@ -139,7 +139,7 @@ var area = Math.PI * Math.pow(radius, 2);
 
 ### Math.sqrt()
 
-`Math.sqrt`方法返回参数值的平方根。如果参数是一个负值，则返回`NaN`。
+`Math.sqrt`方法返回引數值的平方根。如果引數是一個負值，則返回`NaN`。
 
 ```javascript
 Math.sqrt(4) // 2
@@ -148,14 +148,14 @@ Math.sqrt(-4) // NaN
 
 ### Math.log()
 
-`Math.log`方法返回以`e`为底的自然对数值。
+`Math.log`方法返回以`e`為底的自然對數值。
 
 ```javascript
 Math.log(Math.E) // 1
 Math.log(10) // 2.302585092994046
 ```
 
-如果要计算以10为底的对数，可以先用`Math.log`求出自然对数，然后除以`Math.LN10`；求以2为底的对数，可以除以`Math.LN2`。
+如果要計算以10為底的對數，可以先用`Math.log`求出自然對數，然後除以`Math.LN10`；求以2為底的對數，可以除以`Math.LN2`。
 
 ```javascript
 Math.log(100)/Math.LN10 // 2
@@ -164,7 +164,7 @@ Math.log(8)/Math.LN2 // 3
 
 ### Math.exp()
 
-`Math.exp`方法返回常数`e`的参数次方。
+`Math.exp`方法返回常數`e`的引數次方。
 
 ```javascript
 Math.exp(1) // 2.718281828459045
@@ -173,13 +173,13 @@ Math.exp(3) // 20.085536923187668
 
 ### Math.random()
 
-`Math.random()`返回0到1之间的一个伪随机数，可能等于0，但是一定小于1。
+`Math.random()`返回0到1之間的一個偽隨機數，可能等於0，但是一定小於1。
 
 ```javascript
 Math.random() // 0.7151307314634323
 ```
 
-任意范围的随机数生成函数如下。
+任意範圍的隨機數生成函式如下。
 
 ```javascript
 function getRandomArbitrary(min, max) {
@@ -190,7 +190,7 @@ getRandomArbitrary(1.5, 6.5)
 // 2.4942810038223864
 ```
 
-任意范围的随机整数生成函数如下。
+任意範圍的隨機整數生成函式如下。
 
 ```javascript
 function getRandomInt(min, max) {
@@ -200,7 +200,7 @@ function getRandomInt(min, max) {
 getRandomInt(1, 6) // 5
 ```
 
-返回随机字符的例子如下。
+返回隨機字元的例子如下。
 
 ```javascript
 function random_str(length) {
@@ -218,18 +218,18 @@ function random_str(length) {
 random_str(6) // "NdQKOr"
 ```
 
-上面代码中，`random_str`函数接受一个整数作为参数，返回变量`ALPHABET`内的随机字符所组成的指定长度的字符串。
+上面程式碼中，`random_str`函式接受一個整數作為引數，返回變數`ALPHABET`內的隨機字元所組成的指定長度的字串。
 
-### 三角函数方法
+### 三角函式方法
 
-`Math`对象还提供一系列三角函数方法。
+`Math`物件還提供一系列三角函式方法。
 
-- `Math.sin()`：返回参数的正弦（参数为弧度值）
-- `Math.cos()`：返回参数的余弦（参数为弧度值）
-- `Math.tan()`：返回参数的正切（参数为弧度值）
-- `Math.asin()`：返回参数的反正弦（返回值为弧度值）
-- `Math.acos()`：返回参数的反余弦（返回值为弧度值）
-- `Math.atan()`：返回参数的反正切（返回值为弧度值）
+- `Math.sin()`：返回引數的正弦（引數為弧度值）
+- `Math.cos()`：返回引數的餘弦（引數為弧度值）
+- `Math.tan()`：返回引數的正切（引數為弧度值）
+- `Math.asin()`：返回引數的反正弦（返回值為弧度值）
+- `Math.acos()`：返回引數的反餘弦（返回值為弧度值）
+- `Math.atan()`：返回引數的反正切（返回值為弧度值）
 
 ```javascript
 Math.sin(0) // 0

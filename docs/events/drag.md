@@ -1,34 +1,34 @@
 # 拖拉事件
 
-## 拖拉事件的种类
+## 拖拉事件的種類
 
-拖拉（drag）指的是，用户在某个对象上按下鼠标键不放，拖动它到另一个位置，然后释放鼠标键，将该对象放在那里。
+拖拉（drag）指的是，使用者在某個物件上按下滑鼠鍵不放，拖動它到另一個位置，然後釋放滑鼠鍵，將該物件放在那裡。
 
-拖拉的对象有好几种，包括元素节点、图片、链接、选中的文字等等。在网页中，除了元素节点默认不可以拖拉，其他（图片、链接、选中的文字）都可以直接拖拉。为了让元素节点可拖拉，可以将该节点的`draggable`属性设为`true`。
+拖拉的物件有好幾種，包括元素節點、圖片、連結、選中的文字等等。在網頁中，除了元素節點預設不可以拖拉，其他（圖片、連結、選中的文字）都可以直接拖拉。為了讓元素節點可拖拉，可以將該節點的`draggable`屬性設為`true`。
 
 ```html
 <div draggable="true">
-  此区域可拖拉
+  此區域可拖拉
 </div>
 ```
 
-上面代码的`div`区块，在网页中可以直接用鼠标拖动。松开鼠标键时，拖动效果就会消失，该区块依然在原来的位置。
+上面程式碼的`div`區塊，在網頁中可以直接用滑鼠拖動。鬆開滑鼠鍵時，拖動效果就會消失，該區塊依然在原來的位置。
 
-`draggable`属性可用于任何元素节点，但是图片（`<img>`）和链接（`<a>`）不加这个属性，就可以拖拉。对于它们，用到这个属性的时候，往往是将其设为`false`，防止拖拉这两种元素。
+`draggable`屬性可用於任何元素節點，但是圖片（`<img>`）和連結（`<a>`）不加這個屬性，就可以拖拉。對於它們，用到這個屬性的時候，往往是將其設為`false`，防止拖拉這兩種元素。
 
-注意，一旦某个元素节点的`draggable`属性设为`true`，就无法再用鼠标选中该节点内部的文字或子节点了。
+注意，一旦某個元素節點的`draggable`屬性設為`true`，就無法再用滑鼠選中該節點內部的文字或子節點了。
 
-当元素节点或选中的文本被拖拉时，就会持续触发拖拉事件，包括以下一些事件。
+當元素節點或選中的文字被拖拉時，就會持續觸發拖拉事件，包括以下一些事件。
 
-- `drag`：拖拉过程中，在被拖拉的节点上持续触发（相隔几百毫秒）。
-- `dragstart`：用户开始拖拉时，在被拖拉的节点上触发，该事件的`target`属性是被拖拉的节点。通常应该在这个事件的监听函数中，指定拖拉的数据。
-- `dragend`：拖拉结束时（释放鼠标键或按下 ESC 键）在被拖拉的节点上触发，该事件的`target`属性是被拖拉的节点。它与`dragstart`事件，在同一个节点上触发。不管拖拉是否跨窗口，或者中途被取消，`dragend`事件总是会触发的。
-- `dragenter`：拖拉进入当前节点时，在当前节点上触发一次，该事件的`target`属性是当前节点。通常应该在这个事件的监听函数中，指定是否允许在当前节点放下（drop）拖拉的数据。如果当前节点没有该事件的监听函数，或者监听函数不执行任何操作，就意味着不允许在当前节点放下数据。在视觉上显示拖拉进入当前节点，也是在这个事件的监听函数中设置。
-- `dragover`：拖拉到当前节点上方时，在当前节点上持续触发（相隔几百毫秒），该事件的`target`属性是当前节点。该事件与`dragenter`事件的区别是，`dragenter`事件在进入该节点时触发，然后只要没有离开这个节点，`dragover`事件会持续触发。
-- `dragleave`：拖拉操作离开当前节点范围时，在当前节点上触发，该事件的`target`属性是当前节点。如果要在视觉上显示拖拉离开操作当前节点，就在这个事件的监听函数中设置。
-- `drop`：被拖拉的节点或选中的文本，释放到目标节点时，在目标节点上触发。注意，如果当前节点不允许`drop`，即使在该节点上方松开鼠标键，也不会触发该事件。如果用户按下 ESC 键，取消这个操作，也不会触发该事件。该事件的监听函数负责取出拖拉数据，并进行相关处理。
+- `drag`：拖拉過程中，在被拖拉的節點上持續觸發（相隔幾百毫秒）。
+- `dragstart`：使用者開始拖拉時，在被拖拉的節點上觸發，該事件的`target`屬性是被拖拉的節點。通常應該在這個事件的監聽函式中，指定拖拉的資料。
+- `dragend`：拖拉結束時（釋放滑鼠鍵或按下 ESC 鍵）在被拖拉的節點上觸發，該事件的`target`屬性是被拖拉的節點。它與`dragstart`事件，在同一個節點上觸發。不管拖拉是否跨視窗，或者中途被取消，`dragend`事件總是會觸發的。
+- `dragenter`：拖拉進入當前節點時，在當前節點上觸發一次，該事件的`target`屬性是當前節點。通常應該在這個事件的監聽函式中，指定是否允許在當前節點放下（drop）拖拉的資料。如果當前節點沒有該事件的監聽函式，或者監聽函式不執行任何操作，就意味著不允許在當前節點放下資料。在視覺上顯示拖拉進入當前節點，也是在這個事件的監聽函式中設定。
+- `dragover`：拖拉到當前節點上方時，在當前節點上持續觸發（相隔幾百毫秒），該事件的`target`屬性是當前節點。該事件與`dragenter`事件的區別是，`dragenter`事件在進入該節點時觸發，然後只要沒有離開這個節點，`dragover`事件會持續觸發。
+- `dragleave`：拖拉操作離開當前節點範圍時，在當前節點上觸發，該事件的`target`屬性是當前節點。如果要在視覺上顯示拖拉離開操作當前節點，就在這個事件的監聽函式中設定。
+- `drop`：被拖拉的節點或選中的文字，釋放到目標節點時，在目標節點上觸發。注意，如果當前節點不允許`drop`，即使在該節點上方鬆開滑鼠鍵，也不會觸發該事件。如果使用者按下 ESC 鍵，取消這個操作，也不會觸發該事件。該事件的監聽函式負責取出拖拉資料，並進行相關處理。
 
-下面的例子展示，如何动态改变被拖动节点的背景色。
+下面的例子展示，如何動態改變被拖動節點的背景色。
 
 ```javascript
 div.addEventListener('dragstart', function (e) {
@@ -40,15 +40,15 @@ div.addEventListener('dragend', function (e) {
 }, false);
 ```
 
-上面代码中，`div`节点被拖动时，背景色会变为红色，拖动结束，又变回绿色。
+上面程式碼中，`div`節點被拖動時，背景色會變為紅色，拖動結束，又變回綠色。
 
-下面是一个例子，展示如何实现将一个节点从当前父节点，拖拉到另一个父节点中。
+下面是一個例子，展示如何實現將一個節點從當前父節點，拖拉到另一個父節點中。
 
 ```javascript
-/* HTML 代码如下
+/* HTML 程式碼如下
  <div class="dropzone">
    <div id="draggable" draggable="true">
-     该节点可拖拉
+     該節點可拖拉
    </div>
  </div>
  <div class="dropzone"></div>
@@ -56,111 +56,111 @@ div.addEventListener('dragend', function (e) {
  <div class="dropzone"></div>
 */
 
-// 被拖拉节点
+// 被拖拉節點
 var dragged;
 
 document.addEventListener('dragstart', function (event) {
-  // 保存被拖拉节点
+  // 儲存被拖拉節點
   dragged = event.target;
-  // 被拖拉节点的背景色变透明
+  // 被拖拉節點的背景色變透明
   event.target.style.opacity = 0.5;
 }, false);
 
 document.addEventListener('dragend', function (event) {
-  // 被拖拉节点的背景色恢复正常
+  // 被拖拉節點的背景色恢復正常
   event.target.style.opacity = '';
 }, false);
 
 document.addEventListener('dragover', function (event) {
-  // 防止拖拉效果被重置，允许被拖拉的节点放入目标节点
+  // 防止拖拉效果被重置，允許被拖拉的節點放入目標節點
   event.preventDefault();
 }, false);
 
 document.addEventListener('dragenter', function (event) {
-  // 目标节点的背景色变紫色
-  // 由于该事件会冒泡，所以要过滤节点
+  // 目標節點的背景色變紫色
+  // 由於該事件會冒泡，所以要過濾節點
   if (event.target.className === 'dropzone') {
     event.target.style.background = 'purple';
   }
 }, false);
 
 document.addEventListener('dragleave', function( event ) {
-  // 目标节点的背景色恢复原样
+  // 目標節點的背景色恢復原樣
   if (event.target.className === 'dropzone') {
     event.target.style.background = '';
   }
 }, false);
 
 document.addEventListener('drop', function( event ) {
-  // 防止事件默认行为（比如某些元素节点上可以打开链接），
+  // 防止事件預設行為（比如某些元素節點上可以開啟連結），
   event.preventDefault();
   if (event.target.className === 'dropzone') {
-    // 恢复目标节点背景色
+    // 恢復目標節點背景色
     event.target.style.background = '';
-    // 将被拖拉节点插入目标节点
+    // 將被拖拉節點插入目標節點
     dragged.parentNode.removeChild(dragged);
     event.target.appendChild( dragged );
   }
 }, false);
 ```
 
-关于拖拉事件，有以下几个注意点。
+關於拖拉事件，有以下幾個注意點。
 
-- 拖拉过程只触发以上这些拖拉事件，尽管鼠标在移动，但是鼠标事件不会触发。
-- 将文件从操作系统拖拉进浏览器，不会触发`dragstart`和`dragend`事件。
-- `dragenter`和`dragover`事件的监听函数，用来取出拖拉的数据（即允许放下被拖拉的元素）。由于网页的大部分区域不适合作为放下拖拉元素的目标节点，所以这两个事件的默认设置为当前节点不允许接受被拖拉的元素。如果想要在目标节点上放下的数据，首先必须阻止这两个事件的默认行为。
+- 拖拉過程只觸發以上這些拖拉事件，儘管滑鼠在移動，但是滑鼠事件不會觸發。
+- 將檔案從作業系統拖拉進瀏覽器，不會觸發`dragstart`和`dragend`事件。
+- `dragenter`和`dragover`事件的監聽函式，用來取出拖拉的資料（即允許放下被拖拉的元素）。由於網頁的大部分割槽域不適合作為放下拖拉元素的目標節點，所以這兩個事件的預設設定為當前節點不允許接受被拖拉的元素。如果想要在目標節點上放下的資料，首先必須阻止這兩個事件的預設行為。
 
 ```html
 <div ondragover="return false">
 <div ondragover="event.preventDefault()">
 ```
 
-上面代码中，如果不取消拖拉事件或者阻止默认行为，就不能在`div`节点上放下被拖拉的节点。
+上面程式碼中，如果不取消拖拉事件或者阻止預設行為，就不能在`div`節點上放下被拖拉的節點。
 
-## DragEvent 接口
+## DragEvent 介面
 
-拖拉事件都继承了`DragEvent`接口，这个接口又继承了`MouseEvent`接口和`Event`接口。
+拖拉事件都繼承了`DragEvent`介面，這個介面又繼承了`MouseEvent`介面和`Event`介面。
 
-浏览器原生提供一个`DragEvent()`构造函数，用来生成拖拉事件的实例对象。
+瀏覽器原生提供一個`DragEvent()`建構函式，用來生成拖拉事件的例項物件。
 
 ```javascript
 new DragEvent(type, options)
 ```
 
-`DragEvent()`构造函数接受两个参数，第一个参数是字符串，表示事件的类型，该参数必须；第二个参数是事件的配置对象，用来设置事件的属性，该参数可选。配置对象除了接受`MouseEvent`接口和`Event`接口的配置属性，还可以设置`dataTransfer`属性要么是`null`，要么是一个`DataTransfer`接口的实例。
+`DragEvent()`建構函式接受兩個引數，第一個引數是字串，表示事件的型別，該引數必須；第二個引數是事件的配置物件，用來設定事件的屬性，該引數可選。配置物件除了接受`MouseEvent`介面和`Event`介面的配置屬性，還可以設定`dataTransfer`屬性要麼是`null`，要麼是一個`DataTransfer`介面的例項。
 
-`DataTransfer`的实例对象用来读写拖拉事件中传输的数据，详见下文《DataTransfer 接口》的部分。
+`DataTransfer`的例項物件用來讀寫拖拉事件中傳輸的資料，詳見下文《DataTransfer 介面》的部分。
 
-## DataTransfer 接口概述
+## DataTransfer 介面概述
 
-所有拖拉事件的实例都有一个`DragEvent.dataTransfer`属性，用来读写需要传递的数据。这个属性的值是一个`DataTransfer`接口的实例。
+所有拖拉事件的例項都有一個`DragEvent.dataTransfer`屬性，用來讀寫需要傳遞的資料。這個屬性的值是一個`DataTransfer`介面的例項。
 
-浏览器原生提供一个`DataTransfer()`构造函数，用来生成`DataTransfer`实例对象。
+瀏覽器原生提供一個`DataTransfer()`建構函式，用來生成`DataTransfer`例項物件。
 
 ```javascript
 var dataTrans = new DataTransfer();
 ```
 
-`DataTransfer()`构造函数不接受参数。
+`DataTransfer()`建構函式不接受引數。
 
-拖拉的数据分成两方面：数据的种类（又称格式）和数据的值。数据的种类是一个 MIME 字符串（比如`text/plain`、`image/jpeg`），数据的值是一个字符串。一般来说，如果拖拉一段文本，则数据默认就是那段文本；如果拖拉一个链接，则数据默认就是链接的 URL。
+拖拉的資料分成兩方面：資料的種類（又稱格式）和資料的值。資料的種類是一個 MIME 字串（比如`text/plain`、`image/jpeg`），資料的值是一個字串。一般來說，如果拖拉一段文字，則資料預設就是那段文字；如果拖拉一個連結，則資料預設就是連結的 URL。
 
-拖拉事件开始时，开发者可以提供数据类型和数据值。拖拉过程中，开发者通过`dragenter`和`dragover`事件的监听函数，检查数据类型，以确定是否允许放下（drop）被拖拉的对象。比如，在只允许放下链接的区域，检查拖拉的数据类型是否为`text/uri-list`。
+拖拉事件開始時，開發者可以提供資料型別和資料值。拖拉過程中，開發者透過`dragenter`和`dragover`事件的監聽函式，檢查資料型別，以確定是否允許放下（drop）被拖拉的物件。比如，在只允許放下連結的區域，檢查拖拉的資料型別是否為`text/uri-list`。
 
-发生`drop`事件时，监听函数取出拖拉的数据，对其进行处理。
+發生`drop`事件時，監聽函式取出拖拉的資料，對其進行處理。
 
-## DataTransfer 的实例属性
+## DataTransfer 的例項屬性
 
 ### DataTransfer.dropEffect
 
-`DataTransfer.dropEffect`属性用来设置放下（drop）被拖拉节点时的效果，会影响到拖拉经过相关区域时鼠标的形状。它可能取下面的值。
+`DataTransfer.dropEffect`屬性用來設定放下（drop）被拖拉節點時的效果，會影響到拖拉經過相關區域時滑鼠的形狀。它可能取下面的值。
 
-- copy：复制被拖拉的节点
-- move：移动被拖拉的节点
-- link：创建指向被拖拉的节点的链接
-- none：无法放下被拖拉的节点
+- copy：複製被拖拉的節點
+- move：移動被拖拉的節點
+- link：建立指向被拖拉的節點的連結
+- none：無法放下被拖拉的節點
 
-除了上面这些值，设置其他的值都是无效的。
+除了上面這些值，設定其他的值都是無效的。
 
 ```javascript
 target.addEventListener('dragover', function (e) {
@@ -170,29 +170,29 @@ target.addEventListener('dragover', function (e) {
 });
 ```
 
-上面代码中，被拖拉元素一旦`drop`，接受的区域会复制该节点。
+上面程式碼中，被拖拉元素一旦`drop`，接受的區域會複製該節點。
 
-`dropEffect`属性一般在`dragenter`和`dragover`事件的监听函数中设置，对于`dragstart`、`drag`、`dragleave`这三个事件，该属性不起作用。因为该属性只对接受被拖拉的节点的区域有效，对被拖拉的节点本身是无效的。进入目标区域后，拖拉行为会初始化成设定的效果。
+`dropEffect`屬性一般在`dragenter`和`dragover`事件的監聽函式中設定，對於`dragstart`、`drag`、`dragleave`這三個事件，該屬性不起作用。因為該屬性只對接受被拖拉的節點的區域有效，對被拖拉的節點本身是無效的。進入目標區域後，拖拉行為會初始化成設定的效果。
 
 ### DataTransfer.effectAllowed
 
-`DataTransfer.effectAllowed`属性设置本次拖拉中允许的效果。它可能取下面的值。
+`DataTransfer.effectAllowed`屬性設定本次拖拉中允許的效果。它可能取下面的值。
 
-- copy：复制被拖拉的节点
-- move：移动被拖拉的节点
-- link：创建指向被拖拉节点的链接
-- copyLink：允许`copy`或`link`
-- copyMove：允许`copy`或`move`
-- linkMove：允许`link`或`move`
-- all：允许所有效果
-- none：无法放下被拖拉的节点
-- uninitialized：默认值，等同于`all`
+- copy：複製被拖拉的節點
+- move：移動被拖拉的節點
+- link：建立指向被拖拉節點的連結
+- copyLink：允許`copy`或`link`
+- copyMove：允許`copy`或`move`
+- linkMove：允許`link`或`move`
+- all：允許所有效果
+- none：無法放下被拖拉的節點
+- uninitialized：預設值，等同於`all`
 
-如果某种效果是不允许的，用户就无法在目标节点中达成这种效果。
+如果某種效果是不允許的，使用者就無法在目標節點中達成這種效果。
 
-这个属性与`dropEffect`属性是同一件事的两个方面。前者设置被拖拉的节点允许的效果，后者设置接受拖拉的区域的效果，它们往往配合使用。
+這個屬性與`dropEffect`屬性是同一件事的兩個方面。前者設定被拖拉的節點允許的效果，後者設定接受拖拉的區域的效果，它們往往配合使用。
 
-`dragstart`事件的监听函数，可以用来设置这个属性。其他事件的监听函数里面设置这个属性是无效的。
+`dragstart`事件的監聽函式，可以用來設定這個屬性。其他事件的監聽函式裡面設定這個屬性是無效的。
 
 ```javascript
 source.addEventListener('dragstart', function (e) {
@@ -204,18 +204,18 @@ target.addEventListener('dragover', function (e) {
 });
 ```
 
-只要`dropEffect`属性和`effectAllowed`属性之中，有一个为`none`，就无法在目标节点上完成`drop`操作。
+只要`dropEffect`屬性和`effectAllowed`屬性之中，有一個為`none`，就無法在目標節點上完成`drop`操作。
 
 ### DataTransfer.files
 
-`DataTransfer.files`属性是一个 FileList 对象，包含一组本地文件，可以用来在拖拉操作中传送。如果本次拖拉不涉及文件，则该属性为空的 FileList 对象。
+`DataTransfer.files`屬性是一個 FileList 物件，包含一組本地檔案，可以用來在拖拉操作中傳送。如果本次拖拉不涉及檔案，則該屬性為空的 FileList 物件。
 
-下面就是一个接收拖拉文件的例子。
+下面就是一個接收拖拉檔案的例子。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <div id="output" style="min-height: 200px;border: 1px solid black;">
-//   文件拖拉到这里
+//   檔案拖拉到這裡
 // </div>
 
 var div = document.getElementById('output');
@@ -236,12 +236,12 @@ div.addEventListener("drop", function( event ) {
   event.preventDefault();
   var files = event.dataTransfer.files;
   for (var i = 0; i < files.length; i++) {
-    div.textContent += files[i].name + ' ' + files[i].size + '字节\n';
+    div.textContent += files[i].name + ' ' + files[i].size + '位元組\n';
   }
 }, false);
 ```
 
-上面代码中，通过`dataTransfer.files`属性读取被拖拉的文件的信息。如果想要读取文件内容，就要使用`FileReader`对象。
+上面程式碼中，透過`dataTransfer.files`屬性讀取被拖拉的檔案的資訊。如果想要讀取檔案內容，就要使用`FileReader`物件。
 
 ```javascript
 div.addEventListener('drop', function(e) {
@@ -265,9 +265,9 @@ div.addEventListener('drop', function(e) {
 
 ### DataTransfer.types
 
-`DataTransfer.types`属性是一个只读的数组，每个成员是一个字符串，里面是拖拉的数据格式（通常是 MIME 值）。比如，如果拖拉的是文字，对应的成员就是`text/plain`。
+`DataTransfer.types`屬性是一個只讀的陣列，每個成員是一個字串，裡面是拖拉的資料格式（通常是 MIME 值）。比如，如果拖拉的是文字，對應的成員就是`text/plain`。
 
-下面是一个例子，通过检查`dataTransfer`属性的类型，决定是否允许在当前节点执行`drop`操作。
+下面是一個例子，透過檢查`dataTransfer`屬性的型別，決定是否允許在當前節點執行`drop`操作。
 
 ```javascript
 function contains(list, value){
@@ -283,28 +283,28 @@ function doDragOver(event) {
 }
 ```
 
-上面代码中，只有当被拖拉的节点有一个是链接时，才允许在当前节点放下。
+上面程式碼中，只有當被拖拉的節點有一個是連結時，才允許在當前節點放下。
 
 ### DataTransfer.items
 
-`DataTransfer.items`属性返回一个类似数组的只读对象（DataTransferItemList 实例），每个成员就是本次拖拉的一个对象（DataTransferItem 实例）。如果本次拖拉不包含对象，则返回一个空对象。
+`DataTransfer.items`屬性返回一個類似陣列的只讀物件（DataTransferItemList 例項），每個成員就是本次拖拉的一個物件（DataTransferItem 例項）。如果本次拖拉不包含物件，則返回一個空物件。
 
-DataTransferItemList 实例具有以下的属性和方法。
+DataTransferItemList 例項具有以下的屬性和方法。
 
-- `length`：返回成员的数量
-- `add(data, type)`：增加一个指定内容和类型（比如`text/html`和`text/plain`）的字符串作为成员
-- `add(file)`：`add`方法的另一种用法，增加一个文件作为成员
-- `remove(index)`：移除指定位置的成员
-- `clear()`：移除所有的成员
+- `length`：返回成員的數量
+- `add(data, type)`：增加一個指定內容和型別（比如`text/html`和`text/plain`）的字串作為成員
+- `add(file)`：`add`方法的另一種用法，增加一個檔案作為成員
+- `remove(index)`：移除指定位置的成員
+- `clear()`：移除所有的成員
 
-DataTransferItem 实例具有以下的属性和方法。
+DataTransferItem 例項具有以下的屬性和方法。
 
-- `kind`：返回成员的种类（`string`还是`file`）。
-- `type`：返回成员的类型（通常是 MIME 值）。
-- `getAsFile()`：如果被拖拉是文件，返回该文件，否则返回`null`。
-- `getAsString(callback)`：如果被拖拉的是字符串，将该字符传入指定的回调函数处理。该方法是异步的，所以需要传入回调函数。
+- `kind`：返回成員的種類（`string`還是`file`）。
+- `type`：返回成員的型別（通常是 MIME 值）。
+- `getAsFile()`：如果被拖拉是檔案，返回該檔案，否則返回`null`。
+- `getAsString(callback)`：如果被拖拉的是字串，將該字元傳入指定的回撥函式處理。該方法是非同步的，所以需要傳入回撥函式。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
 div.addEventListener('drop', function (e) {
@@ -317,21 +317,21 @@ div.addEventListener('drop', function (e) {
 });
 ```
 
-## DataTransfer 的实例方法
+## DataTransfer 的例項方法
 
 ### DataTransfer.setData()
 
-`DataTransfer.setData()`方法用来设置拖拉事件所带有的数据。该方法没有返回值。
+`DataTransfer.setData()`方法用來設定拖拉事件所帶有的資料。該方法沒有返回值。
 
 ```javascript
 event.dataTransfer.setData('text/plain', 'Text to drag');
 ```
 
-上面代码为当前的拖拉事件加入纯文本数据。
+上面程式碼為當前的拖拉事件加入純文字資料。
 
-该方法接受两个参数，都是字符串。第一个参数表示数据类型（比如`text/plain`），第二个参数是具体数据。如果指定类型的数据在`dataTransfer`属性不存在，那么这些数据将被加入，否则原有的数据将被新数据替换。
+該方法接受兩個引數，都是字串。第一個引數表示資料型別（比如`text/plain`），第二個引數是具體資料。如果指定型別的資料在`dataTransfer`屬性不存在，那麼這些資料將被加入，否則原有的資料將被新資料替換。
 
-如果是拖拉文本框或者拖拉选中的文本，会默认将对应的文本数据，添加到`dataTransfer`属性，不用手动指定。
+如果是拖拉文字框或者拖拉選中的文字，會預設將對應的文字資料，新增到`dataTransfer`屬性，不用手動指定。
 
 ```html
 <div draggable="true">
@@ -339,9 +339,9 @@ event.dataTransfer.setData('text/plain', 'Text to drag');
 </div>
 ```
 
-上面代码中，拖拉这个`<div>`元素会自动带上文本数据`aaa`。
+上面程式碼中，拖拉這個`<div>`元素會自動帶上文字資料`aaa`。
 
-使用`setData`方法，可以替换到原有数据。
+使用`setData`方法，可以替換到原有資料。
 
 ```html
 <div
@@ -352,27 +352,27 @@ event.dataTransfer.setData('text/plain', 'Text to drag');
 </div>
 ```
 
-上面代码中，拖拉数据实际上是`bbb`，而不是`aaa`。
+上面程式碼中，拖拉資料實際上是`bbb`，而不是`aaa`。
 
-下面是添加其他类型的数据。由于`text/plain`是最普遍支持的格式，为了保证兼容性，建议最后总是保存一份纯文本格式的数据。
+下面是新增其他型別的資料。由於`text/plain`是最普遍支援的格式，為了保證相容性，建議最後總是儲存一份純文字格式的資料。
 
 ```javascript
 var dt = event.dataTransfer;
 
-// 添加链接
+// 新增連結
 dt.setData('text/uri-list', 'http://www.example.com');
 dt.setData('text/plain', 'http://www.example.com');
 
-// 添加 HTML 代码
+// 新增 HTML 程式碼
 dt.setData('text/html', 'Hello there, <strong>stranger</strong>');
 dt.setData('text/plain', 'Hello there, <strong>stranger</strong>');
 
-// 添加图像的 URL
+// 新增影象的 URL
 dt.setData('text/uri-list', imageurl);
 dt.setData('text/plain', imageurl);
 ```
 
-可以一次提供多种格式的数据。
+可以一次提供多種格式的資料。
 
 ```javascript
 var dt = event.dataTransfer;
@@ -381,13 +381,13 @@ dt.setData('text/uri-list', 'http://www.example.com');
 dt.setData('text/plain', 'http://www.example.com');
 ```
 
-上面代码中，通过在同一个事件上面，存放三种类型的数据，使得拖拉事件可以在不同的对象上面，`drop`不同的值。注意，第一种格式是一个自定义格式，浏览器默认无法读取，这意味着，只有某个部署了特定代码的节点，才可能`drop`（读取到）这个数据。
+上面程式碼中，透過在同一個事件上面，存放三種類型的資料，使得拖拉事件可以在不同的物件上面，`drop`不同的值。注意，第一種格式是一個自定義格式，瀏覽器預設無法讀取，這意味著，只有某個部署了特定程式碼的節點，才可能`drop`（讀取到）這個資料。
 
 ### DataTransfer.getData()
 
-`DataTransfer.getData()`方法接受一个字符串（表示数据类型）作为参数，返回事件所带的指定类型的数据（通常是用`setData`方法添加的数据）。如果指定类型的数据不存在，则返回空字符串。通常只有`drop`事件触发后，才能取出数据。
+`DataTransfer.getData()`方法接受一個字串（表示資料型別）作為引數，返回事件所帶的指定型別的資料（通常是用`setData`方法新增的資料）。如果指定型別的資料不存在，則返回空字串。通常只有`drop`事件觸發後，才能取出資料。
 
-下面是一个`drop`事件的监听函数，用来取出指定类型的数据。
+下面是一個`drop`事件的監聽函式，用來取出指定型別的資料。
 
 ```javascript
 function onDrop(event) {
@@ -397,9 +397,9 @@ function onDrop(event) {
 }
 ```
 
-上面代码取出拖拉事件的文本数据，将其替换成当前节点的文本内容。注意，这时还必须取消浏览器的默认行为，因为假如用户拖拉的是一个链接，浏览器默认会在当前窗口打开这个链接。
+上面程式碼取出拖拉事件的文字資料，將其替換成當前節點的文字內容。注意，這時還必須取消瀏覽器的預設行為，因為假如使用者拖拉的是一個連結，瀏覽器預設會在當前視窗開啟這個連結。
 
-`getData`方法返回的是一个字符串，如果其中包含多项数据，就必须手动解析。
+`getData`方法返回的是一個字串，如果其中包含多項資料，就必須手動解析。
 
 ```javascript
 function doDrop(event) {
@@ -414,15 +414,15 @@ function doDrop(event) {
 }
 ```
 
-上面代码中，`getData`方法返回的是一组链接，就必须自行解析。
+上面程式碼中，`getData`方法返回的是一組連結，就必須自行解析。
 
-类型值指定为`URL`，可以取出第一个有效链接。
+型別值指定為`URL`，可以取出第一個有效連結。
 
 ```javascript
 var link = event.dataTransfer.getData('URL');
 ```
 
-下面的例子是从多种类型的数据里面取出数据。
+下面的例子是從多種型別的資料裡面取出資料。
 
 ```javascript
 function doDrop(event) {
@@ -438,28 +438,28 @@ function doDrop(event) {
 
 ### DataTransfer.clearData()
 
-`DataTransfer.clearData()`方法接受一个字符串（表示数据类型）作为参数，删除事件所带的指定类型的数据。如果没有指定类型，则删除所有数据。如果指定类型不存在，则调用该方法不会产生任何效果。
+`DataTransfer.clearData()`方法接受一個字串（表示資料型別）作為引數，刪除事件所帶的指定型別的資料。如果沒有指定型別，則刪除所有資料。如果指定型別不存在，則呼叫該方法不會產生任何效果。
 
 ```javascript
 event.dataTransfer.clearData('text/uri-list');
 ```
 
-上面代码清除事件所带的`text/uri-list`类型的数据。
+上面程式碼清除事件所帶的`text/uri-list`型別的資料。
 
-该方法不会移除拖拉的文件，因此调用该方法后，`DataTransfer.types`属性可能依然会返回`Files`类型（前提是存在文件拖拉）。
+該方法不會移除拖拉的檔案，因此呼叫該方法後，`DataTransfer.types`屬性可能依然會返回`Files`型別（前提是存在檔案拖拉）。
 
-注意，该方法只能在`dragstart`事件的监听函数之中使用，因为这是拖拉操作的数据唯一可写的时机。
+注意，該方法只能在`dragstart`事件的監聽函式之中使用，因為這是拖拉操作的資料唯一可寫的時機。
 
 ### DataTransfer.setDragImage()
 
-拖动过程中（`dragstart`事件触发后），浏览器会显示一张图片跟随鼠标一起移动，表示被拖动的节点。这张图片是自动创造的，通常显示为被拖动节点的外观，不需要自己动手设置。
+拖動過程中（`dragstart`事件觸發後），瀏覽器會顯示一張圖片跟隨滑鼠一起移動，表示被拖動的節點。這張圖片是自動創造的，通常顯示為被拖動節點的外觀，不需要自己動手設定。
 
-`DataTransfer.setDragImage()`方法可以自定义这张图片。它接受三个参数。第一个是`<img>`节点或者`<canvas>`节点，如果省略或为`null`，则使用被拖动的节点的外观；第二个和第三个参数为鼠标相对于该图片左上角的横坐标和纵坐标。
+`DataTransfer.setDragImage()`方法可以自定義這張圖片。它接受三個引數。第一個是`<img>`節點或者`<canvas>`節點，如果省略或為`null`，則使用被拖動的節點的外觀；第二個和第三個引數為滑鼠相對於該圖片左上角的橫座標和縱座標。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
-/* HTML 代码如下
+/* HTML 程式碼如下
  <div id="drag-with-image" class="dragdemo" draggable="true">
    drag me
  </div>

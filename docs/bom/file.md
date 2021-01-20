@@ -1,40 +1,40 @@
-# File 对象，FileList 对象，FileReader 对象
+# File 物件，FileList 物件，FileReader 物件
 
-## File 对象
+## File 物件
 
-File 对象代表一个文件，用来读写文件信息。它继承了 Blob 对象，或者说是一种特殊的 Blob 对象，所有可以使用 Blob 对象的场合都可以使用它。
+File 物件代表一個檔案，用來讀寫檔案資訊。它繼承了 Blob 物件，或者說是一種特殊的 Blob 物件，所有可以使用 Blob 物件的場合都可以使用它。
 
-最常见的使用场合是表单的文件上传控件（`<input type="file">`），用户选中文件以后，浏览器就会生成一个数组，里面是每一个用户选中的文件，它们都是 File 实例对象。
+最常見的使用場合是表單的檔案上傳控制元件（`<input type="file">`），使用者選中檔案以後，瀏覽器就會生成一個數組，裡面是每一個使用者選中的檔案，它們都是 File 例項物件。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <input id="fileItem" type="file">
 var file = document.getElementById('fileItem').files[0];
 file instanceof File // true
 ```
 
-上面代码中，`file`是用户选中的第一个文件，它是 File 的实例。
+上面程式碼中，`file`是使用者選中的第一個檔案，它是 File 的例項。
 
-### 构造函数
+### 建構函式
 
-浏览器原生提供一个`File()`构造函数，用来生成 File 实例对象。
+瀏覽器原生提供一個`File()`建構函式，用來生成 File 例項物件。
 
 ```javascript
 new File(array, name [, options])
 ```
 
-`File()`构造函数接受三个参数。
+`File()`建構函式接受三個引數。
 
-- array：一个数组，成员可以是二进制对象或字符串，表示文件的内容。
-- name：字符串，表示文件名或文件路径。
-- options：配置对象，设置实例的属性。该参数可选。
+- array：一個數組，成員可以是二進位制物件或字串，表示檔案的內容。
+- name：字串，表示檔名或檔案路徑。
+- options：配置物件，設定例項的屬性。該引數可選。
 
-第三个参数配置对象，可以设置两个属性。
+第三個引數配置物件，可以設定兩個屬性。
 
-- type：字符串，表示实例对象的 MIME 类型，默认值为空字符串。
-- lastModified：时间戳，表示上次修改的时间，默认为`Date.now()`。
+- type：字串，表示例項物件的 MIME 型別，預設值為空字串。
+- lastModified：時間戳，表示上次修改的時間，預設為`Date.now()`。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
 var file = new File(
@@ -46,14 +46,14 @@ var file = new File(
 );
 ```
 
-### 实例属性和实例方法
+### 例項屬性和例項方法
 
-File 对象有以下实例属性。
+File 物件有以下例項屬性。
 
-- File.lastModified：最后修改时间
-- File.name：文件名或文件路径
-- File.size：文件大小（单位字节）
-- File.type：文件的 MIME 类型
+- File.lastModified：最後修改時間
+- File.name：檔名或檔案路徑
+- File.size：檔案大小（單位位元組）
+- File.type：檔案的 MIME 型別
 
 ```javascript
 var myFile = new File([], 'file.bin', {
@@ -65,56 +65,56 @@ myFile.size // 0
 myFile.type // ""
 ```
 
-上面代码中，由于`myFile`的内容为空，也没有设置 MIME 类型，所以`size`属性等于0，`type`属性等于空字符串。
+上面程式碼中，由於`myFile`的內容為空，也沒有設定 MIME 型別，所以`size`屬性等於0，`type`屬性等於空字串。
 
-File 对象没有自己的实例方法，由于继承了 Blob 对象，因此可以使用 Blob 的实例方法`slice()`。
+File 物件沒有自己的例項方法，由於繼承了 Blob 物件，因此可以使用 Blob 的例項方法`slice()`。
 
-## FileList 对象
+## FileList 物件
 
-`FileList`对象是一个类似数组的对象，代表一组选中的文件，每个成员都是一个 File 实例。它主要出现在两个场合。
+`FileList`物件是一個類似陣列的物件，代表一組選中的檔案，每個成員都是一個 File 例項。它主要出現在兩個場合。
 
-- 文件控件节点（`<input type="file">`）的`files`属性，返回一个 FileList 实例。
-- 拖拉一组文件时，目标区的`DataTransfer.files`属性，返回一个 FileList 实例。
+- 檔案控制元件節點（`<input type="file">`）的`files`屬性，返回一個 FileList 例項。
+- 拖拉一組檔案時，目標區的`DataTransfer.files`屬性，返回一個 FileList 例項。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <input id="fileItem" type="file">
 var files = document.getElementById('fileItem').files;
 files instanceof FileList // true
 ```
 
-上面代码中，文件控件的`files`属性是一个 FileList 实例。
+上面程式碼中，檔案控制元件的`files`屬性是一個 FileList 例項。
 
-FileList 的实例属性主要是`length`，表示包含多少个文件。
+FileList 的例項屬性主要是`length`，表示包含多少個檔案。
 
-FileList 的实例方法主要是`item()`，用来返回指定位置的实例。它接受一个整数作为参数，表示位置的序号（从零开始）。但是，由于 FileList 的实例是一个类似数组的对象，可以直接用方括号运算符，即`myFileList[0]`等同于`myFileList.item(0)`，所以一般用不到`item()`方法。
+FileList 的例項方法主要是`item()`，用來返回指定位置的例項。它接受一個整數作為引數，表示位置的序號（從零開始）。但是，由於 FileList 的例項是一個類似陣列的物件，可以直接用方括號運算子，即`myFileList[0]`等同於`myFileList.item(0)`，所以一般用不到`item()`方法。
 
-## FileReader 对象
+## FileReader 物件
 
-FileReader 对象用于读取 File 对象或 Blob 对象所包含的文件内容。
+FileReader 物件用於讀取 File 物件或 Blob 物件所包含的檔案內容。
 
-浏览器原生提供一个`FileReader`构造函数，用来生成 FileReader 实例。
+瀏覽器原生提供一個`FileReader`建構函式，用來生成 FileReader 例項。
 
 ```javascript
 var reader = new FileReader();
 ```
 
-FileReader 有以下的实例属性。
+FileReader 有以下的例項屬性。
 
-- FileReader.error：读取文件时产生的错误对象
-- FileReader.readyState：整数，表示读取文件时的当前状态。一共有三种可能的状态，`0`表示尚未加载任何数据，`1`表示数据正在加载，`2`表示加载完成。
-- FileReader.result：读取完成后的文件内容，有可能是字符串，也可能是一个 ArrayBuffer 实例。
-- FileReader.onabort：`abort`事件（用户终止读取操作）的监听函数。
-- FileReader.onerror：`error`事件（读取错误）的监听函数。
-- FileReader.onload：`load`事件（读取操作完成）的监听函数，通常在这个函数里面使用`result`属性，拿到文件内容。
-- FileReader.onloadstart：`loadstart`事件（读取操作开始）的监听函数。
-- FileReader.onloadend：`loadend`事件（读取操作结束）的监听函数。
-- FileReader.onprogress：`progress`事件（读取操作进行中）的监听函数。
+- FileReader.error：讀取檔案時產生的錯誤物件
+- FileReader.readyState：整數，表示讀取檔案時的當前狀態。一共有三種可能的狀態，`0`表示尚未載入任何資料，`1`表示資料正在載入，`2`表示載入完成。
+- FileReader.result：讀取完成後的檔案內容，有可能是字串，也可能是一個 ArrayBuffer 例項。
+- FileReader.onabort：`abort`事件（使用者終止讀取操作）的監聽函式。
+- FileReader.onerror：`error`事件（讀取錯誤）的監聽函式。
+- FileReader.onload：`load`事件（讀取操作完成）的監聽函式，通常在這個函式裡面使用`result`屬性，拿到檔案內容。
+- FileReader.onloadstart：`loadstart`事件（讀取操作開始）的監聽函式。
+- FileReader.onloadend：`loadend`事件（讀取操作結束）的監聽函式。
+- FileReader.onprogress：`progress`事件（讀取操作進行中）的監聽函式。
 
-下面是监听`load`事件的一个例子。
+下面是監聽`load`事件的一個例子。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <input type="file" onchange="onChange(event)">
 
 function onChange(event) {
@@ -128,20 +128,20 @@ function onChange(event) {
 }
 ```
 
-上面代码中，每当文件控件发生变化，就尝试读取第一个文件。如果读取成功（`load`事件发生），就打印出文件内容。
+上面程式碼中，每當檔案控制元件發生變化，就嘗試讀取第一個檔案。如果讀取成功（`load`事件發生），就打印出檔案內容。
 
-FileReader 有以下实例方法。
+FileReader 有以下例項方法。
 
-- FileReader.abort()：终止读取操作，`readyState`属性将变成`2`。
-- FileReader.readAsArrayBuffer()：以 ArrayBuffer 的格式读取文件，读取完成后`result`属性将返回一个 ArrayBuffer 实例。
-- FileReader.readAsBinaryString()：读取完成后，`result`属性将返回原始的二进制字符串。
-- FileReader.readAsDataURL()：读取完成后，`result`属性将返回一个 Data URL 格式（Base64 编码）的字符串，代表文件内容。对于图片文件，这个字符串可以用于`<img>`元素的`src`属性。注意，这个字符串不能直接进行 Base64 解码，必须把前缀`data:*/*;base64,`从字符串里删除以后，再进行解码。
-- FileReader.readAsText()：读取完成后，`result`属性将返回文件内容的文本字符串。该方法的第一个参数是代表文件的 Blob 实例，第二个参数是可选的，表示文本编码，默认为 UTF-8。
+- FileReader.abort()：終止讀取操作，`readyState`屬性將變成`2`。
+- FileReader.readAsArrayBuffer()：以 ArrayBuffer 的格式讀取檔案，讀取完成後`result`屬性將返回一個 ArrayBuffer 例項。
+- FileReader.readAsBinaryString()：讀取完成後，`result`屬性將返回原始的二進位制字串。
+- FileReader.readAsDataURL()：讀取完成後，`result`屬性將返回一個 Data URL 格式（Base64 編碼）的字串，代表檔案內容。對於圖片檔案，這個字串可以用於`<img>`元素的`src`屬性。注意，這個字串不能直接進行 Base64 解碼，必須把字首`data:*/*;base64,`從字串裡刪除以後，再進行解碼。
+- FileReader.readAsText()：讀取完成後，`result`屬性將返回檔案內容的文字字串。該方法的第一個引數是代表檔案的 Blob 例項，第二個引數是可選的，表示文字編碼，預設為 UTF-8。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
-/* HTML 代码如下
+/* HTML 程式碼如下
   <input type="file" onchange="previewFile()">
   <img src="" height="200">
 */
@@ -161,4 +161,4 @@ function previewFile() {
 }
 ```
 
-上面代码中，用户选中图片文件以后，脚本会自动读取文件内容，然后作为一个 Data URL 赋值给`<img>`元素的`src`属性，从而把图片展示出来。
+上面程式碼中，使用者選中圖片檔案以後，指令碼會自動讀取檔案內容，然後作為一個 Data URL 賦值給`<img>`元素的`src`屬性，從而把圖片展示出來。

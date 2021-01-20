@@ -1,40 +1,40 @@
-# History 对象
+# History 物件
 
 ## 概述
 
-`window.history`属性指向 History 对象，它表示当前窗口的浏览历史。
+`window.history`屬性指向 History 物件，它表示當前視窗的瀏覽歷史。
 
-History 对象保存了当前窗口访问过的所有页面网址。下面代码表示当前窗口一共访问过3个网址。
+History 物件儲存了當前視窗訪問過的所有頁面網址。下面程式碼表示當前視窗一共訪問過3個網址。
 
 ```javascript
 window.history.length // 3
 ```
 
-由于安全原因，浏览器不允许脚本读取这些地址，但是允许在地址之间导航。
+由於安全原因，瀏覽器不允許指令碼讀取這些地址，但是允許在地址之間導航。
 
 ```javascript
-// 后退到前一个网址
+// 後退到前一個網址
 history.back()
 
-// 等同于
+// 等同於
 history.go(-1)
 ```
 
-浏览器工具栏的“前进”和“后退”按钮，其实就是对 History 对象进行操作。
+瀏覽器工具欄的“前進”和“後退”按鈕，其實就是對 History 物件進行操作。
 
-## 属性
+## 屬性
 
-History 对象主要有两个属性。
+History 物件主要有兩個屬性。
 
-- `History.length`：当前窗口访问过的网址数量（包括当前网页）
-- `History.state`：History 堆栈最上层的状态值（详见下文）
+- `History.length`：當前視窗訪問過的網址數量（包括當前網頁）
+- `History.state`：History 堆疊最上層的狀態值（詳見下文）
 
 ```javascript
-// 当前窗口访问过多少个网页
+// 當前視窗訪問過多少個網頁
 window.history.length // 1
 
-// History 对象的当前状态
-// 通常是 undefined，即未设置
+// History 物件的當前狀態
+// 通常是 undefined，即未設定
 window.history.state // undefined
 ```
 
@@ -42,11 +42,11 @@ window.history.state // undefined
 
 ### History.back()、History.forward()、History.go()
 
-这三个方法用于在历史之中移动。
+這三個方法用於在歷史之中移動。
 
-- `History.back()`：移动到上一个网址，等同于点击浏览器的后退键。对于第一个访问的网址，该方法无效果。
-- `History.forward()`：移动到下一个网址，等同于点击浏览器的前进键。对于最后一个访问的网址，该方法无效果。
-- `History.go()`：接受一个整数作为参数，以当前网址为基准，移动到参数指定的网址，比如`go(1)`相当于`forward()`，`go(-1)`相当于`back()`。如果参数超过实际存在的网址范围，该方法无效果；如果不指定参数，默认参数为`0`，相当于刷新当前页面。
+- `History.back()`：移動到上一個網址，等同於點選瀏覽器的後退鍵。對於第一個訪問的網址，該方法無效果。
+- `History.forward()`：移動到下一個網址，等同於點選瀏覽器的前進鍵。對於最後一個訪問的網址，該方法無效果。
+- `History.go()`：接受一個整數作為引數，以當前網址為基準，移動到引數指定的網址，比如`go(1)`相當於`forward()`，`go(-1)`相當於`back()`。如果引數超過實際存在的網址範圍，該方法無效果；如果不指定引數，預設引數為`0`，相當於重新整理當前頁面。
 
 ```javascript
 history.back();
@@ -54,40 +54,40 @@ history.forward();
 history.go(-2);
 ```
 
-`history.go(0)`相当于刷新当前页面。
+`history.go(0)`相當於重新整理當前頁面。
 
 ```javascript
-history.go(0); // 刷新当前页面
+history.go(0); // 重新整理當前頁面
 ```
 
-注意，移动到以前访问过的页面时，页面通常是从浏览器缓存之中加载，而不是重新要求服务器发送新的网页。
+注意，移動到以前訪問過的頁面時，頁面通常是從瀏覽器快取之中載入，而不是重新要求伺服器傳送新的網頁。
 
 ### History.pushState()，
 
-`History.pushState()`方法用于在历史中添加一条记录。
+`History.pushState()`方法用於在歷史中新增一條記錄。
 
 ```javascript
 window.history.pushState(state, title, url)
 ```
 
-该方法接受三个参数，依次为：
+該方法接受三個引數，依次為：
 
-- `state`：一个与添加的记录相关联的状态对象，主要用于`popstate`事件。该事件触发时，该对象会传入回调函数。也就是说，浏览器会将这个对象序列化以后保留在本地，重新载入这个页面的时候，可以拿到这个对象。如果不需要这个对象，此处可以填`null`。
-- `title`：新页面的标题。但是，现在所有浏览器都忽视这个参数，所以这里可以填空字符串。
-- `url`：新的网址，必须与当前页面处在同一个域。浏览器的地址栏将显示这个网址。
+- `state`：一個與新增的記錄相關聯的狀態物件，主要用於`popstate`事件。該事件觸發時，該物件會傳入回撥函式。也就是說，瀏覽器會將這個物件序列化以後保留在本地，重新載入這個頁面的時候，可以拿到這個物件。如果不需要這個物件，此處可以填`null`。
+- `title`：新頁面的標題。但是，現在所有瀏覽器都忽視這個引數，所以這裡可以填空字串。
+- `url`：新的網址，必須與當前頁面處在同一個域。瀏覽器的位址列將顯示這個網址。
 
-假定当前网址是`example.com/1.html`，使用`pushState()`方法在浏览记录（History 对象）中添加一个新记录。
+假定當前網址是`example.com/1.html`，使用`pushState()`方法在瀏覽記錄（History 物件）中新增一個新記錄。
 
 ```javascript
 var stateObj = { foo: 'bar' };
 history.pushState(stateObj, 'page 2', '2.html');
 ```
 
-添加新记录后，浏览器地址栏立刻显示`example.com/2.html`，但并不会跳转到`2.html`，甚至也不会检查`2.html`是否存在，它只是成为浏览历史中的最新记录。这时，在地址栏输入一个新的地址(比如访问`google.com`)，然后点击了倒退按钮，页面的 URL 将显示`2.html`；你再点击一次倒退按钮，URL 将显示`1.html`。
+新增新記錄後，瀏覽器位址列立刻顯示`example.com/2.html`，但並不會跳轉到`2.html`，甚至也不會檢查`2.html`是否存在，它只是成為瀏覽歷史中的最新記錄。這時，在位址列輸入一個新的地址(比如訪問`google.com`)，然後點選了倒退按鈕，頁面的 URL 將顯示`2.html`；你再點選一次倒退按鈕，URL 將顯示`1.html`。
 
-总之，`pushState()`方法不会触发页面刷新，只是导致 History 对象发生变化，地址栏会有反应。
+總之，`pushState()`方法不會觸發頁面重新整理，只是導致 History 物件發生變化，位址列會有反應。
 
-使用该方法之后，就可以用`History.state`属性读出状态对象。
+使用該方法之後，就可以用`History.state`屬性讀出狀態物件。
 
 ```javascript
 var stateObj = { foo: 'bar' };
@@ -95,51 +95,51 @@ history.pushState(stateObj, 'page 2', '2.html');
 history.state // {foo: "bar"}
 ```
 
-如果`pushState`的 URL 参数设置了一个新的锚点值（即`hash`），并不会触发`hashchange`事件。反过来，如果 URL 的锚点值变了，则会在 History 对象创建一条浏览记录。
+如果`pushState`的 URL 引數設定了一個新的錨點值（即`hash`），並不會觸發`hashchange`事件。反過來，如果 URL 的錨點值變了，則會在 History 物件建立一條瀏覽記錄。
 
-如果`pushState()`方法设置了一个跨域网址，则会报错。
+如果`pushState()`方法設定了一個跨域網址，則會報錯。
 
 ```javascript
-// 报错
-// 当前网址为 http://example.com
+// 報錯
+// 當前網址為 http://example.com
 history.pushState(null, '', 'https://twitter.com/hello');
 ```
 
-上面代码中，`pushState`想要插入一个跨域的网址，导致报错。这样设计的目的是，防止恶意代码让用户以为他们是在另一个网站上，因为这个方法不会导致页面跳转。
+上面程式碼中，`pushState`想要插入一個跨域的網址，導致報錯。這樣設計的目的是，防止惡意程式碼讓使用者以為他們是在另一個網站上，因為這個方法不會導致頁面跳轉。
 
 ### History.replaceState()
 
-`History.replaceState()`方法用来修改 History 对象的当前记录，其他都与`pushState()`方法一模一样。
+`History.replaceState()`方法用來修改 History 物件的當前記錄，其他都與`pushState()`方法一模一樣。
 
-假定当前网页是`example.com/example.html`。
+假定當前網頁是`example.com/example.html`。
 
 ```javascript
 history.pushState({page: 1}, 'title 1', '?page=1')
-// URL 显示为 http://example.com/example.html?page=1
+// URL 顯示為 http://example.com/example.html?page=1
 
 history.pushState({page: 2}, 'title 2', '?page=2');
-// URL 显示为 http://example.com/example.html?page=2
+// URL 顯示為 http://example.com/example.html?page=2
 
 history.replaceState({page: 3}, 'title 3', '?page=3');
-// URL 显示为 http://example.com/example.html?page=3
+// URL 顯示為 http://example.com/example.html?page=3
 
 history.back()
-// URL 显示为 http://example.com/example.html?page=1
+// URL 顯示為 http://example.com/example.html?page=1
 
 history.back()
-// URL 显示为 http://example.com/example.html
+// URL 顯示為 http://example.com/example.html
 
 history.go(2)
-// URL 显示为 http://example.com/example.html?page=3
+// URL 顯示為 http://example.com/example.html?page=3
 ```
 
 ## popstate 事件
 
-每当同一个文档的浏览历史（即`history`对象）出现变化时，就会触发`popstate`事件。
+每當同一個文件的瀏覽歷史（即`history`物件）出現變化時，就會觸發`popstate`事件。
 
-注意，仅仅调用`pushState()`方法或`replaceState()`方法 ，并不会触发该事件，只有用户点击浏览器倒退按钮和前进按钮，或者使用 JavaScript 调用`History.back()`、`History.forward()`、`History.go()`方法时才会触发。另外，该事件只针对同一个文档，如果浏览历史的切换，导致加载不同的文档，该事件也不会触发。
+注意，僅僅呼叫`pushState()`方法或`replaceState()`方法 ，並不會觸發該事件，只有使用者點選瀏覽器倒退按鈕和前進按鈕，或者使用 JavaScript 呼叫`History.back()`、`History.forward()`、`History.go()`方法時才會觸發。另外，該事件只針對同一個文件，如果瀏覽歷史的切換，導致載入不同的文件，該事件也不會觸發。
 
-使用的时候，可以为`popstate`事件指定回调函数。
+使用的時候，可以為`popstate`事件指定回撥函式。
 
 ```javascript
 window.onpopstate = function (event) {
@@ -154,12 +154,12 @@ window.addEventListener('popstate', function(event) {
 });
 ```
 
-回调函数的参数是一个`event`事件对象，它的`state`属性指向`pushState`和`replaceState`方法为当前 URL 所提供的状态对象（即这两个方法的第一个参数）。上面代码中的`event.state`，就是通过`pushState`和`replaceState`方法，为当前 URL 绑定的`state`对象。
+回撥函式的引數是一個`event`事件物件，它的`state`屬性指向`pushState`和`replaceState`方法為當前 URL 所提供的狀態物件（即這兩個方法的第一個引數）。上面程式碼中的`event.state`，就是透過`pushState`和`replaceState`方法，為當前 URL 繫結的`state`物件。
 
-这个`state`对象也可以直接通过`history`对象读取。
+這個`state`物件也可以直接透過`history`物件讀取。
 
 ```javascript
 var currentState = history.state;
 ```
 
-注意，页面第一次加载的时候，浏览器不会触发`popstate`事件。
+注意，頁面第一次載入的時候，瀏覽器不會觸發`popstate`事件。

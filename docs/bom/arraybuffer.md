@@ -1,66 +1,66 @@
-# ArrayBuffer 对象，Blob 对象
+# ArrayBuffer 物件，Blob 物件
 
-## ArrayBuffer 对象
+## ArrayBuffer 物件
 
-ArrayBuffer 对象表示一段二进制数据，用来模拟内存里面的数据。通过这个对象，JavaScript 可以读写二进制数据。这个对象可以看作内存数据的表达。
+ArrayBuffer 物件表示一段二進位制資料，用來模擬記憶體裡面的資料。透過這個物件，JavaScript 可以讀寫二進位制資料。這個物件可以看作記憶體資料的表達。
 
-这个对象是 ES6 才写入标准的，普通的网页编程用不到它，为了教程体系的完整，下面只提供一个简略的介绍，详细介绍请看《ES6 标准入门》里面的章节。
+這個物件是 ES6 才寫入標準的，普通的網頁程式設計用不到它，為了教程體系的完整，下面只提供一個簡略的介紹，詳細介紹請看《ES6 標準入門》裡面的章節。
 
-浏览器原生提供`ArrayBuffer()`构造函数，用来生成实例。它接受一个整数作为参数，表示这段二进制数据占用多少个字节。
+瀏覽器原生提供`ArrayBuffer()`建構函式，用來生成例項。它接受一個整數作為引數，表示這段二進位制資料佔用多少個位元組。
 
 ```javascript
 var buffer = new ArrayBuffer(8);
 ```
 
-上面代码中，实例对象`buffer`占用8个字节。
+上面程式碼中，例項物件`buffer`佔用8個位元組。
 
-ArrayBuffer 对象有实例属性`byteLength`，表示当前实例占用的内存长度（单位字节）。
+ArrayBuffer 物件有例項屬性`byteLength`，表示當前例項佔用的記憶體長度（單位位元組）。
 
 ```javascript
 var buffer = new ArrayBuffer(8);
 buffer.byteLength // 8
 ```
 
-ArrayBuffer 对象有实例方法`slice()`，用来复制一部分内存。它接受两个整数参数，分别表示复制的开始位置（从0开始）和结束位置（复制时不包括结束位置），如果省略第二个参数，则表示一直复制到结束。
+ArrayBuffer 物件有例項方法`slice()`，用來複制一部分記憶體。它接受兩個整數引數，分別表示複製的開始位置（從0開始）和結束位置（複製時不包括結束位置），如果省略第二個引數，則表示一直複製到結束。
 
 ```javascript
 var buf1 = new ArrayBuffer(8);
 var buf2 = buf1.slice(0);
 ```
 
-上面代码表示复制原来的实例。
+上面程式碼表示覆制原來的例項。
 
-## Blob 对象
+## Blob 物件
 
-### 简介
+### 簡介
 
-Blob 对象表示一个二进制文件的数据内容，比如一个图片文件的内容就可以通过 Blob 对象读写。它通常用来读写文件，它的名字是 Binary Large Object （二进制大型对象）的缩写。它与 ArrayBuffer 的区别在于，它用于操作二进制文件，而 ArrayBuffer 用于操作内存。
+Blob 物件表示一個二進位制檔案的資料內容，比如一個圖片檔案的內容就可以透過 Blob 物件讀寫。它通常用來讀寫檔案，它的名字是 Binary Large Object （二進位制大型物件）的縮寫。它與 ArrayBuffer 的區別在於，它用於操作二進位制檔案，而 ArrayBuffer 用於操作記憶體。
 
-浏览器原生提供`Blob()`构造函数，用来生成实例对象。
+瀏覽器原生提供`Blob()`建構函式，用來生成例項物件。
 
 ```javascript
 new Blob(array [, options])
 ```
 
-`Blob`构造函数接受两个参数。第一个参数是数组，成员是字符串或二进制对象，表示新生成的`Blob`实例对象的内容；第二个参数是可选的，是一个配置对象，目前只有一个属性`type`，它的值是一个字符串，表示数据的 MIME 类型，默认是空字符串。
+`Blob`建構函式接受兩個引數。第一個引數是陣列，成員是字串或二進位制物件，表示新生成的`Blob`例項物件的內容；第二個引數是可選的，是一個配置物件，目前只有一個屬性`type`，它的值是一個字串，表示資料的 MIME 型別，預設是空字串。
 
 ```javascript
 var htmlFragment = ['<a id="a"><b id="b">hey!</b></a>'];
 var myBlob = new Blob(htmlFragment, {type : 'text/html'});
 ```
 
-上面代码中，实例对象`myBlob`包含的是字符串。生成实例的时候，数据类型指定为`text/html`。
+上面程式碼中，例項物件`myBlob`包含的是字串。生成例項的時候，資料型別指定為`text/html`。
 
-下面是另一个例子，Blob 保存 JSON 数据。
+下面是另一個例子，Blob 儲存 JSON 資料。
 
 ```javascript
 var obj = { hello: 'world' };
 var blob = new Blob([ JSON.stringify(obj) ], {type : 'application/json'});
 ```
 
-### 实例属性和实例方法
+### 例項屬性和例項方法
 
-`Blob`具有两个实例属性`size`和`type`，分别返回数据的大小和类型。
+`Blob`具有兩個例項屬性`size`和`type`，分別返回資料的大小和型別。
 
 ```javascript
 var htmlFragment = ['<a id="a"><b id="b">hey!</b></a>'];
@@ -70,42 +70,42 @@ myBlob.size // 32
 myBlob.type // "text/html"
 ```
 
-`Blob`具有一个实例方法`slice`，用来拷贝原来的数据，返回的也是一个`Blob`实例。
+`Blob`具有一個例項方法`slice`，用來複製原來的資料，返回的也是一個`Blob`例項。
 
 ```javascript
 myBlob.slice(start, end, contentType)
 ```
 
-`slice`方法有三个参数，都是可选的。它们依次是起始的字节位置（默认为0）、结束的字节位置（默认为`size`属性的值，该位置本身将不包含在拷贝的数据之中）、新实例的数据类型（默认为空字符串）。
+`slice`方法有三個引數，都是可選的。它們依次是起始的位元組位置（預設為0）、結束的位元組位置（預設為`size`屬性的值，該位置本身將不包含在複製的資料之中）、新例項的資料型別（預設為空字串）。
 
-### 获取文件信息
+### 獲取檔案資訊
 
-文件选择器`<input type="file">`用来让用户选取文件。出于安全考虑，浏览器不允许脚本自行设置这个控件的`value`属性，即文件必须是用户手动选取的，不能是脚本指定的。一旦用户选好了文件，脚本就可以读取这个文件。
+檔案選擇器`<input type="file">`用來讓使用者選取檔案。出於安全考慮，瀏覽器不允許指令碼自行設定這個控制元件的`value`屬性，即檔案必須是使用者手動選取的，不能是指令碼指定的。一旦使用者選好了檔案，指令碼就可以讀取這個檔案。
 
-文件选择器返回一个 FileList 对象，该对象是一个类似数组的成员，每个成员都是一个 File 实例对象。File 实例对象是一个特殊的 Blob 实例，增加了`name`和`lastModifiedDate`属性。
+檔案選擇器返回一個 FileList 物件，該物件是一個類似陣列的成員，每個成員都是一個 File 例項物件。File 例項物件是一個特殊的 Blob 例項，增加了`name`和`lastModifiedDate`屬性。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <input type="file" accept="image/*" multiple onchange="fileinfo(this.files)"/>
 
 function fileinfo(files) {
   for (var i = 0; i < files.length; i++) {
     var f = files[i];
     console.log(
-      f.name, // 文件名，不含路径
-      f.size, // 文件大小，Blob 实例属性
-      f.type, // 文件类型，Blob 实例属性
-      f.lastModifiedDate // 文件的最后修改时间
+      f.name, // 檔名，不含路徑
+      f.size, // 檔案大小，Blob 例項屬性
+      f.type, // 檔案型別，Blob 例項屬性
+      f.lastModifiedDate // 檔案的最後修改時間
     );
   }
 }
 ```
 
-除了文件选择器，拖放 API 的`dataTransfer.files`返回的也是一个FileList 对象，它的成员因此也是 File 实例对象。
+除了檔案選擇器，拖放 API 的`dataTransfer.files`返回的也是一個FileList 物件，它的成員因此也是 File 例項物件。
 
-### 下载文件
+### 下載檔案
 
-AJAX 请求时，如果指定`responseType`属性为`blob`，下载下来的就是一个 Blob 对象。
+AJAX 請求時，如果指定`responseType`屬性為`blob`，下載下來的就是一個 Blob 物件。
 
 ```javascript
 function getBlob(url, callback) {
@@ -119,11 +119,11 @@ function getBlob(url, callback) {
 }
 ```
 
-上面代码中，`xhr.response`拿到的就是一个 Blob 对象。
+上面程式碼中，`xhr.response`拿到的就是一個 Blob 物件。
 
 ### 生成 URL
 
-浏览器允许使用`URL.createObjectURL()`方法，针对 Blob 对象生成一个临时 URL，以便于某些 API 使用。这个 URL 以`blob://`开头，表明对应一个 Blob 对象，协议头后面是一个识别符，用来唯一对应内存里面的 Blob 对象。这一点与`data://URL`（URL 包含实际数据）和`file://URL`（本地文件系统里面的文件）都不一样。
+瀏覽器允許使用`URL.createObjectURL()`方法，針對 Blob 物件生成一個臨時 URL，以便於某些 API 使用。這個 URL 以`blob://`開頭，表明對應一個 Blob 物件，協議頭後面是一個識別符，用來唯一對應記憶體裡面的 Blob 物件。這一點與`data://URL`（URL 包含實際資料）和`file://URL`（本地檔案系統裡面的檔案）都不一樣。
 
 ```javascript
 var droptarget = document.getElementById('droptarget');
@@ -145,25 +145,25 @@ droptarget.ondrop = function (e) {
 }
 ```
 
-上面代码通过为拖放的图片文件生成一个 URL，产生它们的缩略图，从而使得用户可以预览选择的文件。
+上面程式碼透過為拖放的圖片檔案生成一個 URL，產生它們的縮圖，從而使得使用者可以預覽選擇的檔案。
 
-浏览器处理 Blob URL 就跟普通的 URL 一样，如果 Blob 对象不存在，返回404状态码；如果跨域请求，返回403状态码。Blob URL 只对 GET 请求有效，如果请求成功，返回200状态码。由于 Blob URL 就是普通 URL，因此可以下载。
+瀏覽器處理 Blob URL 就跟普通的 URL 一樣，如果 Blob 物件不存在，返回404狀態碼；如果跨域請求，返回403狀態碼。Blob URL 只對 GET 請求有效，如果請求成功，返回200狀態碼。由於 Blob URL 就是普通 URL，因此可以下載。
 
-### 读取文件
+### 讀取檔案
 
-取得 Blob 对象以后，可以通过`FileReader`对象，读取 Blob 对象的内容，即文件内容。
+取得 Blob 物件以後，可以透過`FileReader`物件，讀取 Blob 物件的內容，即檔案內容。
 
-FileReader 对象提供四个方法，处理 Blob 对象。Blob 对象作为参数传入这些方法，然后以指定的格式返回。
+FileReader 物件提供四個方法，處理 Blob 物件。Blob 物件作為引數傳入這些方法，然後以指定的格式返回。
 
-- `FileReader.readAsText()`：返回文本，需要指定文本编码，默认为 UTF-8。
-- `FileReader.readAsArrayBuffer()`：返回 ArrayBuffer 对象。
+- `FileReader.readAsText()`：返回文字，需要指定文字編碼，預設為 UTF-8。
+- `FileReader.readAsArrayBuffer()`：返回 ArrayBuffer 物件。
 - `FileReader.readAsDataURL()`：返回 Data URL。
-- `FileReader.readAsBinaryString()`：返回原始的二进制字符串。
+- `FileReader.readAsBinaryString()`：返回原始的二進位制字串。
 
-下面是`FileReader.readAsText()`方法的例子，用来读取文本文件。
+下面是`FileReader.readAsText()`方法的例子，用來讀取文字檔案。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <input type="file" onchange="readfile(this.files[0])"></input>
 // <pre id="output"></pre>
 function readfile(f) {
@@ -181,25 +181,25 @@ function readfile(f) {
 }
 ```
 
-上面代码中，通过指定 FileReader 实例对象的`onload`监听函数，在实例的`result`属性上拿到文件内容。
+上面程式碼中，透過指定 FileReader 例項物件的`onload`監聽函式，在例項的`result`屬性上拿到檔案內容。
 
-下面是`FileReader.readAsArrayBuffer()`方法的例子，用于读取二进制文件。
+下面是`FileReader.readAsArrayBuffer()`方法的例子，用於讀取二進位制檔案。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <input type="file" onchange="typefile(this.files[0])"></input>
 function typefile(file) {
-  // 文件开头的四个字节，生成一个 Blob 对象
+  // 檔案開頭的四個位元組，生成一個 Blob 物件
   var slice = file.slice(0, 4);
   var reader = new FileReader();
-  // 读取这四个字节
+  // 讀取這四個位元組
   reader.readAsArrayBuffer(slice);
   reader.onload = function (e) {
     var buffer = reader.result;
-    // 将这四个字节的内容，视作一个32位整数
+    // 將這四個位元組的內容，視作一個32位整數
     var view = new DataView(buffer);
     var magic = view.getUint32(0, false);
-    // 根据文件的前四个字节，判断它的类型
+    // 根據檔案的前四個位元組，判斷它的型別
     switch(magic) {
       case 0x89504E47: file.verified_type = 'image/png'; break;
       case 0x47494638: file.verified_type = 'image/gif'; break;

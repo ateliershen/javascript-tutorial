@@ -1,35 +1,35 @@
-# Navigator 对象，Screen 对象。
+# Navigator 物件，Screen 物件。
 
-`window.navigator`属性指向一个包含浏览器和系统信息的 Navigator 对象。脚本通过这个属性了解用户的环境信息。
+`window.navigator`屬性指向一個包含瀏覽器和系統資訊的 Navigator 物件。指令碼透過這個屬性瞭解使用者的環境資訊。
 
-## Navigator 对象的属性
+## Navigator 物件的屬性
 
 ### Navigator.userAgent
 
-`navigator.userAgent`属性返回浏览器的 User Agent 字符串，表示浏览器的厂商和版本信息。
+`navigator.userAgent`屬性返回瀏覽器的 User Agent 字串，表示瀏覽器的廠商和版本資訊。
 
-下面是 Chrome 浏览器的`userAgent`。
+下面是 Chrome 瀏覽器的`userAgent`。
 
 ```javascript
 navigator.userAgent
 // "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.57 Safari/537.36"
 ```
 
-通过`userAgent`属性识别浏览器，不是一个好办法。因为必须考虑所有的情况（不同的浏览器，不同的版本），非常麻烦，而且用户可以改变这个字符串。这个字符串的格式并无统一规定，也无法保证未来的适用性，各种上网设备层出不穷，难以穷尽。所以，现在一般不再通过它识别浏览器了，而是使用“功能识别”方法，即逐一测试当前浏览器是否支持要用到的 JavaScript 功能。
+透過`userAgent`屬性識別瀏覽器，不是一個好辦法。因為必須考慮所有的情況（不同的瀏覽器，不同的版本），非常麻煩，而且使用者可以改變這個字串。這個字串的格式並無統一規定，也無法保證未來的適用性，各種上網裝置層出不窮，難以窮盡。所以，現在一般不再透過它識別瀏覽器了，而是使用“功能識別”方法，即逐一測試當前瀏覽器是否支援要用到的 JavaScript 功能。
 
-不过，通过`userAgent`可以大致准确地识别手机浏览器，方法就是测试是否包含`mobi`字符串。
+不過，透過`userAgent`可以大致準確地識別手機瀏覽器，方法就是測試是否包含`mobi`字串。
 
 ```javascript
 var ua = navigator.userAgent.toLowerCase();
 
 if (/mobi/i.test(ua)) {
-  // 手机浏览器
+  // 手機瀏覽器
 } else {
-  // 非手机浏览器
+  // 非手機瀏覽器
 }
 ```
 
-如果想要识别所有移动设备的浏览器，可以测试更多的特征字符串。
+如果想要識別所有移動裝置的瀏覽器，可以測試更多的特徵字串。
 
 ```javascript
 /mobi|android|touch|mini/i.test(ua)
@@ -37,7 +37,7 @@ if (/mobi/i.test(ua)) {
 
 ### Navigator.plugins
 
-`Navigator.plugins`属性返回一个类似数组的对象，成员是 Plugin 实例对象，表示浏览器安装的插件，比如 Flash、ActiveX 等。
+`Navigator.plugins`屬性返回一個類似陣列的物件，成員是 Plugin 例項物件，表示瀏覽器安裝的外掛，比如 Flash、ActiveX 等。
 
 ```javascript
 var pluginsLength = navigator.plugins.length;
@@ -52,7 +52,7 @@ for (var i = 0; i < pluginsLength; i++) {
 
 ### Navigator.platform
 
-`Navigator.platform`属性返回用户的操作系统信息，比如`MacIntel`、`Win32`、`Linux x86_64`等 。
+`Navigator.platform`屬性返回使用者的作業系統資訊，比如`MacIntel`、`Win32`、`Linux x86_64`等 。
 
 ```javascript
 navigator.platform
@@ -61,15 +61,15 @@ navigator.platform
 
 ### Navigator.onLine
 
-`navigator.onLine`属性返回一个布尔值，表示用户当前在线还是离线（浏览器断线）。
+`navigator.onLine`屬性返回一個布林值，表示使用者當前線上還是離線（瀏覽器斷線）。
 
 ```javascript
 navigator.onLine // true
 ```
 
-有时，浏览器可以连接局域网，但是局域网不能连通外网。这时，有的浏览器的`onLine`属性会返回`true`，所以不能假定只要是`true`，用户就一定能访问互联网。不过，如果是`false`，可以断定用户一定离线。
+有時，瀏覽器可以連線區域網，但是區域網不能連通外網。這時，有的瀏覽器的`onLine`屬性會返回`true`，所以不能假定只要是`true`，使用者就一定能訪問網際網路。不過，如果是`false`，可以斷定使用者一定離線。
 
-用户变成在线会触发`online`事件，变成离线会触发`offline`事件，可以通过`window.ononline`和`window.onoffline`指定这两个事件的回调函数。
+使用者變成線上會觸發`online`事件，變成離線會觸發`offline`事件，可以透過`window.ononline`和`window.onoffline`指定這兩個事件的回撥函式。
 
 ```javascript
 window.addEventListener('offline', function(e) { console.log('offline'); });
@@ -78,47 +78,47 @@ window.addEventListener('online', function(e) { console.log('online'); });
 
 ### Navigator.language，Navigator.languages
 
-`Navigator.language`属性返回一个字符串，表示浏览器的首选语言。该属性只读。
+`Navigator.language`屬性返回一個字串，表示瀏覽器的首選語言。該屬性只讀。
 
 ```javascript
 navigator.language // "en"
 ```
 
-`Navigator.languages`属性返回一个数组，表示用户可以接受的语言。`Navigator.language`总是这个数组的第一个成员。HTTP 请求头信息的`Accept-Language`字段，就来自这个数组。
+`Navigator.languages`屬性返回一個數組，表示使用者可以接受的語言。`Navigator.language`總是這個陣列的第一個成員。HTTP 請求頭資訊的`Accept-Language`欄位，就來自這個陣列。
 
 ```javascript
 navigator.languages  // ["en-US", "en", "zh-CN", "zh", "zh-TW"]
 ```
 
-如果这个属性发生变化，就会在`window`对象上触发`languagechange`事件。
+如果這個屬性發生變化，就會在`window`物件上觸發`languagechange`事件。
 
 ### Navigator.geolocation
 
-`Navigator.geolocation`属性返回一个 Geolocation 对象，包含用户地理位置的信息。注意，该 API 只有在 HTTPS 协议下可用，否则调用下面方法时会报错。
+`Navigator.geolocation`屬性返回一個 Geolocation 物件，包含使用者地理位置的資訊。注意，該 API 只有在 HTTPS 協議下可用，否則呼叫下面方法時會報錯。
 
-Geolocation 对象提供下面三个方法。
+Geolocation 物件提供下面三個方法。
 
-- Geolocation.getCurrentPosition()：得到用户的当前位置
-- Geolocation.watchPosition()：监听用户位置变化
-- Geolocation.clearWatch()：取消`watchPosition()`方法指定的监听函数
+- Geolocation.getCurrentPosition()：得到使用者的當前位置
+- Geolocation.watchPosition()：監聽使用者位置變化
+- Geolocation.clearWatch()：取消`watchPosition()`方法指定的監聽函式
 
-注意，调用这三个方法时，浏览器会跳出一个对话框，要求用户给予授权。
+注意，呼叫這三個方法時，瀏覽器會跳出一個對話方塊，要求使用者給予授權。
 
 ### Navigator.cookieEnabled
 
-`navigator.cookieEnabled`属性返回一个布尔值，表示浏览器的 Cookie 功能是否打开。
+`navigator.cookieEnabled`屬性返回一個布林值，表示瀏覽器的 Cookie 功能是否開啟。
 
 ```javascript
 navigator.cookieEnabled // true
 ```
 
-注意，这个属性反映的是浏览器总的特性，与是否储存某个具体的网站的 Cookie 无关。用户可以设置某个网站不得储存 Cookie，这时`cookieEnabled`返回的还是`true`。
+注意，這個屬性反映的是瀏覽器總的特性，與是否儲存某個具體的網站的 Cookie 無關。使用者可以設定某個網站不得儲存 Cookie，這時`cookieEnabled`返回的還是`true`。
 
-## Navigator 对象的方法
+## Navigator 物件的方法
 
 ### Navigator.javaEnabled()
 
-`navigator.javaEnabled()`方法返回一个布尔值，表示浏览器是否能运行 Java Applet 小程序。
+`navigator.javaEnabled()`方法返回一個布林值，表示瀏覽器是否能執行 Java Applet 小程式。
 
 ```javascript
 navigator.javaEnabled() // false
@@ -126,17 +126,17 @@ navigator.javaEnabled() // false
 
 ### Navigator.sendBeacon()
 
-`Navigator.sendBeacon()`方法用于向服务器异步发送数据，详见《XMLHttpRequest 对象》一章。
+`Navigator.sendBeacon()`方法用於向伺服器非同步傳送資料，詳見《XMLHttpRequest 物件》一章。
 
-## Navigator 的实验性属性
+## Navigator 的實驗性屬性
 
-Navigator 对象有一些实验性属性，在部分浏览器可用。
+Navigator 物件有一些實驗性屬性，在部分瀏覽器可用。
 
 ### Navigator.deviceMemory
 
-`navigator.deviceMemory`属性返回当前计算机的内存数量（单位为 GB）。该属性只读，只在 HTTPS 环境下可用。
+`navigator.deviceMemory`屬性返回當前計算機的記憶體數量（單位為 GB）。該屬性只讀，只在 HTTPS 環境下可用。
 
-它的返回值是一个近似值，四舍五入到最接近的2的幂，通常是 0.25、0.5、1、2、4、8。实际内存超过 8GB，也返回`8`。
+它的返回值是一個近似值，四捨五入到最接近的2的冪，通常是 0.25、0.5、1、2、4、8。實際記憶體超過 8GB，也返回`8`。
 
 ```javascript
 if (navigator.deviceMemory > 1) {
@@ -144,13 +144,13 @@ if (navigator.deviceMemory > 1) {
 }
 ```
 
-上面示例中，只有当前内存大于 1GB，才加载大型的脚本。
+上面示例中，只有當前記憶體大於 1GB，才載入大型的指令碼。
 
 ### Navigator.hardwareConcurrency
 
-`navigator.hardwareConcurrency`属性返回用户计算机上可用的逻辑处理器的数量。该属性只读。
+`navigator.hardwareConcurrency`屬性返回使用者計算機上可用的邏輯處理器的數量。該屬性只讀。
 
-现代计算机的 CPU 有多个物理核心，每个物理核心有时支持一次运行多个线程。因此，四核 CPU 可以提供八个逻辑处理器核心。
+現代計算機的 CPU 有多個物理核心，每個物理核心有時支援一次執行多個執行緒。因此，四核 CPU 可以提供八個邏輯處理器核心。
 
 ```javascript
 if (navigator.hardwareConcurrency > 4) {
@@ -158,9 +158,9 @@ if (navigator.hardwareConcurrency > 4) {
 }
 ```
 
-上面示例中，可用的逻辑处理器大于4，才会加载大型脚本。
+上面示例中，可用的邏輯處理器大於4，才會載入大型指令碼。
 
-该属性通过用于创建 Web Worker，每个可用的逻辑处理器都创建一个 Worker。
+該屬性透過用於建立 Web Worker，每個可用的邏輯處理器都建立一個 Worker。
 
 ```javascript
 let workerList = [];
@@ -174,18 +174,18 @@ for (let i = 0; i < window.navigator.hardwareConcurrency; i++) {
 }
 ```
 
-上面示例中，有多少个可用的逻辑处理器，就创建多少个 Web Worker。
+上面示例中，有多少個可用的邏輯處理器，就建立多少個 Web Worker。
 
 ### Navigator.connection
 
-`navigator.connection`属性返回一个对象，包含当前网络连接的相关信息。
+`navigator.connection`屬性返回一個物件，包含當前網路連線的相關資訊。
 
-- downlink：有效带宽估计值（单位：兆比特/秒，Mbps），四舍五入到每秒 25KB 的最接近倍数。
-- downlinkMax：当前连接的最大下行链路速度（单位：兆比特每秒，Mbps）。
-- effectiveType：返回连接的等效类型，可能的值为`slow-2g`、`2g`、`3g`、`4g`。
-- rtt：当前连接的估计有效往返时间，四舍五入到最接近的25毫秒的倍数。
-- saveData：用户是否设置了浏览器的减少数据使用量选项（比如不加载图片），返回`true`或者`false`。
-- type：当前连接的介质类型，可能的值为`bluetooth`、`cellular`、`ethernet`、`none`、`wifi`、`wimax`、`other`、`unknown`。
+- downlink：有效頻寬估計值（單位：兆位元/秒，Mbps），四捨五入到每秒 25KB 的最接近倍數。
+- downlinkMax：當前連線的最大下行鏈路速度（單位：兆位元每秒，Mbps）。
+- effectiveType：返回連線的等效型別，可能的值為`slow-2g`、`2g`、`3g`、`4g`。
+- rtt：當前連線的估計有效往返時間，四捨五入到最接近的25毫秒的倍數。
+- saveData：使用者是否設定了瀏覽器的減少資料使用量選項（比如不載入圖片），返回`true`或者`false`。
+- type：當前連線的介質型別，可能的值為`bluetooth`、`cellular`、`ethernet`、`none`、`wifi`、`wimax`、`other`、`unknown`。
 
 ```javascript
 if (navigator.connection.effectiveType === '4g') {
@@ -193,21 +193,21 @@ if (navigator.connection.effectiveType === '4g') {
 }
 ```
 
-上面示例中，如果网络连接是 4G，则加载大型脚本。
+上面示例中，如果網路連線是 4G，則載入大型指令碼。
 
-## Screen 对象
+## Screen 物件
 
-Screen 对象表示当前窗口所在的屏幕，提供显示设备的信息。`window.screen`属性指向这个对象。
+Screen 物件表示當前視窗所在的螢幕，提供顯示裝置的資訊。`window.screen`屬性指向這個物件。
 
-该对象有下面的属性。
+該物件有下面的屬性。
 
-- `Screen.height`：浏览器窗口所在的屏幕的高度（单位像素）。除非调整显示器的分辨率，否则这个值可以看作常量，不会发生变化。显示器的分辨率与浏览器设置无关，缩放网页并不会改变分辨率。
-- `Screen.width`：浏览器窗口所在的屏幕的宽度（单位像素）。
-- `Screen.availHeight`：浏览器窗口可用的屏幕高度（单位像素）。因为部分空间可能不可用，比如系统的任务栏或者 Mac 系统屏幕底部的 Dock 区，这个属性等于`height`减去那些被系统组件的高度。
-- `Screen.availWidth`：浏览器窗口可用的屏幕宽度（单位像素）。
-- `Screen.pixelDepth`：整数，表示屏幕的色彩位数，比如`24`表示屏幕提供24位色彩。
-- `Screen.colorDepth`：`Screen.pixelDepth`的别名。严格地说，colorDepth 表示应用程序的颜色深度，pixelDepth 表示屏幕的颜色深度，绝大多数情况下，它们都是同一件事。
-- `Screen.orientation`：返回一个对象，表示屏幕的方向。该对象的`type`属性是一个字符串，表示屏幕的具体方向，`landscape-primary`表示横放，`landscape-secondary`表示颠倒的横放，`portrait-primary`表示竖放，`portrait-secondary`表示颠倒的竖放。
+- `Screen.height`：瀏覽器視窗所在的螢幕的高度（單位畫素）。除非調整顯示器的解析度，否則這個值可以看作常量，不會發生變化。顯示器的解析度與瀏覽器設定無關，縮放網頁並不會改變解析度。
+- `Screen.width`：瀏覽器視窗所在的螢幕的寬度（單位畫素）。
+- `Screen.availHeight`：瀏覽器視窗可用的螢幕高度（單位畫素）。因為部分空間可能不可用，比如系統的工作列或者 Mac 系統螢幕底部的 Dock 區，這個屬性等於`height`減去那些被系統元件的高度。
+- `Screen.availWidth`：瀏覽器視窗可用的螢幕寬度（單位畫素）。
+- `Screen.pixelDepth`：整數，表示螢幕的色彩位數，比如`24`表示螢幕提供24位色彩。
+- `Screen.colorDepth`：`Screen.pixelDepth`的別名。嚴格地說，colorDepth 表示應用程式的顏色深度，pixelDepth 表示螢幕的顏色深度，絕大多數情況下，它們都是同一件事。
+- `Screen.orientation`：返回一個物件，表示螢幕的方向。該物件的`type`屬性是一個字串，表示螢幕的具體方向，`landscape-primary`表示橫放，`landscape-secondary`表示顛倒的橫放，`portrait-primary`表示豎放，`portrait-secondary`表示顛倒的豎放。
 
 下面是`Screen.orientation`的例子。
 
@@ -216,15 +216,15 @@ window.screen.orientation
 // { angle: 0, type: "landscape-primary", onchange: null }
 ```
 
-下面的例子保证屏幕分辨率大于 1024 x 768。
+下面的例子保證螢幕解析度大於 1024 x 768。
 
 ```javascript
 if (window.screen.width >= 1024 && window.screen.height >= 768) {
-  // 分辨率不低于 1024x768
+  // 解析度不低於 1024x768
 }
 ```
 
-下面是根据屏幕的宽度，将用户导向不同网页的代码。
+下面是根據螢幕的寬度，將使用者導向不同網頁的程式碼。
 
 ```javascript
 if ((screen.width <= 800) && (screen.height <= 600)) {

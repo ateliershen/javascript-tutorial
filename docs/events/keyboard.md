@@ -1,55 +1,55 @@
-# 键盘事件
+# 鍵盤事件
 
-## 键盘事件的种类
+## 鍵盤事件的種類
 
-键盘事件由用户击打键盘触发，主要有`keydown`、`keypress`、`keyup`三个事件，它们都继承了`KeyboardEvent`接口。
+鍵盤事件由使用者擊打鍵盤觸發，主要有`keydown`、`keypress`、`keyup`三個事件，它們都繼承了`KeyboardEvent`介面。
 
-- `keydown`：按下键盘时触发。
-- `keypress`：按下有值的键时触发，即按下 Ctrl、Alt、Shift、Meta 这样无值的键，这个事件不会触发。对于有值的键，按下时先触发`keydown`事件，再触发这个事件。
-- `keyup`：松开键盘时触发该事件。
+- `keydown`：按下鍵盤時觸發。
+- `keypress`：按下有值的鍵時觸發，即按下 Ctrl、Alt、Shift、Meta 這樣無值的鍵，這個事件不會觸發。對於有值的鍵，按下時先觸發`keydown`事件，再觸發這個事件。
+- `keyup`：鬆開鍵盤時觸發該事件。
 
-如果用户一直按键不松开，就会连续触发键盘事件，触发的顺序如下。
+如果使用者一直按鍵不鬆開，就會連續觸發鍵盤事件，觸發的順序如下。
 
 1. keydown
 1. keypress
 1. keydown
 1. keypress
-1. ...（重复以上过程）
+1. ...（重複以上過程）
 1. keyup
 
-## KeyboardEvent 接口概述
+## KeyboardEvent 介面概述
 
-`KeyboardEvent`接口用来描述用户与键盘的互动。这个接口继承了`Event`接口，并且定义了自己的实例属性和实例方法。
+`KeyboardEvent`介面用來描述使用者與鍵盤的互動。這個介面繼承了`Event`介面，並且定義了自己的例項屬性和例項方法。
 
-浏览器原生提供`KeyboardEvent`构造函数，用来新建键盘事件的实例。
+瀏覽器原生提供`KeyboardEvent`建構函式，用來新建鍵盤事件的例項。
 
 ```javascript
 new KeyboardEvent(type, options)
 ```
 
-`KeyboardEvent`构造函数接受两个参数。第一个参数是字符串，表示事件类型；第二个参数是一个事件配置对象，该参数可选。除了`Event`接口提供的属性，还可以配置以下字段，它们都是可选。
+`KeyboardEvent`建構函式接受兩個引數。第一個引數是字串，表示事件型別；第二個引數是一個事件配置物件，該引數可選。除了`Event`介面提供的屬性，還可以配置以下欄位，它們都是可選。
 
-- `key`：字符串，当前按下的键，默认为空字符串。
-- `code`：字符串，表示当前按下的键的字符串形式，默认为空字符串。
-- `location`：整数，当前按下的键的位置，默认为`0`。
-- `ctrlKey`：布尔值，是否按下 Ctrl 键，默认为`false`。
-- `shiftKey`：布尔值，是否按下 Shift 键，默认为`false`。
-- `altKey`：布尔值，是否按下 Alt 键，默认为`false`。
-- `metaKey`：布尔值，是否按下 Meta 键，默认为`false`。
-- `repeat`：布尔值，是否重复按键，默认为`false`。
+- `key`：字串，當前按下的鍵，預設為空字串。
+- `code`：字串，表示當前按下的鍵的字串形式，預設為空字串。
+- `location`：整數，當前按下的鍵的位置，預設為`0`。
+- `ctrlKey`：布林值，是否按下 Ctrl 鍵，預設為`false`。
+- `shiftKey`：布林值，是否按下 Shift 鍵，預設為`false`。
+- `altKey`：布林值，是否按下 Alt 鍵，預設為`false`。
+- `metaKey`：布林值，是否按下 Meta 鍵，預設為`false`。
+- `repeat`：布林值，是否重複按鍵，預設為`false`。
 
-## KeyboardEvent 的实例属性
+## KeyboardEvent 的例項屬性
 
 ### KeyboardEvent.altKey，KeyboardEvent.ctrlKey，KeyboardEvent.metaKey，KeyboardEvent.shiftKey
 
-以下属性都是只读属性，返回一个布尔值，表示是否按下对应的键。
+以下屬性都是隻讀屬性，返回一個布林值，表示是否按下對應的鍵。
 
-- `KeyboardEvent.altKey`：是否按下 Alt 键
-- `KeyboardEvent.ctrlKey`：是否按下 Ctrl 键
-- `KeyboardEvent.metaKey`：是否按下 meta 键（Mac 系统是一个四瓣的小花，Windows 系统是 windows 键）
-- `KeyboardEvent.shiftKey`：是否按下 Shift 键
+- `KeyboardEvent.altKey`：是否按下 Alt 鍵
+- `KeyboardEvent.ctrlKey`：是否按下 Ctrl 鍵
+- `KeyboardEvent.metaKey`：是否按下 meta 鍵（Mac 系統是一個四瓣的小花，Windows 系統是 windows 鍵）
+- `KeyboardEvent.shiftKey`：是否按下 Shift 鍵
 
-下面是一个示例。
+下面是一個示例。
 
 ```javascript
 function showChar(e) {
@@ -64,55 +64,55 @@ document.body.addEventListener('keydown', showChar, false);
 
 ### KeyboardEvent.code
 
-`KeyboardEvent.code`属性返回一个字符串，表示当前按下的键的字符串形式。该属性只读。
+`KeyboardEvent.code`屬性返回一個字串，表示當前按下的鍵的字串形式。該屬性只讀。
 
-下面是一些常用键的字符串形式，其他键请查[文档](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values)。
+下面是一些常用鍵的字串形式，其他鍵請查[文件](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values)。
 
-- 数字键0 - 9：返回`digit0` - `digit9`
-- 字母键A - z：返回`KeyA` - `KeyZ`
-- 功能键F1 - F12：返回 `F1` - `F12`
-- 方向键：返回`ArrowDown`、`ArrowUp`、`ArrowLeft`、`ArrowRight`
-- Alt 键：返回`AltLeft`或`AltRight`
-- Shift 键：返回`ShiftLeft`或`ShiftRight`
-- Ctrl 键：返回`ControlLeft`或`ControlRight`
+- 數字鍵0 - 9：返回`digit0` - `digit9`
+- 字母鍵A - z：返回`KeyA` - `KeyZ`
+- 功能鍵F1 - F12：返回 `F1` - `F12`
+- 方向鍵：返回`ArrowDown`、`ArrowUp`、`ArrowLeft`、`ArrowRight`
+- Alt 鍵：返回`AltLeft`或`AltRight`
+- Shift 鍵：返回`ShiftLeft`或`ShiftRight`
+- Ctrl 鍵：返回`ControlLeft`或`ControlRight`
 
 ### KeyboardEvent.key
 
-`KeyboardEvent.key`属性返回一个字符串，表示按下的键名。该属性只读。
+`KeyboardEvent.key`屬性返回一個字串，表示按下的鍵名。該屬性只讀。
 
-如果按下的键代表可打印字符，则返回这个字符，比如数字、字母。
+如果按下的鍵代表可列印字元，則返回這個字元，比如數字、字母。
 
-如果按下的键代表不可打印的特殊字符，则返回预定义的键值，比如 Backspace，Tab，Enter，Shift，Control，Alt，CapsLock，Esc，Spacebar，PageUp，PageDown，End，Home，Left，Right，Up，Down，PrintScreen，Insert，Del，Win，F1～F12，NumLock，Scroll 等。
+如果按下的鍵代表不可列印的特殊字元，則返回預定義的鍵值，比如 Backspace，Tab，Enter，Shift，Control，Alt，CapsLock，Esc，Spacebar，PageUp，PageDown，End，Home，Left，Right，Up，Down，PrintScreen，Insert，Del，Win，F1～F12，NumLock，Scroll 等。
 
-如果同时按下一个控制键和一个符号键，则返回符号键的键名。比如，按下 Ctrl + a，则返回`a`；按下 Shift + a，则返回大写的`A`。
+如果同時按下一個控制鍵和一個符號鍵，則返回符號鍵的鍵名。比如，按下 Ctrl + a，則返回`a`；按下 Shift + a，則返回大寫的`A`。
 
-如果无法识别键名，返回字符串`Unidentified`。
+如果無法識別鍵名，返回字串`Unidentified`。
 
 ### KeyboardEvent.location
 
-`KeyboardEvent.location`属性返回一个整数，表示按下的键处在键盘的哪一个区域。它可能取以下值。
+`KeyboardEvent.location`屬性返回一個整數，表示按下的鍵處在鍵盤的哪一個區域。它可能取以下值。
 
-- 0：处在键盘的主区域，或者无法判断处于哪一个区域。
-- 1：处在键盘的左侧，只适用那些有两个位置的键（比如 Ctrl 和 Shift 键）。
-- 2：处在键盘的右侧，只适用那些有两个位置的键（比如 Ctrl 和 Shift 键）。
-- 3：处在数字小键盘。
+- 0：處在鍵盤的主區域，或者無法判斷處於哪一個區域。
+- 1：處在鍵盤的左側，只適用那些有兩個位置的鍵（比如 Ctrl 和 Shift 鍵）。
+- 2：處在鍵盤的右側，只適用那些有兩個位置的鍵（比如 Ctrl 和 Shift 鍵）。
+- 3：處在數字小鍵盤。
 
 ### KeyboardEvent.repeat
 
-`KeyboardEvent.repeat`返回一个布尔值，代表该键是否被按着不放，以便判断是否重复这个键，即浏览器会持续触发`keydown`和`keypress`事件，直到用户松开手为止。
+`KeyboardEvent.repeat`返回一個布林值，代表該鍵是否被按著不放，以便判斷是否重複這個鍵，即瀏覽器會持續觸發`keydown`和`keypress`事件，直到使用者鬆開手為止。
 
-## KeyboardEvent 的实例方法
+## KeyboardEvent 的例項方法
 
 ### KeyboardEvent.getModifierState()
 
-`KeyboardEvent.getModifierState()`方法返回一个布尔值，表示是否按下或激活指定的功能键。它的常用参数如下。
+`KeyboardEvent.getModifierState()`方法返回一個布林值，表示是否按下或啟用指定的功能鍵。它的常用引數如下。
 
-- `Alt`：Alt 键
-- `CapsLock`：大写锁定键
-- `Control`：Ctrl 键
-- `Meta`：Meta 键
-- `NumLock`：数字键盘开关键
-- `Shift`：Shift 键
+- `Alt`：Alt 鍵
+- `CapsLock`：大寫鎖定鍵
+- `Control`：Ctrl 鍵
+- `Meta`：Meta 鍵
+- `NumLock`：數字鍵盤開關鍵
+- `Shift`：Shift 鍵
 
 ```javascript
 if (
@@ -124,4 +124,4 @@ if (
 }
 ```
 
-上面代码表示，只要`Control`、`Alt`、`Meta`里面，同时按下任意两个或两个以上的键就返回。
+上面程式碼表示，只要`Control`、`Alt`、`Meta`裡面，同時按下任意兩個或兩個以上的鍵就返回。

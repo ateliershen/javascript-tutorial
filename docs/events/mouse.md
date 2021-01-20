@@ -1,29 +1,29 @@
-# 鼠标事件
+# 滑鼠事件
 
-## 鼠标事件的种类
+## 滑鼠事件的種類
 
-鼠标事件指与鼠标相关的事件，继承了`MouseEvent`接口。具体的事件主要有以下一些。
+滑鼠事件指與滑鼠相關的事件，繼承了`MouseEvent`介面。具體的事件主要有以下一些。
 
-- `click`：按下鼠标（通常是按下主按钮）时触发。
-- `dblclick`：在同一个元素上双击鼠标时触发。
-- `mousedown`：按下鼠标键时触发。
-- `mouseup`：释放按下的鼠标键时触发。
-- `mousemove`：当鼠标在一个节点内部移动时触发。当鼠标持续移动时，该事件会连续触发。为了避免性能问题，建议对该事件的监听函数做一些限定，比如限定一段时间内只能运行一次。
-- `mouseenter`：鼠标进入一个节点时触发，进入子节点不会触发这个事件（详见后文）。
-- `mouseover`：鼠标进入一个节点时触发，进入子节点会再一次触发这个事件（详见后文）。
-- `mouseout`：鼠标离开一个节点时触发，离开父节点也会触发这个事件（详见后文）。
-- `mouseleave`：鼠标离开一个节点时触发，离开父节点不会触发这个事件（详见后文）。
-- `contextmenu`：按下鼠标右键时（上下文菜单出现前）触发，或者按下“上下文菜单键”时触发。
-- `wheel`：滚动鼠标的滚轮时触发，该事件继承的是`WheelEvent`接口。
+- `click`：按下滑鼠（通常是按下主按鈕）時觸發。
+- `dblclick`：在同一個元素上雙擊滑鼠時觸發。
+- `mousedown`：按下滑鼠鍵時觸發。
+- `mouseup`：釋放按下的滑鼠鍵時觸發。
+- `mousemove`：當滑鼠在一個節點內部移動時觸發。當滑鼠持續移動時，該事件會連續觸發。為了避免效能問題，建議對該事件的監聽函式做一些限定，比如限定一段時間內只能執行一次。
+- `mouseenter`：滑鼠進入一個節點時觸發，進入子節點不會觸發這個事件（詳見後文）。
+- `mouseover`：滑鼠進入一個節點時觸發，進入子節點會再一次觸發這個事件（詳見後文）。
+- `mouseout`：滑鼠離開一個節點時觸發，離開父節點也會觸發這個事件（詳見後文）。
+- `mouseleave`：滑鼠離開一個節點時觸發，離開父節點不會觸發這個事件（詳見後文）。
+- `contextmenu`：按下滑鼠右鍵時（上下文選單出現前）觸發，或者按下“上下文選單鍵”時觸發。
+- `wheel`：滾動滑鼠的滾輪時觸發，該事件繼承的是`WheelEvent`介面。
 
-`click`事件指的是，用户在同一个位置先完成`mousedown`动作，再完成`mouseup`动作。因此，触发顺序是，`mousedown`首先触发，`mouseup`接着触发，`click`最后触发。
+`click`事件指的是，使用者在同一個位置先完成`mousedown`動作，再完成`mouseup`動作。因此，觸發順序是，`mousedown`首先觸發，`mouseup`接著觸發，`click`最後觸發。
 
-`dblclick`事件则会在`mousedown`、`mouseup`、`click`之后触发。
+`dblclick`事件則會在`mousedown`、`mouseup`、`click`之後觸發。
 
-`mouseover`事件和`mouseenter`事件，都是鼠标进入一个节点时触发。两者的区别是，`mouseenter`事件只触发一次，而只要鼠标在节点内部移动，`mouseover`事件会在子节点上触发多次。
+`mouseover`事件和`mouseenter`事件，都是滑鼠進入一個節點時觸發。兩者的區別是，`mouseenter`事件只觸發一次，而只要滑鼠在節點內部移動，`mouseover`事件會在子節點上觸發多次。
 
 ```javascript
-/* HTML 代码如下
+/* HTML 程式碼如下
  <ul>
    <li>item 1</li>
    <li>item 2</li>
@@ -33,9 +33,9 @@
 
 var ul = document.querySelector('ul');
 
-// 进入 ul 节点以后，mouseenter 事件只会触发一次
-// 以后只要鼠标在节点内移动，都不会再触发这个事件
-// event.target 是 ul 节点
+// 進入 ul 節點以後，mouseenter 事件只會觸發一次
+// 以後只要滑鼠在節點內移動，都不會再觸發這個事件
+// event.target 是 ul 節點
 ul.addEventListener('mouseenter', function (event) {
   event.target.style.color = 'purple';
   setTimeout(function () {
@@ -43,8 +43,8 @@ ul.addEventListener('mouseenter', function (event) {
   }, 500);
 }, false);
 
-// 进入 ul 节点以后，只要在子节点上移动，mouseover 事件会触发多次
-// event.target 是 li 节点
+// 進入 ul 節點以後，只要在子節點上移動，mouseover 事件會觸發多次
+// event.target 是 li 節點
 ul.addEventListener('mouseover', function (event) {
   event.target.style.color = 'orange';
   setTimeout(function () {
@@ -53,12 +53,12 @@ ul.addEventListener('mouseover', function (event) {
 }, false);
 ```
 
-上面代码中，在父节点内部进入子节点，不会触发`mouseenter`事件，但是会触发`mouseover`事件。
+上面程式碼中，在父節點內部進入子節點，不會觸發`mouseenter`事件，但是會觸發`mouseover`事件。
 
-`mouseout`事件和`mouseleave`事件，都是鼠标离开一个节点时触发。两者的区别是，在父元素内部离开一个子元素时，`mouseleave`事件不会触发，而`mouseout`事件会触发。
+`mouseout`事件和`mouseleave`事件，都是滑鼠離開一個節點時觸發。兩者的區別是，在父元素內部離開一個子元素時，`mouseleave`事件不會觸發，而`mouseout`事件會觸發。
 
 ```javascript
-/* HTML 代码如下
+/* HTML 程式碼如下
  <ul>
    <li>item 1</li>
    <li>item 2</li>
@@ -68,9 +68,9 @@ ul.addEventListener('mouseover', function (event) {
 
 var ul = document.querySelector('ul');
 
-// 先进入 ul 节点，然后在节点内部移动，不会触发 mouseleave 事件
-// 只有离开 ul 节点时，触发一次 mouseleave
-// event.target 是 ul 节点
+// 先進入 ul 節點，然後在節點內部移動，不會觸發 mouseleave 事件
+// 只有離開 ul 節點時，觸發一次 mouseleave
+// event.target 是 ul 節點
 ul.addEventListener('mouseleave', function (event) {
   event.target.style.color = 'purple';
   setTimeout(function () {
@@ -78,8 +78,8 @@ ul.addEventListener('mouseleave', function (event) {
   }, 500);
 }, false);
 
-// 先进入 ul 节点，然后在节点内部移动，mouseout 事件会触发多次
-// event.target 是 li 节点
+// 先進入 ul 節點，然後在節點內部移動，mouseout 事件會觸發多次
+// event.target 是 li 節點
 ul.addEventListener('mouseout', function (event) {
   event.target.style.color = 'orange';
   setTimeout(function () {
@@ -88,35 +88,35 @@ ul.addEventListener('mouseout', function (event) {
 }, false);
 ```
 
-上面代码中，在父节点内部离开子节点，不会触发`mouseleave`事件，但是会触发`mouseout`事件。
+上面程式碼中，在父節點內部離開子節點，不會觸發`mouseleave`事件，但是會觸發`mouseout`事件。
 
-## MouseEvent 接口概述
+## MouseEvent 介面概述
 
-`MouseEvent`接口代表了鼠标相关的事件，单击（click）、双击（dblclick）、松开鼠标键（mouseup）、按下鼠标键（mousedown）等动作，所产生的事件对象都是`MouseEvent`实例。此外，滚轮事件和拖拉事件也是`MouseEvent`实例。
+`MouseEvent`介面代表了滑鼠相關的事件，單擊（click）、雙擊（dblclick）、鬆開滑鼠鍵（mouseup）、按下滑鼠鍵（mousedown）等動作，所產生的事件物件都是`MouseEvent`例項。此外，滾輪事件和拖拉事件也是`MouseEvent`例項。
 
-`MouseEvent`接口继承了`Event`接口，所以拥有`Event`的所有属性和方法。它还有自己的属性和方法。
+`MouseEvent`介面繼承了`Event`介面，所以擁有`Event`的所有屬性和方法。它還有自己的屬性和方法。
 
-浏览器原生提供一个`MouseEvent`构造函数，用于新建一个`MouseEvent`实例。
+瀏覽器原生提供一個`MouseEvent`建構函式，用於新建一個`MouseEvent`例項。
 
 ```javascript
 var event = new MouseEvent(type, options);
 ```
 
-`MouseEvent`构造函数接受两个参数。第一个参数是字符串，表示事件名称；第二个参数是一个事件配置对象，该参数可选。除了`Event`接口的实例配置属性，该对象可以配置以下属性，所有属性都是可选的。
+`MouseEvent`建構函式接受兩個引數。第一個引數是字串，表示事件名稱；第二個引數是一個事件配置物件，該引數可選。除了`Event`介面的例項配置屬性，該物件可以配置以下屬性，所有屬性都是可選的。
 
-- `screenX`：数值，鼠标相对于屏幕的水平位置（单位像素），默认值为0，设置该属性不会移动鼠标。
-- `screenY`：数值，鼠标相对于屏幕的垂直位置（单位像素），其他与`screenX`相同。
-- `clientX`：数值，鼠标相对于程序窗口的水平位置（单位像素），默认值为0，设置该属性不会移动鼠标。
-- `clientY`：数值，鼠标相对于程序窗口的垂直位置（单位像素），其他与`clientX`相同。
-- `ctrlKey`：布尔值，是否同时按下了 Ctrl 键，默认值为`false`。
-- `shiftKey`：布尔值，是否同时按下了 Shift 键，默认值为`false`。
-- `altKey`：布尔值，是否同时按下 Alt 键，默认值为`false`。
-- `metaKey`：布尔值，是否同时按下 Meta 键，默认值为`false`。
-- `button`：数值，表示按下了哪一个鼠标按键，默认值为`0`，表示按下主键（通常是鼠标的左键）或者当前事件没有定义这个属性；`1`表示按下辅助键（通常是鼠标的中间键），`2`表示按下次要键（通常是鼠标的右键）。
-- `buttons`：数值，表示按下了鼠标的哪些键，是一个三个比特位的二进制值，默认为`0`（没有按下任何键）。`1`（二进制`001`）表示按下主键（通常是左键），`2`（二进制`010`）表示按下次要键（通常是右键），`4`（二进制`100`）表示按下辅助键（通常是中间键）。因此，如果返回`3`（二进制`011`）就表示同时按下了左键和右键。
-- `relatedTarget`：节点对象，表示事件的相关节点，默认为`null`。`mouseenter`和`mouseover`事件时，表示鼠标刚刚离开的那个元素节点；`mouseout`和`mouseleave`事件时，表示鼠标正在进入的那个元素节点。
+- `screenX`：數值，滑鼠相對於螢幕的水平位置（單位畫素），預設值為0，設定該屬性不會移動滑鼠。
+- `screenY`：數值，滑鼠相對於螢幕的垂直位置（單位畫素），其他與`screenX`相同。
+- `clientX`：數值，滑鼠相對於程式視窗的水平位置（單位畫素），預設值為0，設定該屬性不會移動滑鼠。
+- `clientY`：數值，滑鼠相對於程式視窗的垂直位置（單位畫素），其他與`clientX`相同。
+- `ctrlKey`：布林值，是否同時按下了 Ctrl 鍵，預設值為`false`。
+- `shiftKey`：布林值，是否同時按下了 Shift 鍵，預設值為`false`。
+- `altKey`：布林值，是否同時按下 Alt 鍵，預設值為`false`。
+- `metaKey`：布林值，是否同時按下 Meta 鍵，預設值為`false`。
+- `button`：數值，表示按下了哪一個滑鼠按鍵，預設值為`0`，表示按下主鍵（通常是滑鼠的左鍵）或者當前事件沒有定義這個屬性；`1`表示按下輔助鍵（通常是滑鼠的中間鍵），`2`表示按下次要鍵（通常是滑鼠的右鍵）。
+- `buttons`：數值，表示按下了滑鼠的哪些鍵，是一個三個位元位的二進位制值，預設為`0`（沒有按下任何鍵）。`1`（二進位制`001`）表示按下主鍵（通常是左鍵），`2`（二進位制`010`）表示按下次要鍵（通常是右鍵），`4`（二進位制`100`）表示按下輔助鍵（通常是中間鍵）。因此，如果返回`3`（二進位制`011`）就表示同時按下了左鍵和右鍵。
+- `relatedTarget`：節點物件，表示事件的相關節點，預設為`null`。`mouseenter`和`mouseover`事件時，表示滑鼠剛剛離開的那個元素節點；`mouseout`和`mouseleave`事件時，表示滑鼠正在進入的那個元素節點。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
 function simulateClick() {
@@ -129,21 +129,21 @@ function simulateClick() {
 }
 ```
 
-上面代码生成一个鼠标点击事件，并触发该事件。
+上面程式碼生成一個滑鼠點選事件，並觸發該事件。
 
-## MouseEvent 接口的实例属性
+## MouseEvent 介面的例項屬性
 
 ### MouseEvent.altKey，MouseEvent.ctrlKey，MouseEvent.metaKey，MouseEvent.shiftKey
 
-`MouseEvent.altKey`、`MouseEvent.ctrlKey`、`MouseEvent.metaKey`、`MouseEvent.shiftKey`这四个属性都返回一个布尔值，表示事件发生时，是否按下对应的键。它们都是只读属性。
+`MouseEvent.altKey`、`MouseEvent.ctrlKey`、`MouseEvent.metaKey`、`MouseEvent.shiftKey`這四個屬性都返回一個布林值，表示事件發生時，是否按下對應的鍵。它們都是隻讀屬性。
 
-- `altKey`属性：Alt 键
-- `ctrlKey`属性：Ctrl 键
-- `metaKey`属性：Meta 键（Mac 键盘是一个四瓣的小花，Windows 键盘是 Windows 键）
-- `shiftKey`属性：Shift 键
+- `altKey`屬性：Alt 鍵
+- `ctrlKey`屬性：Ctrl 鍵
+- `metaKey`屬性：Meta 鍵（Mac 鍵盤是一個四瓣的小花，Windows 鍵盤是 Windows 鍵）
+- `shiftKey`屬性：Shift 鍵
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <body onclick="showKey(event)">
 function showKey(e) {
   console.log('ALT key pressed: ' + e.altKey);
@@ -153,19 +153,19 @@ function showKey(e) {
 }
 ```
 
-上面代码中，点击网页会输出是否同时按下对应的键。
+上面程式碼中，點選網頁會輸出是否同時按下對應的鍵。
 
 ### MouseEvent.button，MouseEvent.buttons
 
-`MouseEvent.button`属性返回一个数值，表示事件发生时按下了鼠标的哪个键。该属性只读。
+`MouseEvent.button`屬性返回一個數值，表示事件發生時按下了滑鼠的哪個鍵。該屬性只讀。
 
-- 0：按下主键（通常是左键），或者该事件没有初始化这个属性（比如`mousemove`事件）。
-- 1：按下辅助键（通常是中键或者滚轮键）。
-- 2：按下次键（通常是右键）。
+- 0：按下主鍵（通常是左鍵），或者該事件沒有初始化這個屬性（比如`mousemove`事件）。
+- 1：按下輔助鍵（通常是中鍵或者滾輪鍵）。
+- 2：按下次鍵（通常是右鍵）。
 
 ```javascript
-// HTML 代码为
-// <button onmouseup="whichButton(event)">点击</button>
+// HTML 程式碼為
+// <button onmouseup="whichButton(event)">點選</button>
 var whichButton = function (e) {
   switch (e.button) {
     case 0:
@@ -183,20 +183,20 @@ var whichButton = function (e) {
 }
 ```
 
-`MouseEvent.buttons`属性返回一个三个比特位的值，表示同时按下了哪些键。它用来处理同时按下多个鼠标键的情况。该属性只读。
+`MouseEvent.buttons`屬性返回一個三個位元位的值，表示同時按下了哪些鍵。它用來處理同時按下多個滑鼠鍵的情況。該屬性只讀。
 
-- 1：二进制为`001`（十进制的1），表示按下左键。
-- 2：二进制为`010`（十进制的2），表示按下右键。
-- 4：二进制为`100`（十进制的4），表示按下中键或滚轮键。
+- 1：二進位制為`001`（十進位制的1），表示按下左鍵。
+- 2：二進位制為`010`（十進位制的2），表示按下右鍵。
+- 4：二進位制為`100`（十進位制的4），表示按下中鍵或滾輪鍵。
 
-同时按下多个键的时候，每个按下的键对应的比特位都会有值。比如，同时按下左键和右键，会返回3（二进制为011）。
+同時按下多個鍵的時候，每個按下的鍵對應的位元位都會有值。比如，同時按下左鍵和右鍵，會返回3（二進位制為011）。
 
 ### MouseEvent.clientX，MouseEvent.clientY
 
-`MouseEvent.clientX`属性返回鼠标位置相对于浏览器窗口左上角的水平坐标（单位像素），`MouseEvent.clientY`属性返回垂直坐标。这两个属性都是只读属性。
+`MouseEvent.clientX`屬性返回滑鼠位置相對於瀏覽器視窗左上角的水平座標（單位畫素），`MouseEvent.clientY`屬性返回垂直座標。這兩個屬性都是隻讀屬性。
 
 ```javascript
-// HTML 代码为
+// HTML 程式碼為
 // <body onmousedown="showCoords(event)">
 function showCoords(evt){
   console.log(
@@ -206,30 +206,30 @@ function showCoords(evt){
 }
 ```
 
-这两个属性还分别有一个别名`MouseEvent.x`和`MouseEvent.y`。
+這兩個屬性還分別有一個別名`MouseEvent.x`和`MouseEvent.y`。
 
 ### MouseEvent.movementX，MouseEvent.movementY
 
-`MouseEvent.movementX`属性返回当前位置与上一个`mousemove`事件之间的水平距离（单位像素）。数值上，它等于下面的计算公式。
+`MouseEvent.movementX`屬性返回當前位置與上一個`mousemove`事件之間的水平距離（單位畫素）。數值上，它等於下面的計算公式。
 
 ```javascript
 currentEvent.movementX = currentEvent.screenX - previousEvent.screenX
 ```
 
-`MouseEvent.movementY`属性返回当前位置与上一个`mousemove`事件之间的垂直距离（单位像素）。数值上，它等于下面的计算公式。
+`MouseEvent.movementY`屬性返回當前位置與上一個`mousemove`事件之間的垂直距離（單位畫素）。數值上，它等於下面的計算公式。
 
 ```javascript
 currentEvent.movementY = currentEvent.screenY - previousEvent.screenY。
 ```
 
-这两个属性都是只读属性。
+這兩個屬性都是隻讀屬性。
 
 ### MouseEvent.screenX，MouseEvent.screenY
 
-`MouseEvent.screenX`属性返回鼠标位置相对于屏幕左上角的水平坐标（单位像素），`MouseEvent.screenY`属性返回垂直坐标。这两个属性都是只读属性。
+`MouseEvent.screenX`屬性返回滑鼠位置相對於螢幕左上角的水平座標（單位畫素），`MouseEvent.screenY`屬性返回垂直座標。這兩個屬性都是隻讀屬性。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <body onmousedown="showCoords(event)">
 function showCoords(evt) {
   console.log(
@@ -241,10 +241,10 @@ function showCoords(evt) {
 
 ### MouseEvent.offsetX，MouseEvent.offsetY
 
-`MouseEvent.offsetX`属性返回鼠标位置与目标节点左侧的`padding`边缘的水平距离（单位像素），`MouseEvent.offsetY`属性返回与目标节点上方的`padding`边缘的垂直距离。这两个属性都是只读属性。
+`MouseEvent.offsetX`屬性返回滑鼠位置與目標節點左側的`padding`邊緣的水平距離（單位畫素），`MouseEvent.offsetY`屬性返回與目標節點上方的`padding`邊緣的垂直距離。這兩個屬性都是隻讀屬性。
 
 ```javascript
-/* HTML 代码如下
+/* HTML 程式碼如下
   <style>
     p {
       width: 100px;
@@ -265,14 +265,14 @@ p.addEventListener(
 );
 ```
 
-上面代码中，鼠标如果在`p`元素的中心位置点击，会返回`150 150`。因此中心位置距离左侧和上方的`padding`边缘，等于`padding`的宽度（100像素）加上元素内容区域一半的宽度（50像素）。
+上面程式碼中，滑鼠如果在`p`元素的中心位置點選，會返回`150 150`。因此中心位置距離左側和上方的`padding`邊緣，等於`padding`的寬度（100畫素）加上元素內容區域一半的寬度（50畫素）。
 
 ### MouseEvent.pageX，MouseEvent.pageY
 
-`MouseEvent.pageX`属性返回鼠标位置与文档左侧边缘的距离（单位像素），`MouseEvent.pageY`属性返回与文档上侧边缘的距离（单位像素）。它们的返回值都包括文档不可见的部分。这两个属性都是只读。
+`MouseEvent.pageX`屬性返回滑鼠位置與文件左側邊緣的距離（單位畫素），`MouseEvent.pageY`屬性返回與文件上側邊緣的距離（單位畫素）。它們的返回值都包括文件不可見的部分。這兩個屬性都是隻讀。
 
 ```javascript
-/* HTML 代码如下
+/* HTML 程式碼如下
   <style>
     body {
       height: 2000px;
@@ -289,30 +289,30 @@ document.body.addEventListener(
 );
 ```
 
-上面代码中，页面高度为2000像素，会产生垂直滚动条。滚动到页面底部，点击鼠标输出的`pageY`值会接近2000。
+上面程式碼中，頁面高度為2000畫素，會產生垂直捲軸。滾動到頁面底部，點選滑鼠輸出的`pageY`值會接近2000。
 
 ### MouseEvent.relatedTarget
 
-`MouseEvent.relatedTarget`属性返回事件的相关节点。对于那些没有相关节点的事件，该属性返回`null`。该属性只读。
+`MouseEvent.relatedTarget`屬性返回事件的相關節點。對於那些沒有相關節點的事件，該屬性返回`null`。該屬性只讀。
 
-下表列出不同事件的`target`属性值和`relatedTarget`属性值义。
+下表列出不同事件的`target`屬性值和`relatedTarget`屬性值義。
 
-|事件名称 |target 属性 |relatedTarget 属性 |
+|事件名稱 |target 屬性 |relatedTarget 屬性 |
 |---------|-----------|------------------|
-|focusin |接受焦点的节点 |丧失焦点的节点 |
-|focusout |丧失焦点的节点 |接受焦点的节点 |
-|mouseenter |将要进入的节点 |将要离开的节点 |
-|mouseleave |将要离开的节点 |将要进入的节点 |
-|mouseout |将要离开的节点 |将要进入的节点 |
-|mouseover |将要进入的节点 |将要离开的节点 |
-|dragenter |将要进入的节点 |将要离开的节点 |
-|dragexit |将要离开的节点 |将要进入的节点 |
+|focusin |接受焦點的節點 |喪失焦點的節點 |
+|focusout |喪失焦點的節點 |接受焦點的節點 |
+|mouseenter |將要進入的節點 |將要離開的節點 |
+|mouseleave |將要離開的節點 |將要進入的節點 |
+|mouseout |將要離開的節點 |將要進入的節點 |
+|mouseover |將要進入的節點 |將要離開的節點 |
+|dragenter |將要進入的節點 |將要離開的節點 |
+|dragexit |將要離開的節點 |將要進入的節點 |
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
 /*
-  HTML 代码如下
+  HTML 程式碼如下
   <div id="outer" style="height:50px;width:50px;border:1px solid black;">
     <div id="inner" style="height:25px;width:25px;border:1px solid black;"></div>
   </div>
@@ -320,32 +320,32 @@ document.body.addEventListener(
 
 var inner = document.getElementById('inner');
 inner.addEventListener('mouseover', function (event) {
-  console.log('进入' + event.target.id + ' 离开' + event.relatedTarget.id);
+  console.log('進入' + event.target.id + ' 離開' + event.relatedTarget.id);
 }, false);
 inner.addEventListener('mouseenter', function (event) {
-  console.log('进入' + event.target.id + ' 离开' + event.relatedTarget.id);
+  console.log('進入' + event.target.id + ' 離開' + event.relatedTarget.id);
 });
 inner.addEventListener('mouseout', function () {
-  console.log('离开' + event.target.id + ' 进入' + event.relatedTarget.id);
+  console.log('離開' + event.target.id + ' 進入' + event.relatedTarget.id);
 });
 inner.addEventListener("mouseleave", function (){
-  console.log('离开' + event.target.id + ' 进入' + event.relatedTarget.id);
+  console.log('離開' + event.target.id + ' 進入' + event.relatedTarget.id);
 });
 
-// 鼠标从 outer 进入inner，输出
-// 进入inner 离开outer
-// 进入inner 离开outer
+// 滑鼠從 outer 進入inner，輸出
+// 進入inner 離開outer
+// 進入inner 離開outer
 
-// 鼠标从 inner进入 outer，输出
-// 离开inner 进入outer
-// 离开inner 进入outer
+// 滑鼠從 inner進入 outer，輸出
+// 離開inner 進入outer
+// 離開inner 進入outer
 ```
 
-## MouseEvent 接口的实例方法
+## MouseEvent 介面的例項方法
 
 ### MouseEvent.getModifierState()
 
-`MouseEvent.getModifierState`方法返回一个布尔值，表示有没有按下特定的功能键。它的参数是一个表示[功能键](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/getModifierState#Modifier_keys_on_Gecko)的字符串。
+`MouseEvent.getModifierState`方法返回一個布林值，表示有沒有按下特定的功能鍵。它的引數是一個表示[功能鍵](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/getModifierState#Modifier_keys_on_Gecko)的字串。
 
 ```javascript
 document.addEventListener('click', function (e) {
@@ -353,34 +353,34 @@ document.addEventListener('click', function (e) {
 }, false);
 ```
 
-上面的代码可以了解用户是否按下了大写键。
+上面的程式碼可以瞭解使用者是否按下了大寫鍵。
 
-## WheelEvent 接口
+## WheelEvent 介面
 
 ### 概述
 
-WheelEvent 接口继承了 MouseEvent 实例，代表鼠标滚轮事件的实例对象。目前，鼠标滚轮相关的事件只有一个`wheel`事件，用户滚动鼠标的滚轮，就生成这个事件的实例。
+WheelEvent 介面繼承了 MouseEvent 例項，代表滑鼠滾輪事件的例項物件。目前，滑鼠滾輪相關的事件只有一個`wheel`事件，使用者滾動滑鼠的滾輪，就生成這個事件的例項。
 
-浏览器原生提供`WheelEvent()`构造函数，用来生成`WheelEvent`实例。
+瀏覽器原生提供`WheelEvent()`建構函式，用來生成`WheelEvent`例項。
 
 ```javascript
 var wheelEvent = new WheelEvent(type, options);
 ```
 
-`WheelEvent()`构造函数可以接受两个参数，第一个是字符串，表示事件类型，对于滚轮事件来说，这个值目前只能是`wheel`。第二个参数是事件的配置对象。该对象的属性除了`Event`、`UIEvent`的配置属性以外，还可以接受以下几个属性，所有属性都是可选的。
+`WheelEvent()`建構函式可以接受兩個引數，第一個是字串，表示事件型別，對於滾輪事件來說，這個值目前只能是`wheel`。第二個引數是事件的配置物件。該物件的屬性除了`Event`、`UIEvent`的配置屬性以外，還可以接受以下幾個屬性，所有屬性都是可選的。
 
-- `deltaX`：数值，表示滚轮的水平滚动量，默认值是 0.0。
-- `deltaY`：数值，表示滚轮的垂直滚动量，默认值是 0.0。
-- `deltaZ`：数值，表示滚轮的 Z 轴滚动量，默认值是 0.0。
-- `deltaMode`：数值，表示相关的滚动事件的单位，适用于上面三个属性。`0`表示滚动单位为像素，`1`表示单位为行，`2`表示单位为页，默认为`0`。
+- `deltaX`：數值，表示滾輪的水平滾動量，預設值是 0.0。
+- `deltaY`：數值，表示滾輪的垂直滾動量，預設值是 0.0。
+- `deltaZ`：數值，表示滾輪的 Z 軸滾動量，預設值是 0.0。
+- `deltaMode`：數值，表示相關的滾動事件的單位，適用於上面三個屬性。`0`表示滾動單位為畫素，`1`表示單位為行，`2`表示單位為頁，預設為`0`。
 
-### 实例属性
+### 例項屬性
 
-`WheelEvent`事件实例除了具有`Event`和`MouseEvent`的实例属性和实例方法，还有一些自己的实例属性，但是没有自己的实例方法。
+`WheelEvent`事件例項除了具有`Event`和`MouseEvent`的例項屬性和例項方法，還有一些自己的例項屬性，但是沒有自己的例項方法。
 
-下面的属性都是只读属性。
+下面的屬性都是隻讀屬性。
 
-- `WheelEvent.deltaX`：数值，表示滚轮的水平滚动量。
-- `WheelEvent.deltaY`：数值，表示滚轮的垂直滚动量。
-- `WheelEvent.deltaZ`：数值，表示滚轮的 Z 轴滚动量。
-- `WheelEvent.deltaMode`：数值，表示上面三个属性的单位，`0`是像素，`1`是行，`2`是页。
+- `WheelEvent.deltaX`：數值，表示滾輪的水平滾動量。
+- `WheelEvent.deltaY`：數值，表示滾輪的垂直滾動量。
+- `WheelEvent.deltaZ`：數值，表示滾輪的 Z 軸滾動量。
+- `WheelEvent.deltaMode`：數值，表示上面三個屬性的單位，`0`是畫素，`1`是行，`2`是頁。

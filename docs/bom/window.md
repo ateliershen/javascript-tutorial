@@ -1,23 +1,23 @@
-# window 对象
+# window 物件
 
 ## 概述
 
-浏览器里面，`window`对象（注意，`w`为小写）指当前的浏览器窗口。它也是当前页面的顶层对象，即最高一层的对象，所有其他对象都是它的下属。一个变量如果未声明，那么默认就是顶层对象的属性。
+瀏覽器裡面，`window`物件（注意，`w`為小寫）指當前的瀏覽器視窗。它也是當前頁面的頂層物件，即最高一層的物件，所有其他物件都是它的下屬。一個變數如果未宣告，那麼預設就是頂層物件的屬性。
 
 ```javascript
 a = 1;
 window.a // 1
 ```
 
-上面代码中，`a`是一个没有声明就直接赋值的变量，它自动成为顶层对象的属性。
+上面程式碼中，`a`是一個沒有宣告就直接賦值的變數，它自動成為頂層物件的屬性。
 
-`window`有自己的实体含义，其实不适合当作最高一层的顶层对象，这是一个语言的设计失误。最早，设计这门语言的时候，原始设想是语言内置的对象越少越好，这样可以提高浏览器的性能。因此，语言设计者 Brendan Eich 就把`window`对象当作顶层对象，所有未声明就赋值的变量都自动变成`window`对象的属性。这种设计使得编译阶段无法检测出未声明变量，但到了今天已经没有办法纠正了。
+`window`有自己的實體含義，其實不適合當作最高一層的頂層物件，這是一個語言的設計失誤。最早，設計這門語言的時候，原始設想是語言內建的物件越少越好，這樣可以提高瀏覽器的效能。因此，語言設計者 Brendan Eich 就把`window`物件當作頂層物件，所有未宣告就賦值的變數都自動變成`window`物件的屬性。這種設計使得編譯階段無法檢測出未宣告變數，但到了今天已經沒有辦法糾正了。
 
-## window 对象的属性
+## window 物件的屬性
 
 ### window.name
 
-`window.name`属性是一个字符串，表示当前浏览器窗口的名字。窗口不一定需要名字，这个属性主要配合超链接和表单的`target`属性使用。
+`window.name`屬性是一個字串，表示當前瀏覽器視窗的名字。視窗不一定需要名字，這個屬性主要配合超連結和表單的`target`屬性使用。
 
 ```javascript
 window.name = 'Hello World!';
@@ -25,56 +25,56 @@ console.log(window.name)
 // "Hello World!"
 ```
 
-该属性只能保存字符串，如果写入的值不是字符串，会自动转成字符串。各个浏览器对这个值的储存容量有所不同，但是一般来说，可以高达几MB。
+該屬性只能儲存字串，如果寫入的值不是字串，會自動轉成字串。各個瀏覽器對這個值的儲存容量有所不同，但是一般來說，可以高達幾MB。
 
-只要浏览器窗口不关闭，这个属性是不会消失的。举例来说，访问`a.com`时，该页面的脚本设置了`window.name`，接下来在同一个窗口里面载入了`b.com`，新页面的脚本可以读到上一个网页设置的`window.name`。页面刷新也是这种情况。一旦浏览器窗口关闭后，该属性保存的值就会消失，因为这时窗口已经不存在了。
+只要瀏覽器視窗不關閉，這個屬性是不會消失的。舉例來說，訪問`a.com`時，該頁面的指令碼設定了`window.name`，接下來在同一個窗口裡面載入了`b.com`，新頁面的指令碼可以讀到上一個網頁設定的`window.name`。頁面重新整理也是這種情況。一旦瀏覽器視窗關閉後，該屬性儲存的值就會消失，因為這時視窗已經不存在了。
 
 ### window.closed，window.opener
 
-`window.closed`属性返回一个布尔值，表示窗口是否关闭。
+`window.closed`屬性返回一個布林值，表示視窗是否關閉。
 
 ```javascript
 window.closed // false
 ```
 
-上面代码检查当前窗口是否关闭。这种检查意义不大，因为只要能运行代码，当前窗口肯定没有关闭。这个属性一般用来检查，使用脚本打开的新窗口是否关闭。
+上面程式碼檢查當前視窗是否關閉。這種檢查意義不大，因為只要能執行程式碼，當前視窗肯定沒有關閉。這個屬性一般用來檢查，使用指令碼開啟的新視窗是否關閉。
 
 ```javascript
 var popup = window.open();
 
 if ((popup !== null) && !popup.closed) {
-  // 窗口仍然打开着
+  // 視窗仍然開啟著
 }
 ```
 
-`window.opener`属性表示打开当前窗口的父窗口。如果当前窗口没有父窗口（即直接在地址栏输入打开），则返回`null`。
+`window.opener`屬性表示開啟當前視窗的父視窗。如果當前視窗沒有父視窗（即直接在位址列輸入開啟），則返回`null`。
 
 ```javascript
 window.open().opener === window // true
 ```
 
-上面表达式会打开一个新窗口，然后返回`true`。
+上面表示式會開啟一個新視窗，然後返回`true`。
 
-如果两个窗口之间不需要通信，建议将子窗口的`opener`属性显式设为`null`，这样可以减少一些安全隐患。
+如果兩個視窗之間不需要通訊，建議將子視窗的`opener`屬性顯式設為`null`，這樣可以減少一些安全隱患。
 
 ```javascript
 var newWin = window.open('example.html', 'newWindow', 'height=400,width=400');
 newWin.opener = null;
 ```
 
-上面代码中，子窗口的`opener`属性设为`null`，两个窗口之间就没办法再联系了。
+上面程式碼中，子視窗的`opener`屬性設為`null`，兩個視窗之間就沒辦法再聯絡了。
 
-通过`opener`属性，可以获得父窗口的全局属性和方法，但只限于两个窗口同源的情况（参见《同源限制》一章），且其中一个窗口由另一个打开。`<a>`元素添加`rel="noopener"`属性，可以防止新打开的窗口获取父窗口，减轻被恶意网站修改父窗口 URL 的风险。
+透過`opener`屬性，可以獲得父視窗的全域性屬性和方法，但只限於兩個視窗同源的情況（參見《同源限制》一章），且其中一個視窗由另一個開啟。`<a>`元素新增`rel="noopener"`屬性，可以防止新開啟的視窗獲取父視窗，減輕被惡意網站修改父視窗 URL 的風險。
 
 ```html
 <a href="https://an.evil.site" target="_blank" rel="noopener">
-恶意网站
+惡意網站
 </a>
 ```
 
 ### window.self，window.window
 
-`window.self`和`window.window`属性都指向窗口本身。这两个属性只读。
+`window.self`和`window.window`屬性都指向視窗本身。這兩個屬性只讀。
 
 ```javascript
 window.self === window // true
@@ -83,92 +83,92 @@ window.window === window // true
 
 ### window.frames，window.length
 
-`window.frames`属性返回一个类似数组的对象，成员为页面内所有框架窗口，包括`frame`元素和`iframe`元素。`window.frames[0]`表示页面中第一个框架窗口。
+`window.frames`屬性返回一個類似陣列的物件，成員為頁面內所有框架視窗，包括`frame`元素和`iframe`元素。`window.frames[0]`表示頁面中第一個框架視窗。
 
-如果`iframe`元素设置了`id`或`name`属性，那么就可以用属性值，引用这个`iframe`窗口。比如`<iframe name="myIFrame">`可以用`frames['myIFrame']`或者`frames.myIFrame`来引用。
+如果`iframe`元素設定了`id`或`name`屬性，那麼就可以用屬性值，引用這個`iframe`視窗。比如`<iframe name="myIFrame">`可以用`frames['myIFrame']`或者`frames.myIFrame`來引用。
 
-`frames`属性实际上是`window`对象的别名。
+`frames`屬性實際上是`window`物件的別名。
 
 ```javascript
 frames === window // true
 ```
 
-因此，`frames[0]`也可以用`window[0]`表示。但是，从语义上看，`frames`更清晰，而且考虑到`window`还是全局对象，因此推荐表示多窗口时，总是使用`frames[0]`的写法。更多介绍请看下文的《多窗口操作》部分。
+因此，`frames[0]`也可以用`window[0]`表示。但是，從語義上看，`frames`更清晰，而且考慮到`window`還是全域性物件，因此推薦表示多視窗時，總是使用`frames[0]`的寫法。更多介紹請看下文的《多視窗操作》部分。
 
-`window.length`属性返回当前网页包含的框架总数。如果当前网页不包含`frame`和`iframe`元素，那么`window.length`就返回`0`。
+`window.length`屬性返回當前網頁包含的框架總數。如果當前網頁不包含`frame`和`iframe`元素，那麼`window.length`就返回`0`。
 
 ```javascript
 window.frames.length === window.length // true
 ```
 
-上面代码表示，`window.frames.length`与`window.length`应该是相等的。
+上面程式碼表示，`window.frames.length`與`window.length`應該是相等的。
 
 ### window.frameElement
 
-`window.frameElement`属性主要用于当前窗口嵌在另一个网页的情况（嵌入`<object>`、`<iframe>`或`<embed>`元素），返回当前窗口所在的那个元素节点。如果当前窗口是顶层窗口，或者所嵌入的那个网页不是同源的，该属性返回`null`。
+`window.frameElement`屬性主要用於當前視窗嵌在另一個網頁的情況（嵌入`<object>`、`<iframe>`或`<embed>`元素），返回當前視窗所在的那個元素節點。如果當前視窗是頂層視窗，或者所嵌入的那個網頁不是同源的，該屬性返回`null`。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <iframe src="about.html"></iframe>
 
-// 下面的脚本在 about.html 里面
+// 下面的指令碼在 about.html 裡面
 var frameEl = window.frameElement;
 if (frameEl) {
   frameEl.src = 'other.html';
 }
 ```
 
-上面代码中，`frameEl`变量就是`<iframe>`元素。
+上面程式碼中，`frameEl`變數就是`<iframe>`元素。
 
 ### window.top，window.parent
 
-`window.top`属性指向最顶层窗口，主要用于在框架窗口（frame）里面获取顶层窗口。
+`window.top`屬性指向最頂層視窗，主要用於在框架視窗（frame）裡面獲取頂層視窗。
 
-`window.parent`属性指向父窗口。如果当前窗口没有父窗口，`window.parent`指向自身。
+`window.parent`屬性指向父視窗。如果當前視窗沒有父視窗，`window.parent`指向自身。
 
 ```javascript
 if (window.parent !== window.top) {
-  // 表明当前窗口嵌入不止一层
+  // 表明當前視窗嵌入不止一層
 }
 ```
 
-对于不包含框架的网页，这两个属性等同于`window`对象。
+對於不包含框架的網頁，這兩個屬性等同於`window`物件。
 
 ### window.status
 
-`window.status`属性用于读写浏览器状态栏的文本。但是，现在很多浏览器都不允许改写状态栏文本，所以使用这个方法不一定有效。
+`window.status`屬性用於讀寫瀏覽器狀態列的文字。但是，現在很多瀏覽器都不允許改寫狀態列文字，所以使用這個方法不一定有效。
 
 ### window.devicePixelRatio
 
-`window.devicePixelRatio`属性返回一个数值，表示一个 CSS 像素的大小与一个物理像素的大小之间的比率。也就是说，它表示一个 CSS 像素由多少个物理像素组成。它可以用于判断用户的显示环境，如果这个比率较大，就表示用户正在使用高清屏幕，因此可以显示较大像素的图片。
+`window.devicePixelRatio`屬性返回一個數值，表示一個 CSS 畫素的大小與一個物理畫素的大小之間的比率。也就是說，它表示一個 CSS 畫素由多少個物理畫素組成。它可以用於判斷使用者的顯示環境，如果這個比率較大，就表示使用者正在使用高畫質螢幕，因此可以顯示較大畫素的圖片。
 
-### 位置大小属性
+### 位置大小屬性
 
-以下属性返回`window`对象的位置信息和大小信息。
+以下屬性返回`window`物件的位置資訊和大小資訊。
 
 **（1）window.screenX，window.screenY**
 
-`window.screenX`和`window.screenY`属性，返回浏览器窗口左上角相对于当前屏幕左上角的水平距离和垂直距离（单位像素）。这两个属性只读。
+`window.screenX`和`window.screenY`屬性，返回瀏覽器視窗左上角相對於當前螢幕左上角的水平距離和垂直距離（單位畫素）。這兩個屬性只讀。
 
 **（2） window.innerHeight，window.innerWidth**
 
-`window.innerHeight`和`window.innerWidth`属性，返回网页在当前窗口中可见部分的高度和宽度，即“视口”（viewport）的大小（单位像素）。这两个属性只读。
+`window.innerHeight`和`window.innerWidth`屬性，返回網頁在當前視窗中可見部分的高度和寬度，即“視口”（viewport）的大小（單位畫素）。這兩個屬性只讀。
 
-用户放大网页的时候（比如将网页从100%的大小放大为200%），这两个属性会变小。因为这时网页的像素大小不变（比如宽度还是960像素），只是每个像素占据的屏幕空间变大了，因此可见部分（视口）就变小了。
+使用者放大網頁的時候（比如將網頁從100%的大小放大為200%），這兩個屬性會變小。因為這時網頁的畫素大小不變（比如寬度還是960畫素），只是每個畫素佔據的螢幕空間變大了，因此可見部分（視口）就變小了。
 
-注意，这两个属性值包括滚动条的高度和宽度。
+注意，這兩個屬性值包括捲軸的高度和寬度。
 
 **（3）window.outerHeight，window.outerWidth**
 
-`window.outerHeight`和`window.outerWidth`属性返回浏览器窗口的高度和宽度，包括浏览器菜单和边框（单位像素）。这两个属性只读。
+`window.outerHeight`和`window.outerWidth`屬性返回瀏覽器視窗的高度和寬度，包括瀏覽器選單和邊框（單位畫素）。這兩個屬性只讀。
 
 **（4）window.scrollX，window.scrollY**
 
-`window.scrollX`属性返回页面的水平滚动距离，`window.scrollY`属性返回页面的垂直滚动距离，单位都为像素。这两个属性只读。
+`window.scrollX`屬性返回頁面的水平滾動距離，`window.scrollY`屬性返回頁面的垂直滾動距離，單位都為畫素。這兩個屬性只讀。
 
-注意，这两个属性的返回值不是整数，而是双精度浮点数。如果页面没有滚动，它们的值就是`0`。
+注意，這兩個屬性的返回值不是整數，而是雙精度浮點數。如果頁面沒有滾動，它們的值就是`0`。
 
-举例来说，如果用户向下拉动了垂直滚动条75像素，那么`window.scrollY`就是75左右。用户水平向右拉动水平滚动条200像素，`window.scrollX`就是200左右。
+舉例來說，如果使用者向下拉動了垂直捲軸75畫素，那麼`window.scrollY`就是75左右。使用者水平向右拉動水平捲軸200畫素，`window.scrollX`就是200左右。
 
 ```javascript
 if (window.scrollY < 75) {
@@ -176,24 +176,24 @@ if (window.scrollY < 75) {
 }
 ```
 
-上面代码中，如果页面向下滚动的距离小于75像素，那么页面向下滚动75像素。
+上面程式碼中，如果頁面向下滾動的距離小於75畫素，那麼頁面向下滾動75畫素。
 
 **（5）window.pageXOffset，window.pageYOffset**
 
-`window.pageXOffset`属性和`window.pageYOffset`属性，是`window.scrollX`和`window.scrollY`别名。
+`window.pageXOffset`屬性和`window.pageYOffset`屬性，是`window.scrollX`和`window.scrollY`別名。
 
-### 组件属性
+### 元件屬性
 
-组件属性返回浏览器的组件对象。这样的属性有下面几个。
+元件屬性返回瀏覽器的元件物件。這樣的屬性有下面幾個。
 
-- `window.locationbar`：地址栏对象
-- `window.menubar`：菜单栏对象
-- `window.scrollbars`：窗口的滚动条对象
-- `window.toolbar`：工具栏对象
-- `window.statusbar`：状态栏对象
-- `window.personalbar`：用户安装的个人工具栏对象
+- `window.locationbar`：位址列物件
+- `window.menubar`：選單欄物件
+- `window.scrollbars`：視窗的捲軸物件
+- `window.toolbar`：工具欄物件
+- `window.statusbar`：狀態列物件
+- `window.personalbar`：使用者安裝的個人工具欄物件
 
-这些对象的`visible`属性是一个布尔值，表示这些组件是否可见。这些属性只读。
+這些物件的`visible`屬性是一個布林值，表示這些元件是否可見。這些屬性只讀。
 
 ```javascript
 window.locationbar.visible
@@ -204,117 +204,117 @@ window.statusbar.visible
 window.personalbar.visible
 ```
 
-### 全局对象属性
+### 全域性物件屬性
 
-全局对象属性指向一些浏览器原生的全局对象。
+全域性物件屬性指向一些瀏覽器原生的全域性物件。
 
-- `window.document`：指向`document`对象，详见《document 对象》一章。注意，这个属性有同源限制。只有来自同源的脚本才能读取这个属性。
-- `window.location`：指向`Location`对象，用于获取当前窗口的 URL 信息。它等同于`document.location`属性，详见《Location 对象》一章。
-- `window.navigator`：指向`Navigator`对象，用于获取环境信息，详见《Navigator 对象》一章。
-- `window.history`：指向`History`对象，表示浏览器的浏览历史，详见《History 对象》一章。
-- `window.localStorage`：指向本地储存的 localStorage 数据，详见《Storage 接口》一章。
-- `window.sessionStorage`：指向本地储存的 sessionStorage 数据，详见《Storage 接口》一章。
-- `window.console`：指向`console`对象，用于操作控制台，详见《console 对象》一章。
-- `window.screen`：指向`Screen`对象，表示屏幕信息，详见《Screen 对象》一章。
+- `window.document`：指向`document`物件，詳見《document 物件》一章。注意，這個屬性有同源限制。只有來自同源的指令碼才能讀取這個屬性。
+- `window.location`：指向`Location`物件，用於獲取當前視窗的 URL 資訊。它等同於`document.location`屬性，詳見《Location 物件》一章。
+- `window.navigator`：指向`Navigator`物件，用於獲取環境資訊，詳見《Navigator 物件》一章。
+- `window.history`：指向`History`物件，表示瀏覽器的瀏覽歷史，詳見《History 物件》一章。
+- `window.localStorage`：指向本地儲存的 localStorage 資料，詳見《Storage 介面》一章。
+- `window.sessionStorage`：指向本地儲存的 sessionStorage 資料，詳見《Storage 介面》一章。
+- `window.console`：指向`console`物件，用於操作控制檯，詳見《console 物件》一章。
+- `window.screen`：指向`Screen`物件，表示螢幕資訊，詳見《Screen 物件》一章。
 
 ### window.isSecureContext
 
-`window.isSecureContext`属性返回一个布尔值，表示当前窗口是否处在加密环境。如果是 HTTPS 协议，就是`true`，否则就是`false`。
+`window.isSecureContext`屬性返回一個布林值，表示當前視窗是否處在加密環境。如果是 HTTPS 協議，就是`true`，否則就是`false`。
 
-## window 对象的方法
+## window 物件的方法
 
 ### window.alert()，window.prompt()，window.confirm()
 
-`window.alert()`、`window.prompt()`、`window.confirm()`都是浏览器与用户互动的全局方法。它们会弹出不同的对话框，要求用户做出回应。注意，这三个方法弹出的对话框，都是浏览器统一规定的式样，无法定制。
+`window.alert()`、`window.prompt()`、`window.confirm()`都是瀏覽器與使用者互動的全域性方法。它們會彈出不同的對話方塊，要求使用者做出迴應。注意，這三個方法彈出的對話方塊，都是瀏覽器統一規定的式樣，無法定製。
 
 **（1）window.alert()**
 
-`window.alert()`方法弹出的对话框，只有一个“确定”按钮，往往用来通知用户某些信息。
+`window.alert()`方法彈出的對話方塊，只有一個“確定”按鈕，往往用來通知使用者某些資訊。
 
 ```javascript
 window.alert('Hello World');
 ```
 
-用户只有点击“确定”按钮，对话框才会消失。对话框弹出期间，浏览器窗口处于冻结状态，如果不点“确定”按钮，用户什么也干不了。
+使用者只有點選“確定”按鈕，對話方塊才會消失。對話方塊彈出期間，瀏覽器視窗處於凍結狀態，如果不點“確定”按鈕，使用者什麼也幹不了。
 
-`window.alert()`方法的参数只能是字符串，没法使用 CSS 样式，但是可以用`\n`指定换行。
+`window.alert()`方法的引數只能是字串，沒法使用 CSS 樣式，但是可以用`\n`指定換行。
 
 ```javascript
-alert('本条提示\n分成两行');
+alert('本條提示\n分成兩行');
 ```
 
 **（2）window.prompt()**
 
-`window.prompt()`方法弹出的对话框，提示文字的下方，还有一个输入框，要求用户输入信息，并有“确定”和“取消”两个按钮。它往往用来获取用户输入的数据。
+`window.prompt()`方法彈出的對話方塊，提示文字的下方，還有一個輸入框，要求使用者輸入資訊，並有“確定”和“取消”兩個按鈕。它往往用來獲取使用者輸入的資料。
 
 ```javascript
-var result = prompt('您的年龄？', 25)
+var result = prompt('您的年齡？', 25)
 ```
 
-上面代码会跳出一个对话框，文字提示为“您的年龄？”，要求用户在对话框中输入自己的年龄（默认显示25）。用户填入的值，会作为返回值存入变量`result`。
+上面程式碼會跳出一個對話方塊，文字提示為“您的年齡？”，要求使用者在對話方塊中輸入自己的年齡（預設顯示25）。使用者填入的值，會作為返回值存入變數`result`。
 
-`window.prompt()`的返回值有两种情况，可能是字符串（有可能是空字符串），也有可能是`null`。具体分成三种情况。
+`window.prompt()`的返回值有兩種情況，可能是字串（有可能是空字串），也有可能是`null`。具體分成三種情況。
 
-1. 用户输入信息，并点击“确定”，则用户输入的信息就是返回值。
-2. 用户没有输入信息，直接点击“确定”，则输入框的默认值就是返回值。
-3. 用户点击了“取消”（或者按了 ESC 按钮），则返回值是`null`。
+1. 使用者輸入資訊，並點選“確定”，則使用者輸入的資訊就是返回值。
+2. 使用者沒有輸入資訊，直接點選“確定”，則輸入框的預設值就是返回值。
+3. 使用者點選了“取消”（或者按了 ESC 按鈕），則返回值是`null`。
 
-`window.prompt()`方法的第二个参数是可选的，但是最好总是提供第二个参数，作为输入框的默认值。
+`window.prompt()`方法的第二個引數是可選的，但是最好總是提供第二個引數，作為輸入框的預設值。
 
 **（3）window.confirm()**
 
-`window.confirm()`方法弹出的对话框，除了提示信息之外，只有“确定”和“取消”两个按钮，往往用来征询用户是否同意。
+`window.confirm()`方法彈出的對話方塊，除了提示資訊之外，只有“確定”和“取消”兩個按鈕，往往用來徵詢使用者是否同意。
 
 ```javascript
-var result = confirm('你最近好吗？');
+var result = confirm('你最近好嗎？');
 ```
 
-上面代码弹出一个对话框，上面只有一行文字“你最近好吗？”，用户选择点击“确定”或“取消”。
+上面程式碼彈出一個對話方塊，上面只有一行文字“你最近好嗎？”，使用者選擇點選“確定”或“取消”。
 
-`confirm`方法返回一个布尔值，如果用户点击“确定”，返回`true`；如果用户点击“取消”，则返回`false`。
+`confirm`方法返回一個布林值，如果使用者點選“確定”，返回`true`；如果使用者點選“取消”，則返回`false`。
 
 ```javascript
 var okay = confirm('Please confirm this message.');
 if (okay) {
-  // 用户按下“确定”
+  // 使用者按下“確定”
 } else {
-  // 用户按下“取消”
+  // 使用者按下“取消”
 }
 ```
 
-`confirm`的一个用途是，用户离开当前页面时，弹出一个对话框，问用户是否真的要离开。
+`confirm`的一個用途是，使用者離開當前頁面時，彈出一個對話方塊，問使用者是否真的要離開。
 
 ```javascript
 window.onunload = function () {
-  return window.confirm('你确定要离开当面页面吗？');
+  return window.confirm('你確定要離開當面頁面嗎？');
 }
 ```
 
-这三个方法都具有堵塞效应，一旦弹出对话框，整个页面就是暂停执行，等待用户做出反应。
+這三個方法都具有堵塞效應，一旦彈出對話方塊，整個頁面就是暫停執行，等待使用者做出反應。
 
 ### window.open(), window.close()，window.stop()
 
 **（1）window.open()**
 
-`window.open`方法用于新建另一个浏览器窗口，类似于浏览器菜单的新建窗口选项。它会返回新窗口的引用，如果无法新建窗口，则返回`null`。
+`window.open`方法用於新建另一個瀏覽器視窗，類似於瀏覽器選單的新建視窗選項。它會返回新視窗的引用，如果無法新建視窗，則返回`null`。
 
 ```javascript
 var popup = window.open('somefile.html');
 ```
 
-上面代码会让浏览器弹出一个新建窗口，网址是当前域名下的`somefile.html`。
+上面程式碼會讓瀏覽器彈出一個新建視窗，網址是當前域名下的`somefile.html`。
 
-`open`方法一共可以接受三个参数。
+`open`方法一共可以接受三個引數。
 
 ```javascript
 window.open(url, windowName, [windowFeatures])
 ```
 
-- `url`：字符串，表示新窗口的网址。如果省略，默认网址就是`about:blank`。
-- `windowName`：字符串，表示新窗口的名字。如果该名字的窗口已经存在，则占用该窗口，不再新建窗口。如果省略，就默认使用`_blank`，表示新建一个没有名字的窗口。另外还有几个预设值，`_self`表示当前窗口，`_top`表示顶层窗口，`_parent`表示上一层窗口。
-- `windowFeatures`：字符串，内容为逗号分隔的键值对（详见下文），表示新窗口的参数，比如有没有提示栏、工具条等等。如果省略，则默认打开一个完整 UI 的新窗口。如果新建的是一个已经存在的窗口，则该参数不起作用，浏览器沿用以前窗口的参数。
+- `url`：字串，表示新視窗的網址。如果省略，預設網址就是`about:blank`。
+- `windowName`：字串，表示新視窗的名字。如果該名字的視窗已經存在，則佔用該視窗，不再新建視窗。如果省略，就預設使用`_blank`，表示新建一個沒有名字的視窗。另外還有幾個預設值，`_self`表示當前視窗，`_top`表示頂層視窗，`_parent`表示上一層視窗。
+- `windowFeatures`：字串，內容為逗號分隔的鍵值對（詳見下文），表示新視窗的引數，比如有沒有提示欄、工具條等等。如果省略，則預設開啟一個完整 UI 的新視窗。如果新建的是一個已經存在的視窗，則該引數不起作用，瀏覽器沿用以前視窗的引數。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
 var popup = window.open(
@@ -324,83 +324,83 @@ var popup = window.open(
 );
 ```
 
-上面代码表示，打开的新窗口高度和宽度都为200像素，没有地址栏，但有状态栏和滚动条，允许用户调整大小。
+上面程式碼表示，開啟的新視窗高度和寬度都為200畫素，沒有位址列，但有狀態列和捲軸，允許使用者調整大小。
 
-第三个参数可以设定如下属性。
+第三個引數可以設定如下屬性。
 
-- left：新窗口距离屏幕最左边的距离（单位像素）。注意，新窗口必须是可见的，不能设置在屏幕以外的位置。
-- top：新窗口距离屏幕最顶部的距离（单位像素）。
-- height：新窗口内容区域的高度（单位像素），不得小于100。
-- width：新窗口内容区域的宽度（单位像素），不得小于100。
-- outerHeight：整个浏览器窗口的高度（单位像素），不得小于100。
-- outerWidth：整个浏览器窗口的宽度（单位像素），不得小于100。
-- menubar：是否显示菜单栏。
-- toolbar：是否显示工具栏。
-- location：是否显示地址栏。
-- personalbar：是否显示用户自己安装的工具栏。
-- status：是否显示状态栏。
-- dependent：是否依赖父窗口。如果依赖，那么父窗口最小化，该窗口也最小化；父窗口关闭，该窗口也关闭。
-- minimizable：是否有最小化按钮，前提是`dialog=yes`。
-- noopener：新窗口将与父窗口切断联系，即新窗口的`window.opener`属性返回`null`，父窗口的`window.open()`方法也返回`null`。
-- resizable：新窗口是否可以调节大小。
-- scrollbars：是否允许新窗口出现滚动条。
-- dialog：新窗口标题栏是否出现最大化、最小化、恢复原始大小的控件。
-- titlebar：新窗口是否显示标题栏。
-- alwaysRaised：是否显示在所有窗口的顶部。
-- alwaysLowered：是否显示在父窗口的底下。
-- close：新窗口是否显示关闭按钮。
+- left：新視窗距離螢幕最左邊的距離（單位畫素）。注意，新視窗必須是可見的，不能設定在螢幕以外的位置。
+- top：新視窗距離螢幕最頂部的距離（單位畫素）。
+- height：新視窗內容區域的高度（單位畫素），不得小於100。
+- width：新視窗內容區域的寬度（單位畫素），不得小於100。
+- outerHeight：整個瀏覽器視窗的高度（單位畫素），不得小於100。
+- outerWidth：整個瀏覽器視窗的寬度（單位畫素），不得小於100。
+- menubar：是否顯示選單欄。
+- toolbar：是否顯示工具欄。
+- location：是否顯示位址列。
+- personalbar：是否顯示使用者自己安裝的工具欄。
+- status：是否顯示狀態列。
+- dependent：是否依賴父視窗。如果依賴，那麼父視窗最小化，該視窗也最小化；父視窗關閉，該視窗也關閉。
+- minimizable：是否有最小化按鈕，前提是`dialog=yes`。
+- noopener：新視窗將與父視窗切斷聯絡，即新視窗的`window.opener`屬性返回`null`，父視窗的`window.open()`方法也返回`null`。
+- resizable：新視窗是否可以調節大小。
+- scrollbars：是否允許新窗口出現捲軸。
+- dialog：新視窗標題欄是否出現最大化、最小化、恢復原始大小的控制元件。
+- titlebar：新視窗是否顯示標題欄。
+- alwaysRaised：是否顯示在所有視窗的頂部。
+- alwaysLowered：是否顯示在父視窗的底下。
+- close：新視窗是否顯示關閉按鈕。
 
-对于那些可以打开和关闭的属性，设为`yes`或`1`或不设任何值就表示打开，比如`status=yes`、`status=1`、`status`都会得到同样的结果。如果想设为关闭，不用写`no`，而是直接省略这个属性即可。也就是说，如果在第三个参数中设置了一部分属性，其他没有被设置的`yes/no`属性都会被设成`no`，只有`titlebar`和关闭按钮除外（它们的值默认为`yes`）。
+對於那些可以開啟和關閉的屬性，設為`yes`或`1`或不設任何值就表示開啟，比如`status=yes`、`status=1`、`status`都會得到同樣的結果。如果想設為關閉，不用寫`no`，而是直接省略這個屬性即可。也就是說，如果在第三個引數中設定了一部分屬性，其他沒有被設定的`yes/no`屬性都會被設成`no`，只有`titlebar`和關閉按鈕除外（它們的值預設為`yes`）。
 
-上面这些属性，属性名与属性值之间用等号连接，属性与属性之间用逗号分隔。
+上面這些屬性，屬性名與屬性值之間用等號連線，屬性與屬性之間用逗號分隔。
 
 ```javascript
 'height=200,width=200,location=no,status=yes,resizable=yes,scrollbars=yes'
 ```
 
-另外，`open()`方法的第二个参数虽然可以指定已经存在的窗口，但是不等于可以任意控制其他窗口。为了防止被不相干的窗口控制，浏览器只有在两个窗口同源，或者目标窗口被当前网页打开的情况下，才允许`open`方法指向该窗口。
+另外，`open()`方法的第二個引數雖然可以指定已經存在的視窗，但是不等於可以任意控制其他視窗。為了防止被不相干的視窗控制，瀏覽器只有在兩個視窗同源，或者目標視窗被當前網頁開啟的情況下，才允許`open`方法指向該視窗。
 
-`window.open`方法返回新窗口的引用。
+`window.open`方法返回新視窗的引用。
 
 ```javascript
 var windowB = window.open('windowB.html', 'WindowB');
 windowB.window.name // "WindowB"
 ```
 
-注意，如果新窗口和父窗口不是同源的（即不在同一个域），它们彼此不能获取对方窗口对象的内部属性。
+注意，如果新視窗和父視窗不是同源的（即不在同一個域），它們彼此不能獲取對方視窗物件的內部屬性。
 
-下面是另一个例子。
+下面是另一個例子。
 
 ```javascript
 var w = window.open();
-console.log('已经打开新窗口');
+console.log('已經開啟新視窗');
 w.location = 'http://example.com';
 ```
 
-上面代码先打开一个新窗口，然后在该窗口弹出一个对话框，再将网址导向`example.com`。
+上面程式碼先開啟一個新視窗，然後在該視窗彈出一個對話方塊，再將網址導向`example.com`。
 
-由于`open`这个方法很容易被滥用，许多浏览器默认都不允许脚本自动新建窗口。只允许在用户点击链接或按钮时，脚本做出反应，弹出新窗口。因此，有必要检查一下打开新窗口是否成功。
+由於`open`這個方法很容易被濫用，許多瀏覽器預設都不允許指令碼自動新建視窗。只允許在使用者點選連結或按鈕時，指令碼做出反應，彈出新視窗。因此，有必要檢查一下開啟新視窗是否成功。
 
 ```javascript
 var popup = window.open();
 if (popup === null) {
-  // 新建窗口失败
+  // 新建視窗失敗
 }
 ```
 
 **（2）window.close()**
 
-`window.close`方法用于关闭当前窗口，一般只用来关闭`window.open`方法新建的窗口。
+`window.close`方法用於關閉當前視窗，一般只用來關閉`window.open`方法新建的視窗。
 
 ```javascript
 popup.close()
 ```
 
-该方法只对顶层窗口有效，`iframe`框架之中的窗口使用该方法无效。
+該方法只對頂層視窗有效，`iframe`框架之中的視窗使用該方法無效。
 
 **（3）window.stop()**
 
-`window.stop()`方法完全等同于单击浏览器的停止按钮，会停止加载图像、视频等正在或等待加载的对象。
+`window.stop()`方法完全等同於單擊瀏覽器的停止按鈕，會停止載入影象、影片等正在或等待載入的物件。
 
 ```javascript
 window.stop()
@@ -408,29 +408,29 @@ window.stop()
 
 ### window.moveTo()，window.moveBy()
 
-`window.moveTo()`方法用于移动浏览器窗口到指定位置。它接受两个参数，分别是窗口左上角距离屏幕左上角的水平距离和垂直距离，单位为像素。
+`window.moveTo()`方法用於移動瀏覽器視窗到指定位置。它接受兩個引數，分別是視窗左上角距離螢幕左上角的水平距離和垂直距離，單位為畫素。
 
 ```javascript
 window.moveTo(100, 200)
 ```
 
-上面代码将窗口移动到屏幕`(100, 200)`的位置。
+上面程式碼將視窗移動到螢幕`(100, 200)`的位置。
 
-`window.moveBy()`方法将窗口移动到一个相对位置。它接受两个参数，分别是窗口左上角向右移动的水平距离和向下移动的垂直距离，单位为像素。
+`window.moveBy()`方法將視窗移動到一個相對位置。它接受兩個引數，分別是視窗左上角向右移動的水平距離和向下移動的垂直距離，單位為畫素。
 
 ```javascript
 window.moveBy(25, 50)
 ```
 
-上面代码将窗口向右移动25像素、向下移动50像素。
+上面程式碼將視窗向右移動25畫素、向下移動50畫素。
 
-为了防止有人滥用这两个方法，随意移动用户的窗口，目前只有一种情况，浏览器允许用脚本移动窗口：该窗口是用`window.open()`方法新建的，并且窗口里只有它一个 Tab 页。除此以外的情况，使用上面两个方法都是无效的。
+為了防止有人濫用這兩個方法，隨意移動使用者的視窗，目前只有一種情況，瀏覽器允許用指令碼移動視窗：該視窗是用`window.open()`方法新建的，並且窗口裡只有它一個 Tab 頁。除此以外的情況，使用上面兩個方法都是無效的。
 
 ### window.resizeTo()，window.resizeBy()
 
-`window.resizeTo()`方法用于缩放窗口到指定大小。
+`window.resizeTo()`方法用於縮放視窗到指定大小。
 
-它接受两个参数，第一个是缩放后的窗口宽度（`outerWidth`属性，包含滚动条、标题栏等等），第二个是缩放后的窗口高度（`outerHeight`属性）。
+它接受兩個引數，第一個是縮放後的視窗寬度（`outerWidth`屬性，包含捲軸、標題欄等等），第二個是縮放後的視窗高度（`outerHeight`屬性）。
 
 ```javascript
 window.resizeTo(
@@ -439,37 +439,37 @@ window.resizeTo(
 )
 ```
 
-上面代码将当前窗口缩放到，屏幕可用区域的一半宽度和高度。
+上面程式碼將當前視窗縮放到，螢幕可用區域的一半寬度和高度。
 
-`window.resizeBy()`方法用于缩放窗口。它与`window.resizeTo()`的区别是，它按照相对的量缩放，`window.resizeTo()`需要给出缩放后的绝对大小。
+`window.resizeBy()`方法用於縮放視窗。它與`window.resizeTo()`的區別是，它按照相對的量縮放，`window.resizeTo()`需要給出縮放後的絕對大小。
 
-它接受两个参数，第一个是水平缩放的量，第二个是垂直缩放的量，单位都是像素。
+它接受兩個引數，第一個是水平縮放的量，第二個是垂直縮放的量，單位都是畫素。
 
 ```javascript
 window.resizeBy(-200, -200)
 ```
 
-上面的代码将当前窗口的宽度和高度，都缩小200像素。
+上面的程式碼將當前視窗的寬度和高度，都縮小200畫素。
 
 ### window.scrollTo()，window.scroll()，window.scrollBy()
 
-`window.scrollTo`方法用于将文档滚动到指定位置。它接受两个参数，表示滚动后位于窗口左上角的页面坐标。
+`window.scrollTo`方法用於將文件滾動到指定位置。它接受兩個引數，表示滾動後位於視窗左上角的頁面座標。
 
 ```javascript
 window.scrollTo(x-coord, y-coord)
 ```
 
-它也可以接受一个配置对象作为参数。
+它也可以接受一個配置物件作為引數。
 
 ```javascript
 window.scrollTo(options)
 ```
 
-配置对象`options`有三个属性。
+配置物件`options`有三個屬性。
 
-- `top`：滚动后页面左上角的垂直坐标，即 y 坐标。
-- `left`：滚动后页面左上角的水平坐标，即 x 坐标。
-- `behavior`：字符串，表示滚动的方式，有三个可能值（`smooth`、`instant`、`auto`），默认值为`auto`。
+- `top`：滾動後頁面左上角的垂直座標，即 y 座標。
+- `left`：滾動後頁面左上角的水平座標，即 x 座標。
+- `behavior`：字串，表示滾動的方式，有三個可能值（`smooth`、`instant`、`auto`），預設值為`auto`。
 
 ```javascript
 window.scrollTo({
@@ -478,17 +478,17 @@ window.scrollTo({
 });
 ```
 
-`window.scroll()`方法是`window.scrollTo()`方法的别名。
+`window.scroll()`方法是`window.scrollTo()`方法的別名。
 
-`window.scrollBy()`方法用于将网页滚动指定距离（单位像素）。它接受两个参数：水平向右滚动的像素，垂直向下滚动的像素。
+`window.scrollBy()`方法用於將網頁滾動指定距離（單位畫素）。它接受兩個引數：水平向右滾動的畫素，垂直向下滾動的畫素。
 
 ```javascript
 window.scrollBy(0, window.innerHeight)
 ```
 
-上面代码用于将网页向下滚动一屏。
+上面程式碼用於將網頁向下滾動一屏。
 
-如果不是要滚动整个文档，而是要滚动某个元素，可以使用下面三个属性和方法。
+如果不是要滾動整個文件，而是要滾動某個元素，可以使用下面三個屬性和方法。
 
 - Element.scrollTop
 - Element.scrollLeft
@@ -496,9 +496,9 @@ window.scrollBy(0, window.innerHeight)
 
 ### window.print()
 
-`window.print`方法会跳出打印对话框，与用户点击菜单里面的“打印”命令效果相同。
+`window.print`方法會跳出列印對話方塊，與使用者點選選單裡面的“列印”命令效果相同。
 
-常见的打印按钮代码如下。
+常見的列印按鈕程式碼如下。
 
 ```javascript
 document.getElementById('printLink').onclick = function () {
@@ -506,17 +506,17 @@ document.getElementById('printLink').onclick = function () {
 }
 ```
 
-非桌面设备（比如手机）可能没有打印功能，这时可以这样判断。
+非桌面裝置（比如手機）可能沒有列印功能，這時可以這樣判斷。
 
 ```javascript
 if (typeof window.print === 'function') {
-  // 支持打印功能
+  // 支援列印功能
 }
 ```
 
 ### window.focus()，window.blur()
 
-`window.focus()`方法会激活窗口，使其获得焦点，出现在其他窗口的前面。
+`window.focus()`方法會啟用視窗，使其獲得焦點，出現在其他視窗的前面。
 
 ```javascript
 var popup = window.open('popup.html', 'Popup Window');
@@ -526,21 +526,21 @@ if ((popup !== null) && !popup.closed) {
 }
 ```
 
-上面代码先检查`popup`窗口是否依然存在，确认后激活该窗口。
+上面程式碼先檢查`popup`視窗是否依然存在，確認後啟用該視窗。
 
-`window.blur()`方法将焦点从窗口移除。
+`window.blur()`方法將焦點從視窗移除。
 
-当前窗口获得焦点时，会触发`focus`事件；当前窗口失去焦点时，会触发`blur`事件。
+當前視窗獲得焦點時，會觸發`focus`事件；當前視窗失去焦點時，會觸發`blur`事件。
 
 ### window.getSelection()
 
-`window.getSelection`方法返回一个`Selection`对象，表示用户现在选中的文本。
+`window.getSelection`方法返回一個`Selection`物件，表示使用者現在選中的文字。
 
 ```javascript
 var selObj = window.getSelection();
 ```
 
-使用`Selection`对象的`toString`方法可以得到选中的文本。
+使用`Selection`物件的`toString`方法可以得到選中的文字。
 
 ```javascript
 var selectedText = selObj.toString();
@@ -548,27 +548,27 @@ var selectedText = selObj.toString();
 
 ### window.getComputedStyle()，window.matchMedia()
 
-`window.getComputedStyle()`方法接受一个元素节点作为参数，返回一个包含该元素的最终样式信息的对象，详见《CSS 操作》一章。
+`window.getComputedStyle()`方法接受一個元素節點作為引數，返回一個包含該元素的最終樣式資訊的物件，詳見《CSS 操作》一章。
 
-`window.matchMedia()`方法用来检查 CSS 的`mediaQuery`语句，详见《CSS 操作》一章。
+`window.matchMedia()`方法用來檢查 CSS 的`mediaQuery`語句，詳見《CSS 操作》一章。
 
 ### window.requestAnimationFrame()
 
-`window.requestAnimationFrame()`方法跟`setTimeout`类似，都是推迟某个函数的执行。不同之处在于，`setTimeout`必须指定推迟的时间，`window.requestAnimationFrame()`则是推迟到浏览器下一次重流时执行，执行完才会进行下一次重绘。重绘通常是 16ms 执行一次，不过浏览器会自动调节这个速率，比如网页切换到后台 Tab 页时，`requestAnimationFrame()`会暂停执行。
+`window.requestAnimationFrame()`方法跟`setTimeout`類似，都是推遲某個函式的執行。不同之處在於，`setTimeout`必須指定推遲的時間，`window.requestAnimationFrame()`則是推遲到瀏覽器下一次重流時執行，執行完才會進行下一次重繪。重繪通常是 16ms 執行一次，不過瀏覽器會自動調節這個速率，比如網頁切換到後臺 Tab 頁時，`requestAnimationFrame()`會暫停執行。
 
-如果某个函数会改变网页的布局，一般就放在`window.requestAnimationFrame()`里面执行，这样可以节省系统资源，使得网页效果更加平滑。因为慢速设备会用较慢的速率重流和重绘，而速度更快的设备会有更快的速率。
+如果某個函式會改變網頁的佈局，一般就放在`window.requestAnimationFrame()`裡面執行，這樣可以節省系統資源，使得網頁效果更加平滑。因為慢速裝置會用較慢的速率重流和重繪，而速度更快的裝置會有更快的速率。
 
-该方法接受一个回调函数作为参数。
+該方法接受一個回撥函式作為引數。
 
 ```javascript
 window.requestAnimationFrame(callback)
 ```
 
-上面代码中，`callback`是一个回调函数。`callback`执行时，它的参数就是系统传入的一个高精度时间戳（`performance.now()`的返回值），单位是毫秒，表示距离网页加载的时间。
+上面程式碼中，`callback`是一個回撥函式。`callback`執行時，它的引數就是系統傳入的一個高精度時間戳（`performance.now()`的返回值），單位是毫秒，表示距離網頁載入的時間。
 
-`window.requestAnimationFrame()`的返回值是一个整数，这个整数可以传入`window.cancelAnimationFrame()`，用来取消回调函数的执行。
+`window.requestAnimationFrame()`的返回值是一個整數，這個整數可以傳入`window.cancelAnimationFrame()`，用來取消回撥函式的執行。
 
-下面是一个`window.requestAnimationFrame()`执行网页动画的例子。
+下面是一個`window.requestAnimationFrame()`執行網頁動畫的例子。
 
 ```javascript
 var element = document.getElementById('animate');
@@ -579,10 +579,10 @@ var start = null;
 function step(timestamp) {
   if (!start) start = timestamp;
   var progress = timestamp - start;
-  // 元素不断向左移，最大不超过200像素
+  // 元素不斷向左移，最大不超過200畫素
   element.style.left = Math.min(progress / 10, 200) + 'px';
-  // 如果距离第一次执行不超过 2000 毫秒，
-  // 就继续执行动画
+  // 如果距離第一次執行不超過 2000 毫秒，
+  // 就繼續執行動畫
   if (progress < 2000) {
     window.requestAnimationFrame(step);
   }
@@ -591,27 +591,27 @@ function step(timestamp) {
 window.requestAnimationFrame(step);
 ```
 
-上面代码定义了一个网页动画，持续时间是2秒，会让元素向右移动。
+上面程式碼定義了一個網頁動畫，持續時間是2秒，會讓元素向右移動。
 
 ### window.requestIdleCallback()
 
-`window.requestIdleCallback()`跟`setTimeout`类似，也是将某个函数推迟执行，但是它保证将回调函数推迟到系统资源空闲时执行。也就是说，如果某个任务不是很关键，就可以使用`window.requestIdleCallback()`将其推迟执行，以保证网页性能。
+`window.requestIdleCallback()`跟`setTimeout`類似，也是將某個函式推遲執行，但是它保證將回調函式推遲到系統資源空閒時執行。也就是說，如果某個任務不是很關鍵，就可以使用`window.requestIdleCallback()`將其推遲執行，以保證網頁效能。
 
-它跟`window.requestAnimationFrame()`的区别在于，后者指定回调函数在下一次浏览器重排时执行，问题在于下一次重排时，系统资源未必空闲，不一定能保证在16毫秒之内完成；`window.requestIdleCallback()`可以保证回调函数在系统资源空闲时执行。
+它跟`window.requestAnimationFrame()`的區別在於，後者指定回撥函式在下一次瀏覽器重排時執行，問題在於下一次重排時，系統資源未必空閒，不一定能保證在16毫秒之內完成；`window.requestIdleCallback()`可以保證回撥函式在系統資源空閒時執行。
 
-该方法接受一个回调函数和一个配置对象作为参数。配置对象可以指定一个推迟执行的最长时间，如果过了这个时间，回调函数不管系统资源有无空闲，都会执行。
+該方法接受一個回撥函式和一個配置物件作為引數。配置物件可以指定一個推遲執行的最長時間，如果過了這個時間，回撥函式不管系統資源有無空閒，都會執行。
 
 ```javascript
 window.requestIdleCallback(callback[, options])
 ```
 
-`callback`参数是一个回调函数。该回调函数执行时，系统会传入一个`IdleDeadline`对象作为参数。`IdleDeadline`对象有一个`didTimeout`属性（布尔值，表示是否为超时调用）和一个`timeRemaining()`方法（返回该空闲时段剩余的毫秒数）。
+`callback`引數是一個回撥函式。該回調函式執行時，系統會傳入一個`IdleDeadline`物件作為引數。`IdleDeadline`物件有一個`didTimeout`屬性（布林值，表示是否為超時呼叫）和一個`timeRemaining()`方法（返回該空閒時段剩餘的毫秒數）。
 
-`options`参数是一个配置对象，目前只有`timeout`一个属性，用来指定回调函数推迟执行的最大毫秒数。该参数可选。
+`options`引數是一個配置物件，目前只有`timeout`一個屬性，用來指定回撥函式推遲執行的最大毫秒數。該引數可選。
 
-`window.requestIdleCallback()`方法返回一个整数。该整数可以传入`window.cancelIdleCallback()`取消回调函数。
+`window.requestIdleCallback()`方法返回一個整數。該整數可以傳入`window.cancelIdleCallback()`取消回撥函式。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
 requestIdleCallback(myNonEssentialWork);
@@ -623,7 +623,7 @@ function myNonEssentialWork(deadline) {
 }
 ```
 
-上面代码中，`requestIdleCallback()`用来执行非关键任务`myNonEssentialWork`。该任务先确认本次空闲时段有剩余时间，然后才真正开始执行任务。
+上面程式碼中，`requestIdleCallback()`用來執行非關鍵任務`myNonEssentialWork`。該任務先確認本次空閒時段有剩餘時間，然後才真正開始執行任務。
 
 下面是指定`timeout`的例子。
 
@@ -631,19 +631,19 @@ function myNonEssentialWork(deadline) {
 requestIdleCallback(processPendingAnalyticsEvents, { timeout: 2000 });
 ```
 
-上面代码指定，`processPendingAnalyticsEvents`必须在未来2秒之内执行。
+上面程式碼指定，`processPendingAnalyticsEvents`必須在未來2秒之內執行。
 
-如果由于超时导致回调函数执行，则`deadline.timeRemaining()`返回`0`，`deadline.didTimeout`返回`true`。
+如果由於超時導致回撥函式執行，則`deadline.timeRemaining()`返回`0`，`deadline.didTimeout`返回`true`。
 
-如果多次执行`window.requestIdleCallback()`，指定多个回调函数，那么这些回调函数将排成一个队列，按照先进先出的顺序执行。
+如果多次執行`window.requestIdleCallback()`，指定多個回撥函式，那麼這些回撥函式將排成一個佇列，按照先進先出的順序執行。
 
 ## 事件
 
-`window`对象可以接收以下事件。
+`window`物件可以接收以下事件。
 
-### load 事件和 onload 属性
+### load 事件和 onload 屬性
 
-`load`事件发生在文档在浏览器窗口加载完毕时。`window.onload`属性可以指定这个事件的回调函数。
+`load`事件發生在文件在瀏覽器視窗載入完畢時。`window.onload`屬性可以指定這個事件的回撥函式。
 
 ```javascript
 window.onload = function() {
@@ -655,31 +655,31 @@ window.onload = function() {
 };
 ```
 
-上面代码在网页加载完毕后，获取指定元素并进行处理。
+上面程式碼在網頁載入完畢後，獲取指定元素並進行處理。
 
-### error 事件和 onerror 属性
+### error 事件和 onerror 屬性
 
-浏览器脚本发生错误时，会触发`window`对象的`error`事件。我们可以通过`window.onerror`属性对该事件指定回调函数。
+瀏覽器指令碼發生錯誤時，會觸發`window`物件的`error`事件。我們可以透過`window.onerror`屬性對該事件指定回撥函式。
 
 ```javascript
 window.onerror = function (message, filename, lineno, colno, error) {
-  console.log("出错了！--> %s", error.stack);
+  console.log("出錯了！--> %s", error.stack);
 };
 ```
 
-由于历史原因，`window`的`error`事件的回调函数不接受错误对象作为参数，而是一共可以接受五个参数，它们的含义依次如下。
+由於歷史原因，`window`的`error`事件的回撥函式不接受錯誤物件作為引數，而是一共可以接受五個引數，它們的含義依次如下。
 
-- 出错信息
-- 出错脚本的网址
-- 行号
-- 列号
-- 错误对象
+- 出錯資訊
+- 出錯指令碼的網址
+- 行號
+- 列號
+- 錯誤物件
 
-老式浏览器只支持前三个参数。
+老式瀏覽器只支援前三個引數。
 
-并不是所有的错误，都会触发 JavaScript 的`error`事件（即让 JavaScript 报错）。一般来说，只有 JavaScript 脚本的错误，才会触发这个事件，而像资源文件不存在之类的错误，都不会触发。
+並不是所有的錯誤，都會觸發 JavaScript 的`error`事件（即讓 JavaScript 報錯）。一般來說，只有 JavaScript 指令碼的錯誤，才會觸發這個事件，而像資原始檔不存在之類的錯誤，都不會觸發。
 
-下面是一个例子，如果整个页面未捕获错误超过3个，就显示警告。
+下面是一個例子，如果整個頁面未捕獲錯誤超過3個，就顯示警告。
 
 ```javascript
 window.onerror = function(msg, url, line) {
@@ -692,75 +692,75 @@ onerror.max = 3;
 onerror.num = 0;
 ```
 
-需要注意的是，如果脚本网址与网页网址不在同一个域（比如使用了 CDN），浏览器根本不会提供详细的出错信息，只会提示出错，错误类型是“Script error.”，行号为0，其他信息都没有。这是浏览器防止向外部脚本泄漏信息。一个解决方法是在脚本所在的服务器，设置`Access-Control-Allow-Origin`的 HTTP 头信息。
+需要注意的是，如果指令碼網址與網頁網址不在同一個域（比如使用了 CDN），瀏覽器根本不會提供詳細的出錯資訊，只會提示出錯，錯誤型別是“Script error.”，行號為0，其他資訊都沒有。這是瀏覽器防止向外部指令碼洩漏資訊。一個解決方法是在指令碼所在的伺服器，設定`Access-Control-Allow-Origin`的 HTTP 頭資訊。
 
 ```bash
 Access-Control-Allow-Origin: *
 ```
 
-然后，在网页的`<script>`标签中设置`crossorigin`属性。
+然後，在網頁的`<script>`標籤中設定`crossorigin`屬性。
 
 ```html
 <script crossorigin="anonymous" src="//example.com/file.js"></script>
 ```
 
-上面代码的`crossorigin="anonymous"`表示，读取文件不需要身份信息，即不需要 cookie 和 HTTP 认证信息。如果设为`crossorigin="use-credentials"`，就表示浏览器会上传 cookie 和 HTTP 认证信息，同时还需要服务器端打开 HTTP 头信息`Access-Control-Allow-Credentials`。
+上面程式碼的`crossorigin="anonymous"`表示，讀取檔案不需要身份資訊，即不需要 cookie 和 HTTP 認證資訊。如果設為`crossorigin="use-credentials"`，就表示瀏覽器會上傳 cookie 和 HTTP 認證資訊，同時還需要伺服器端開啟 HTTP 頭資訊`Access-Control-Allow-Credentials`。
 
-### window 对象的事件监听属性
+### window 物件的事件監聽屬性
 
-除了具备元素节点都有的 GlobalEventHandlers 接口，`window`对象还具有以下的事件监听函数属性。
+除了具備元素節點都有的 GlobalEventHandlers 介面，`window`物件還具有以下的事件監聽函式屬性。
 
-- `window.onafterprint`：`afterprint`事件的监听函数。
-- `window.onbeforeprint`：`beforeprint`事件的监听函数。
-- `window.onbeforeunload`：`beforeunload`事件的监听函数。
-- `window.onhashchange`：`hashchange`事件的监听函数。
-- `window.onlanguagechange`: `languagechange`的监听函数。
-- `window.onmessage`：`message`事件的监听函数。
-- `window.onmessageerror`：`MessageError`事件的监听函数。
-- `window.onoffline`：`offline`事件的监听函数。
-- `window.ononline`：`online`事件的监听函数。
-- `window.onpagehide`：`pagehide`事件的监听函数。
-- `window.onpageshow`：`pageshow`事件的监听函数。
-- `window.onpopstate`：`popstate`事件的监听函数。
-- `window.onstorage`：`storage`事件的监听函数。
-- `window.onunhandledrejection`：未处理的 Promise 对象的`reject`事件的监听函数。
-- `window.onunload`：`unload`事件的监听函数。
+- `window.onafterprint`：`afterprint`事件的監聽函式。
+- `window.onbeforeprint`：`beforeprint`事件的監聽函式。
+- `window.onbeforeunload`：`beforeunload`事件的監聽函式。
+- `window.onhashchange`：`hashchange`事件的監聽函式。
+- `window.onlanguagechange`: `languagechange`的監聽函式。
+- `window.onmessage`：`message`事件的監聽函式。
+- `window.onmessageerror`：`MessageError`事件的監聽函式。
+- `window.onoffline`：`offline`事件的監聽函式。
+- `window.ononline`：`online`事件的監聽函式。
+- `window.onpagehide`：`pagehide`事件的監聽函式。
+- `window.onpageshow`：`pageshow`事件的監聽函式。
+- `window.onpopstate`：`popstate`事件的監聽函式。
+- `window.onstorage`：`storage`事件的監聽函式。
+- `window.onunhandledrejection`：未處理的 Promise 物件的`reject`事件的監聽函式。
+- `window.onunload`：`unload`事件的監聽函式。
 
-## 多窗口操作
+## 多視窗操作
 
-由于网页可以使用`iframe`元素，嵌入其他网页，因此一个网页之中会形成多个窗口。如果子窗口之中又嵌入别的网页，就会形成多级窗口。
+由於網頁可以使用`iframe`元素，嵌入其他網頁，因此一個網頁之中會形成多個視窗。如果子視窗之中又嵌入別的網頁，就會形成多級視窗。
 
-### 窗口的引用
+### 視窗的引用
 
-各个窗口之中的脚本，可以引用其他窗口。浏览器提供了一些特殊变量，用来返回其他窗口。
+各個視窗之中的指令碼，可以引用其他視窗。瀏覽器提供了一些特殊變數，用來返回其他視窗。
 
-- `top`：顶层窗口，即最上层的那个窗口
-- `parent`：父窗口
-- `self`：当前窗口，即自身
+- `top`：頂層視窗，即最上層的那個視窗
+- `parent`：父視窗
+- `self`：當前視窗，即自身
 
-下面代码可以判断，当前窗口是否为顶层窗口。
+下面程式碼可以判斷，當前視窗是否為頂層視窗。
 
 ```javascript
 if (window.top === window.self) {
-  // 当前窗口是顶层窗口
+  // 當前視窗是頂層視窗
 } else {
-  // 当前窗口是子窗口
+  // 當前視窗是子視窗
 }
 ```
 
-下面的代码让父窗口的访问历史后退一次。
+下面的程式碼讓父視窗的訪問歷史後退一次。
 
 ```javascript
 window.parent.history.back();
 ```
 
-与这些变量对应，浏览器还提供一些特殊的窗口名，供`window.open()`方法、`<a>`标签、`<form>`标签等引用。
+與這些變數對應，瀏覽器還提供一些特殊的視窗名，供`window.open()`方法、`<a>`標籤、`<form>`標籤等引用。
 
-- `_top`：顶层窗口
-- `_parent`：父窗口
-- `_blank`：新窗口
+- `_top`：頂層視窗
+- `_parent`：父視窗
+- `_blank`：新視窗
 
-下面代码就表示在顶层窗口打开链接。
+下面程式碼就表示在頂層視窗開啟連結。
 
 ```html
 <a href="somepage.html" target="_top">Link</a>
@@ -768,41 +768,41 @@ window.parent.history.back();
 
 ### iframe 元素
 
-对于`iframe`嵌入的窗口，`document.getElementById`方法可以拿到该窗口的 DOM 节点，然后使用`contentWindow`属性获得`iframe`节点包含的`window`对象。
+對於`iframe`嵌入的視窗，`document.getElementById`方法可以拿到該視窗的 DOM 節點，然後使用`contentWindow`屬性獲得`iframe`節點包含的`window`物件。
 
 ```javascript
 var frame = document.getElementById('theFrame');
 var frameWindow = frame.contentWindow;
 ```
 
-上面代码中，`frame.contentWindow`可以拿到子窗口的`window`对象。然后，在满足同源限制的情况下，可以读取子窗口内部的属性。
+上面程式碼中，`frame.contentWindow`可以拿到子視窗的`window`物件。然後，在滿足同源限制的情況下，可以讀取子視窗內部的屬性。
 
 ```javascript
-// 获取子窗口的标题
+// 獲取子視窗的標題
 frameWindow.title
 ```
 
-`<iframe>`元素的`contentDocument`属性，可以拿到子窗口的`document`对象。
+`<iframe>`元素的`contentDocument`屬性，可以拿到子視窗的`document`物件。
 
 ```javascript
 var frame = document.getElementById('theFrame');
 var frameDoc = frame.contentDocument;
 
-// 等同于
+// 等同於
 var frameDoc = frame.contentWindow.document;
 ```
 
-`<iframe>`元素遵守同源政策，只有当父窗口与子窗口在同一个域时，两者之间才可以用脚本通信，否则只有使用`window.postMessage`方法。
+`<iframe>`元素遵守同源政策，只有當父視窗與子視窗在同一個域時，兩者之間才可以用指令碼通訊，否則只有使用`window.postMessage`方法。
 
-`<iframe>`窗口内部，使用`window.parent`引用父窗口。如果当前页面没有父窗口，则`window.parent`属性返回自身。因此，可以通过`window.parent`是否等于`window.self`，判断当前窗口是否为`iframe`窗口。
+`<iframe>`視窗內部，使用`window.parent`引用父視窗。如果當前頁面沒有父視窗，則`window.parent`屬性返回自身。因此，可以透過`window.parent`是否等於`window.self`，判斷當前視窗是否為`iframe`視窗。
 
 ```javascript
 if (window.parent !== window.self) {
-  // 当前窗口是子窗口
+  // 當前視窗是子視窗
 }
 ```
 
-`<iframe>`窗口的`window`对象，有一个`frameElement`属性，返回`<iframe>`在父窗口中的 DOM 节点。对于非嵌入的窗口，该属性等于`null`。
+`<iframe>`視窗的`window`物件，有一個`frameElement`屬性，返回`<iframe>`在父視窗中的 DOM 節點。對於非嵌入的視窗，該屬性等於`null`。
 
 ```javascript
 var f1Element = document.getElementById('f1');
@@ -812,18 +812,18 @@ f1Window.frameElement === f1Element // true
 window.frameElement === null // true
 ```
 
-### window.frames 属性
+### window.frames 屬性
 
-`window.frames`属性返回一个类似数组的对象，成员是所有子窗口的`window`对象。可以使用这个属性，实现窗口之间的互相引用。比如，`frames[0]`返回第一个子窗口，`frames[1].frames[2]`返回第二个子窗口内部的第三个子窗口，`parent.frames[1]`返回父窗口的第二个子窗口。
+`window.frames`屬性返回一個類似陣列的物件，成員是所有子視窗的`window`物件。可以使用這個屬性，實現視窗之間的互相引用。比如，`frames[0]`返回第一個子視窗，`frames[1].frames[2]`返回第二個子視窗內部的第三個子視窗，`parent.frames[1]`返回父視窗的第二個子視窗。
 
-注意，`window.frames`每个成员的值，是框架内的窗口（即框架的`window`对象），而不是`iframe`标签在父窗口的 DOM 节点。如果要获取每个框架内部的 DOM 树，需要使用`window.frames[0].document`的写法。
+注意，`window.frames`每個成員的值，是框架內的視窗（即框架的`window`物件），而不是`iframe`標籤在父視窗的 DOM 節點。如果要獲取每個框架內部的 DOM 樹，需要使用`window.frames[0].document`的寫法。
 
-另外，如果`<iframe>`元素设置了`name`或`id`属性，那么属性值会自动成为全局变量，并且可以通过`window.frames`属性引用，返回子窗口的`window`对象。
+另外，如果`<iframe>`元素設定了`name`或`id`屬性，那麼屬性值會自動成為全域性變數，並且可以透過`window.frames`屬性引用，返回子視窗的`window`物件。
 
 ```javascript
-// HTML 代码为 <iframe id="myFrame">
+// HTML 程式碼為 <iframe id="myFrame">
 window.myFrame // [HTMLIFrameElement]
 frames.myframe === myFrame // true
 ```
 
-另外，`name`属性的值会自动成为子窗口的名称，可以用在`window.open`方法的第二个参数，或者`<a>`和`<frame>`标签的`target`属性。
+另外，`name`屬性的值會自動成為子視窗的名稱，可以用在`window.open`方法的第二個引數，或者`<a>`和`<frame>`標籤的`target`屬性。

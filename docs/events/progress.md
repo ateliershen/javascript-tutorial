@@ -1,20 +1,20 @@
-# 进度事件
+# 進度事件
 
-## 进度事件的种类
+## 進度事件的種類
 
-进度事件用来描述资源加载的进度，主要由 AJAX 请求、`<img>`、`<audio>`、`<video>`、`<style>`、`<link>`等外部资源的加载触发，继承了`ProgressEvent`接口。它主要包含以下几种事件。
+進度事件用來描述資源載入的進度，主要由 AJAX 請求、`<img>`、`<audio>`、`<video>`、`<style>`、`<link>`等外部資源的載入觸發，繼承了`ProgressEvent`介面。它主要包含以下幾種事件。
 
-- `abort`：外部资源中止加载时（比如用户取消）触发。如果发生错误导致中止，不会触发该事件。
-- `error`：由于错误导致外部资源无法加载时触发。
-- `load`：外部资源加载成功时触发。
-- `loadstart`：外部资源开始加载时触发。
-- `loadend`：外部资源停止加载时触发，发生顺序排在`error`、`abort`、`load`等事件的后面。
-- `progress`：外部资源加载过程中不断触发。
-- `timeout`：加载超时时触发。
+- `abort`：外部資源中止載入時（比如使用者取消）觸發。如果發生錯誤導致中止，不會觸發該事件。
+- `error`：由於錯誤導致外部資源無法載入時觸發。
+- `load`：外部資源載入成功時觸發。
+- `loadstart`：外部資源開始載入時觸發。
+- `loadend`：外部資源停止載入時觸發，發生順序排在`error`、`abort`、`load`等事件的後面。
+- `progress`：外部資源載入過程中不斷觸發。
+- `timeout`：載入超時時觸發。
 
-注意，除了资源下载，文件上传也存在这些事件。
+注意，除了資源下載，檔案上傳也存在這些事件。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
 image.addEventListener('load', function (event) {
@@ -26,9 +26,9 @@ image.addEventListener('error', function (event) {
 });
 ```
 
-上面代码在图片元素加载完成后，为图片元素添加一个`finished`的 Class。如果加载失败，就把图片元素的样式设置为不显示。
+上面程式碼在圖片元素載入完成後，為圖片元素新增一個`finished`的 Class。如果載入失敗，就把圖片元素的樣式設定為不顯示。
 
-有时候，图片加载会在脚本运行之前就完成，尤其是当脚本放置在网页底部的时候，因此有可能`load`和`error`事件的监听函数根本不会执行。所以，比较可靠的方式，是用`complete`属性先判断一下是否加载完成。
+有時候，圖片載入會在指令碼執行之前就完成，尤其是當指令碼放置在網頁底部的時候，因此有可能`load`和`error`事件的監聽函式根本不會執行。所以，比較可靠的方式，是用`complete`屬性先判斷一下是否載入完成。
 
 ```javascript
 function loaded() {
@@ -42,51 +42,51 @@ if (image.complete) {
 }
 ```
 
-由于 DOM 的元素节点没有提供是否加载错误的属性，所以`error`事件的监听函数最好放在`<img>`元素的 HTML 代码中，这样才能保证发生加载错误时百分之百会执行。
+由於 DOM 的元素節點沒有提供是否載入錯誤的屬性，所以`error`事件的監聽函式最好放在`<img>`元素的 HTML 程式碼中，這樣才能保證發生載入錯誤時百分之百會執行。
 
 ```html
 <img src="/wrong/url" onerror="this.style.display='none';" />
 ```
 
-`loadend`事件的监听函数，可以用来取代`abort`事件、`load`事件、`error`事件的监听函数，因为它总是在这些事件之后发生。
+`loadend`事件的監聽函式，可以用來取代`abort`事件、`load`事件、`error`事件的監聽函式，因為它總是在這些事件之後發生。
 
 ```javascript
 req.addEventListener('loadend', loadEnd, false);
 
 function loadEnd(e) {
-  console.log('传输结束，成功失败未知');
+  console.log('傳輸結束，成功失敗未知');
 }
 ```
 
-`loadend`事件本身不提供关于进度结束的原因，但可以用它来做所有加载结束场景都需要做的一些操作。
+`loadend`事件本身不提供關於進度結束的原因，但可以用它來做所有載入結束場景都需要做的一些操作。
 
-另外，`error`事件有一个特殊的性质，就是不会冒泡。所以，子元素的`error`事件，不会触发父元素的`error`事件监听函数。
+另外，`error`事件有一個特殊的性質，就是不會冒泡。所以，子元素的`error`事件，不會觸發父元素的`error`事件監聽函式。
 
-## ProgressEvent 接口
+## ProgressEvent 介面
 
-`ProgressEvent`接口主要用来描述外部资源加载的进度，比如 AJAX 加载、`<img>`、`<video>`、`<style>`、`<link>`等外部资源加载。进度相关的事件都继承了这个接口。
+`ProgressEvent`介面主要用來描述外部資源載入的進度，比如 AJAX 載入、`<img>`、`<video>`、`<style>`、`<link>`等外部資源載入。進度相關的事件都繼承了這個介面。
 
-浏览器原生提供了`ProgressEvent()`构造函数，用来生成事件实例。
+瀏覽器原生提供了`ProgressEvent()`建構函式，用來生成事件例項。
 
 ```javascript
 new ProgressEvent(type, options)
 ```
 
-`ProgressEvent()`构造函数接受两个参数。第一个参数是字符串，表示事件的类型，这个参数是必须的。第二个参数是一个配置对象，表示事件的属性，该参数可选。配置对象除了可以使用`Event`接口的配置属性，还可以使用下面的属性，所有这些属性都是可选的。
+`ProgressEvent()`建構函式接受兩個引數。第一個引數是字串，表示事件的型別，這個引數是必須的。第二個引數是一個配置物件，表示事件的屬性，該引數可選。配置物件除了可以使用`Event`介面的配置屬性，還可以使用下面的屬性，所有這些屬性都是可選的。
 
-- `lengthComputable`：布尔值，表示加载的总量是否可以计算，默认是`false`。
-- `loaded`：整数，表示已经加载的量，默认是`0`。
-- `total`：整数，表示需要加载的总量，默认是`0`。
+- `lengthComputable`：布林值，表示載入的總量是否可以計算，預設是`false`。
+- `loaded`：整數，表示已經載入的量，預設是`0`。
+- `total`：整數，表示需要載入的總量，預設是`0`。
 
-`ProgressEvent`具有对应的实例属性。
+`ProgressEvent`具有對應的例項屬性。
 
 - `ProgressEvent.lengthComputable`
 - `ProgressEvent.loaded`
 - `ProgressEvent.total`
 
-如果`ProgressEvent.lengthComputable`为`false`，`ProgressEvent.total`实际上是没有意义的。
+如果`ProgressEvent.lengthComputable`為`false`，`ProgressEvent.total`實際上是沒有意義的。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
 var p = new ProgressEvent('load', {
@@ -96,16 +96,16 @@ var p = new ProgressEvent('load', {
 });
 
 document.body.addEventListener('load', function (e) {
-  console.log('已经加载：' + (e.loaded / e.total) * 100 + '%');
+  console.log('已經載入：' + (e.loaded / e.total) * 100 + '%');
 });
 
 document.body.dispatchEvent(p);
-// 已经加载：30%
+// 已經載入：30%
 ```
 
-上面代码先构造一个`load`事件，抛出后被监听函数捕捉到。
+上面程式碼先構造一個`load`事件，丟擲後被監聽函式捕捉到。
 
-下面是一个实际的例子。
+下面是一個實際的例子。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -121,24 +121,24 @@ function updateProgress(e) {
   if (e.lengthComputable) {
     var percentComplete = e.loaded / e.total;
   } else {
-    console.log('不能计算进度');
+    console.log('不能計算進度');
   }
 }
 
 function transferComplete(e) {
-  console.log('传输结束');
+  console.log('傳輸結束');
 }
 
 function transferFailed(evt) {
-  console.log('传输过程中发生错误');
+  console.log('傳輸過程中發生錯誤');
 }
 
 function transferCanceled(evt) {
-  console.log('用户取消了传输');
+  console.log('使用者取消了傳輸');
 }
 ```
 
-上面是下载过程的进度事件，还存在上传过程的进度事件。这时所有监听函数都要放在`XMLHttpRequest.upload`对象上面。
+上面是下載過程的進度事件，還存在上傳過程的進度事件。這時所有監聽函式都要放在`XMLHttpRequest.upload`物件上面。
 
 ```javascript
 var xhr = new XMLHttpRequest();

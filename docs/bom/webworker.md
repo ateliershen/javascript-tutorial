@@ -2,60 +2,60 @@
 
 ## 概述
 
-JavaScript 语言采用的是单线程模型，也就是说，所有任务只能在一个线程上完成，一次只能做一件事。前面的任务没做完，后面的任务只能等着。随着电脑计算能力的增强，尤其是多核 CPU 的出现，单线程带来很大的不便，无法充分发挥计算机的计算能力。
+JavaScript 語言採用的是單執行緒模型，也就是說，所有任務只能在一個執行緒上完成，一次只能做一件事。前面的任務沒做完，後面的任務只能等著。隨著電腦計算能力的增強，尤其是多核 CPU 的出現，單執行緒帶來很大的不便，無法充分發揮計算機的計算能力。
 
-Web Worker 的作用，就是为 JavaScript 创造多线程环境，允许主线程创建 Worker 线程，将一些任务分配给后者运行。在主线程运行的同时，Worker 线程在后台运行，两者互不干扰。等到 Worker 线程完成计算任务，再把结果返回给主线程。这样的好处是，一些计算密集型或高延迟的任务可以交由 Worker 线程执行，主线程（通常负责 UI 交互）能够保持流畅，不会被阻塞或拖慢。
+Web Worker 的作用，就是為 JavaScript 創造多執行緒環境，允許主執行緒建立 Worker 執行緒，將一些任務分配給後者執行。在主執行緒執行的同時，Worker 執行緒在後臺執行，兩者互不干擾。等到 Worker 執行緒完成計算任務，再把結果返回給主執行緒。這樣的好處是，一些計算密集型或高延遲的任務可以交由 Worker 執行緒執行，主執行緒（通常負責 UI 互動）能夠保持流暢，不會被阻塞或拖慢。
 
-Worker 线程一旦新建成功，就会始终运行，不会被主线程上的活动（比如用户点击按钮、提交表单）打断。这样有利于随时响应主线程的通信。但是，这也造成了 Worker 比较耗费资源，不应该过度使用，而且一旦使用完毕，就应该关闭。
+Worker 執行緒一旦新建成功，就會始終執行，不會被主執行緒上的活動（比如使用者點選按鈕、提交表單）打斷。這樣有利於隨時響應主執行緒的通訊。但是，這也造成了 Worker 比較耗費資源，不應該過度使用，而且一旦使用完畢，就應該關閉。
 
-Web Worker 有以下几个使用注意点。
+Web Worker 有以下幾個使用注意點。
 
 （1）**同源限制**
 
-分配给 Worker 线程运行的脚本文件，必须与主线程的脚本文件同源。
+分配給 Worker 執行緒執行的指令碼檔案，必須與主執行緒的指令碼檔案同源。
 
 （2）**DOM 限制**
 
-Worker 线程所在的全局对象，与主线程不一样，无法读取主线程所在网页的 DOM 对象，也无法使用`document`、`window`、`parent`这些对象。但是，Worker 线程可以使用`navigator`对象和`location`对象。
+Worker 執行緒所在的全域性物件，與主執行緒不一樣，無法讀取主執行緒所在網頁的 DOM 物件，也無法使用`document`、`window`、`parent`這些物件。但是，Worker 執行緒可以使用`navigator`物件和`location`物件。
 
-（3）**全局对象限制**
+（3）**全域性物件限制**
 
-Worker 的全局对象`WorkerGlobalScope`，不同于网页的全局对象`Window`，很多接口拿不到。比如，理论上 Worker 线程不能使用`console.log`，因为标准里面没有提到 Worker 的全局对象存在`console`接口，只定义了`Navigator`接口和`Location`接口。不过，浏览器实际上支持 Worker 线程使用`console.log`，保险的做法还是不使用这个方法。
+Worker 的全域性物件`WorkerGlobalScope`，不同於網頁的全域性物件`Window`，很多介面拿不到。比如，理論上 Worker 執行緒不能使用`console.log`，因為標準裡面沒有提到 Worker 的全域性物件存在`console`介面，只定義了`Navigator`介面和`Location`介面。不過，瀏覽器實際上支援 Worker 執行緒使用`console.log`，保險的做法還是不使用這個方法。
 
-（4）**通信联系**
+（4）**通訊聯絡**
 
-Worker 线程和主线程不在同一个上下文环境，它们不能直接通信，必须通过消息完成。
+Worker 執行緒和主執行緒不在同一個上下文環境，它們不能直接通訊，必須透過訊息完成。
 
-（5）**脚本限制**
+（5）**指令碼限制**
 
-Worker 线程不能执行`alert()`方法和`confirm()`方法，但可以使用 XMLHttpRequest 对象发出 AJAX 请求。
+Worker 執行緒不能執行`alert()`方法和`confirm()`方法，但可以使用 XMLHttpRequest 物件發出 AJAX 請求。
 
-（6）**文件限制**
+（6）**檔案限制**
 
-Worker 线程无法读取本地文件，即不能打开本机的文件系统（`file://`），它所加载的脚本，必须来自网络。
+Worker 執行緒無法讀取本地檔案，即不能開啟本機的檔案系統（`file://`），它所載入的指令碼，必須來自網路。
 
 ## 基本用法
 
-### 主线程
+### 主執行緒
 
-主线程采用`new`命令，调用`Worker()`构造函数，新建一个 Worker 线程。
+主執行緒採用`new`命令，呼叫`Worker()`建構函式，新建一個 Worker 執行緒。
 
 ```javascript
 var worker = new Worker('work.js');
 ```
 
-`Worker()`构造函数的参数是一个脚本文件，该文件就是 Worker 线程所要执行的任务。由于 Worker 不能读取本地文件，所以这个脚本必须来自网络。如果下载没有成功（比如404错误），Worker 就会默默地失败。
+`Worker()`建構函式的引數是一個指令碼檔案，該檔案就是 Worker 執行緒所要執行的任務。由於 Worker 不能讀取本地檔案，所以這個指令碼必須來自網路。如果下載沒有成功（比如404錯誤），Worker 就會默默地失敗。
 
-然后，主线程调用`worker.postMessage()`方法，向 Worker 发消息。
+然後，主執行緒呼叫`worker.postMessage()`方法，向 Worker 發訊息。
 
 ```javascript
 worker.postMessage('Hello World');
 worker.postMessage({method: 'echo', args: ['Work']});
 ```
 
-`worker.postMessage()`方法的参数，就是主线程传给 Worker 的数据。它可以是各种数据类型，包括二进制数据。
+`worker.postMessage()`方法的引數，就是主執行緒傳給 Worker 的資料。它可以是各種資料型別，包括二進位制資料。
 
-接着，主线程通过`worker.onmessage`指定监听函数，接收子线程发回来的消息。
+接著，主執行緒透過`worker.onmessage`指定監聽函式，接收子執行緒發回來的訊息。
 
 ```javascript
 worker.onmessage = function (event) {
@@ -63,22 +63,22 @@ worker.onmessage = function (event) {
 }
 
 function doSomething() {
-  // 执行任务
+  // 執行任務
   worker.postMessage('Work done!');
 }
 ```
 
-上面代码中，事件对象的`data`属性可以获取 Worker 发来的数据。
+上面程式碼中，事件物件的`data`屬性可以獲取 Worker 發來的資料。
 
-Worker 完成任务以后，主线程就可以把它关掉。
+Worker 完成任務以後，主執行緒就可以把它關掉。
 
 ```javascript
 worker.terminate();
 ```
 
-### Worker 线程
+### Worker 執行緒
 
-Worker 线程内部需要有一个监听函数，监听`message`事件。
+Worker 執行緒內部需要有一個監聽函式，監聽`message`事件。
 
 ```javascript
 self.addEventListener('message', function (e) {
@@ -86,23 +86,23 @@ self.addEventListener('message', function (e) {
 }, false);
 ```
 
-上面代码中，`self`代表子线程自身，即子线程的全局对象。因此，等同于下面两种写法。
+上面程式碼中，`self`代表子執行緒自身，即子執行緒的全域性物件。因此，等同於下面兩種寫法。
 
 ```javascript
-// 写法一
+// 寫法一
 this.addEventListener('message', function (e) {
   this.postMessage('You said: ' + e.data);
 }, false);
 
-// 写法二
+// 寫法二
 addEventListener('message', function (e) {
   postMessage('You said: ' + e.data);
 }, false);
 ```
 
-除了使用`self.addEventListener()`指定监听函数，也可以使用`self.onmessage`指定。监听函数的参数是一个事件对象，它的`data`属性包含主线程发来的数据。`self.postMessage()`方法用来向主线程发送消息。
+除了使用`self.addEventListener()`指定監聽函式，也可以使用`self.onmessage`指定。監聽函式的引數是一個事件物件，它的`data`屬性包含主執行緒發來的資料。`self.postMessage()`方法用來向主執行緒傳送訊息。
 
-根据主线程发来的数据，Worker 线程可以调用不同的方法，下面是一个例子。
+根據主執行緒發來的資料，Worker 執行緒可以呼叫不同的方法，下面是一個例子。
 
 ```javascript
 self.addEventListener('message', function (e) {
@@ -121,25 +121,25 @@ self.addEventListener('message', function (e) {
 }, false);
 ```
 
-上面代码中，`self.close()`用于在 Worker 内部关闭自身。
+上面程式碼中，`self.close()`用於在 Worker 內部關閉自身。
 
-### Worker 加载脚本
+### Worker 載入指令碼
 
-Worker 内部如果要加载其他脚本，有一个专门的方法`importScripts()`。
+Worker 內部如果要載入其他指令碼，有一個專門的方法`importScripts()`。
 
 ```javascript
 importScripts('script1.js');
 ```
 
-该方法可以同时加载多个脚本。
+該方法可以同時載入多個指令碼。
 
 ```javascript
 importScripts('script1.js', 'script2.js');
 ```
 
-### 错误处理
+### 錯誤處理
 
-主线程可以监听 Worker 是否发生错误。如果发生错误，Worker 会触发主线程的`error`事件。
+主執行緒可以監聽 Worker 是否發生錯誤。如果發生錯誤，Worker 會觸發主執行緒的`error`事件。
 
 ```javascript
 worker.onerror = function (event) {
@@ -154,35 +154,35 @@ worker.addEventListener('error', function (event) {
 });
 ```
 
-Worker 内部也可以监听`error`事件。
+Worker 內部也可以監聽`error`事件。
 
-### 关闭 Worker
+### 關閉 Worker
 
-使用完毕，为了节省系统资源，必须关闭 Worker。
+使用完畢，為了節省系統資源，必須關閉 Worker。
 
 ```javascript
-// 主线程
+// 主執行緒
 worker.terminate();
 
-// Worker 线程
+// Worker 執行緒
 self.close();
 ```
 
-## 数据通信
+## 資料通訊
 
-前面说过，主线程与 Worker 之间的通信内容，可以是文本，也可以是对象。需要注意的是，这种通信是拷贝关系，即是传值而不是传址，Worker 对通信内容的修改，不会影响到主线程。事实上，浏览器内部的运行机制是，先将通信内容串行化，然后把串行化后的字符串发给 Worker，后者再将它还原。
+前面說過，主執行緒與 Worker 之間的通訊內容，可以是文字，也可以是物件。需要注意的是，這種通訊是複製關係，即是傳值而不是傳址，Worker 對通訊內容的修改，不會影響到主執行緒。事實上，瀏覽器內部的執行機制是，先將通訊內容序列化，然後把序列化後的字串發給 Worker，後者再將它還原。
 
-主线程与 Worker 之间也可以交换二进制数据，比如 File、Blob、ArrayBuffer 等类型，也可以在线程之间发送。下面是一个例子。
+主執行緒與 Worker 之間也可以交換二進位制資料，比如 File、Blob、ArrayBuffer 等型別，也可以線上程之間傳送。下面是一個例子。
 
 ```javascript
-// 主线程
+// 主執行緒
 var uInt8Array = new Uint8Array(new ArrayBuffer(10));
 for (var i = 0; i < uInt8Array.length; ++i) {
   uInt8Array[i] = i * 2; // [0, 2, 4, 6, 8,...]
 }
 worker.postMessage(uInt8Array);
 
-// Worker 线程
+// Worker 執行緒
 self.onmessage = function (e) {
   var uInt8Array = e.data;
   postMessage('Inside worker.js: uInt8Array.toString() = ' + uInt8Array.toString());
@@ -190,9 +190,9 @@ self.onmessage = function (e) {
 };
 ```
 
-但是，拷贝方式发送二进制数据，会造成性能问题。比如，主线程向 Worker 发送一个 500MB 文件，默认情况下浏览器会生成一个原文件的拷贝。为了解决这个问题，JavaScript 允许主线程把二进制数据直接转移给子线程，但是一旦转移，主线程就无法再使用这些二进制数据了，这是为了防止出现多个线程同时修改数据的麻烦局面。这种转移数据的方法，叫做[Transferable Objects](http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#transferable-objects)。这使得主线程可以快速把数据交给 Worker，对于影像处理、声音处理、3D 运算等就非常方便了，不会产生性能负担。
+但是，複製方式傳送二進位制資料，會造成效能問題。比如，主執行緒向 Worker 傳送一個 500MB 檔案，預設情況下瀏覽器會生成一個原檔案的複製。為了解決這個問題，JavaScript 允許主執行緒把二進位制資料直接轉移給子執行緒，但是一旦轉移，主執行緒就無法再使用這些二進位制資料了，這是為了防止出現多個執行緒同時修改資料的麻煩局面。這種轉移資料的方法，叫做[Transferable Objects](http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#transferable-objects)。這使得主執行緒可以快速把資料交給 Worker，對於影像處理、聲音處理、3D 運算等就非常方便了，不會產生效能負擔。
 
-如果要直接转移数据的控制权，就要使用下面的写法。
+如果要直接轉移資料的控制權，就要使用下面的寫法。
 
 ```javascript
 // Transferable Objects 格式
@@ -203,9 +203,9 @@ var ab = new ArrayBuffer(1);
 worker.postMessage(ab, [ab]);
 ```
 
-## 同页面的 Web Worker
+## 同頁面的 Web Worker
 
-通常情况下，Worker 载入的是一个单独的 JavaScript 脚本文件，但是也可以载入与主线程在同一个网页的代码。
+通常情況下，Worker 載入的是一個單獨的 JavaScript 指令碼檔案，但是也可以載入與主執行緒在同一個網頁的程式碼。
 
 ```html
 <!DOCTYPE html>
@@ -219,9 +219,9 @@ worker.postMessage(ab, [ab]);
 </html>
 ```
 
-上面是一段嵌入网页的脚本，注意必须指定`<script>`标签的`type`属性是一个浏览器不认识的值，上例是`app/worker`。
+上面是一段嵌入網頁的指令碼，注意必須指定`<script>`標籤的`type`屬性是一個瀏覽器不認識的值，上例是`app/worker`。
 
-然后，读取这一段嵌入页面的脚本，用 Worker 来处理。
+然後，讀取這一段嵌入頁面的指令碼，用 Worker 來處理。
 
 ```javascript
 var blob = new Blob([document.querySelector('#worker').textContent]);
@@ -233,11 +233,11 @@ worker.onmessage = function (e) {
 };
 ```
 
-上面代码中，先将嵌入网页的脚本代码，转成一个二进制对象，然后为这个二进制对象生成 URL，再让 Worker 加载这个 URL。这样就做到了，主线程和 Worker 的代码都在同一个网页上面。
+上面程式碼中，先將嵌入網頁的指令碼程式碼，轉成一個二進位制物件，然後為這個二進位制物件生成 URL，再讓 Worker 載入這個 URL。這樣就做到了，主執行緒和 Worker 的程式碼都在同一個網頁上面。
 
-## 实例：Worker 线程完成轮询
+## 例項：Worker 執行緒完成輪詢
 
-有时，浏览器需要轮询服务器状态，以便第一时间得知状态改变。这个工作可以放在 Worker 里面。
+有時，瀏覽器需要輪詢伺服器狀態，以便第一時間得知狀態改變。這個工作可以放在 Worker 裡面。
 
 ```javascript
 function createWorker(f) {
@@ -271,13 +271,13 @@ pollingWorker.onmessage = function () {
 pollingWorker.postMessage('init');
 ```
 
-上面代码中，Worker 每秒钟轮询一次数据，然后跟缓存做比较。如果不一致，就说明服务端有了新的变化，因此就要通知主线程。
+上面程式碼中，Worker 每秒鐘輪詢一次資料，然後跟快取做比較。如果不一致，就說明服務端有了新的變化，因此就要通知主執行緒。
 
-## 实例： Worker 新建 Worker
+## 例項： Worker 新建 Worker
 
-Worker 线程内部还能再新建 Worker 线程（目前只有 Firefox 浏览器支持）。下面的例子是将一个计算密集的任务，分配到10个 Worker。
+Worker 執行緒內部還能再新建 Worker 執行緒（目前只有 Firefox 瀏覽器支援）。下面的例子是將一個計算密集的任務，分配到10個 Worker。
 
-主线程代码如下。
+主執行緒程式碼如下。
 
 ```javascript
 var worker = new Worker('worker.js');
@@ -286,7 +286,7 @@ worker.onmessage = function (event) {
 };
 ```
 
-Worker 线程代码如下。
+Worker 執行緒程式碼如下。
 
 ```javascript
 // worker.js
@@ -314,7 +314,7 @@ function storeResult(event) {
 }
 ```
 
-上面代码中，Worker 线程内部新建了10个 Worker 线程，并且依次向这10个 Worker 发送消息，告知了计算的起点和终点。计算任务脚本的代码如下。
+上面程式碼中，Worker 執行緒內部新建了10個 Worker 執行緒，並且依次向這10個 Worker 傳送訊息，告知了計算的起點和終點。計算任務指令碼的程式碼如下。
 
 ```javascript
 // core.js
@@ -345,43 +345,43 @@ function work() {
 
 ## API
 
-### 主线程
+### 主執行緒
 
-浏览器原生提供`Worker()`构造函数，用来供主线程生成 Worker 线程。
+瀏覽器原生提供`Worker()`建構函式，用來供主執行緒生成 Worker 執行緒。
 
 ```javascript
 var myWorker = new Worker(jsUrl, options);
 ```
 
-`Worker()`构造函数，可以接受两个参数。第一个参数是脚本的网址（必须遵守同源政策），该参数是必需的，且只能加载 JS 脚本，否则会报错。第二个参数是配置对象，该对象可选。它的一个作用就是指定 Worker 的名称，用来区分多个 Worker 线程。
+`Worker()`建構函式，可以接受兩個引數。第一個引數是指令碼的網址（必須遵守同源政策），該引數是必需的，且只能載入 JS 指令碼，否則會報錯。第二個引數是配置物件，該物件可選。它的一個作用就是指定 Worker 的名稱，用來區分多個 Worker 執行緒。
 
 ```javascript
-// 主线程
+// 主執行緒
 var myWorker = new Worker('worker.js', { name : 'myWorker' });
 
-// Worker 线程
+// Worker 執行緒
 self.name // myWorker
 ```
 
-`Worker()`构造函数返回一个 Worker 线程对象，用来供主线程操作 Worker。Worker 线程对象的属性和方法如下。
+`Worker()`建構函式返回一個 Worker 執行緒物件，用來供主執行緒操作 Worker。Worker 執行緒物件的屬性和方法如下。
 
-- Worker.onerror：指定 error 事件的监听函数。
-- Worker.onmessage：指定 message 事件的监听函数，发送过来的数据在`Event.data`属性中。
-- Worker.onmessageerror：指定 messageerror 事件的监听函数。发送的数据无法序列化成字符串时，会触发这个事件。
-- Worker.postMessage()：向 Worker 线程发送消息。
-- Worker.terminate()：立即终止 Worker 线程。
+- Worker.onerror：指定 error 事件的監聽函式。
+- Worker.onmessage：指定 message 事件的監聽函式，傳送過來的資料在`Event.data`屬性中。
+- Worker.onmessageerror：指定 messageerror 事件的監聽函式。傳送的資料無法序列化成字串時，會觸發這個事件。
+- Worker.postMessage()：向 Worker 執行緒傳送訊息。
+- Worker.terminate()：立即終止 Worker 執行緒。
 
-### Worker 线程
+### Worker 執行緒
 
-Web Worker 有自己的全局对象，不是主线程的`window`，而是一个专门为 Worker 定制的全局对象。因此定义在`window`上面的对象和方法不是全部都可以使用。
+Web Worker 有自己的全域性物件，不是主執行緒的`window`，而是一個專門為 Worker 定製的全域性物件。因此定義在`window`上面的物件和方法不是全部都可以使用。
 
-Worker 线程有一些自己的全局属性和方法。
+Worker 執行緒有一些自己的全域性屬性和方法。
 
-- self.name： Worker 的名字。该属性只读，由构造函数指定。
-- self.onmessage：指定`message`事件的监听函数。
-- self.onmessageerror：指定 messageerror 事件的监听函数。发送的数据无法序列化成字符串时，会触发这个事件。
-- self.close()：关闭 Worker 线程。
-- self.postMessage()：向产生这个 Worker 的线程发送消息。
-- self.importScripts()：加载 JS 脚本。
+- self.name： Worker 的名字。該屬性只讀，由建構函式指定。
+- self.onmessage：指定`message`事件的監聽函式。
+- self.onmessageerror：指定 messageerror 事件的監聽函式。傳送的資料無法序列化成字串時，會觸發這個事件。
+- self.close()：關閉 Worker 執行緒。
+- self.postMessage()：向產生這個 Worker 的執行緒傳送訊息。
+- self.importScripts()：載入 JS 指令碼。
 
 （完）

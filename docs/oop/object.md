@@ -1,10 +1,10 @@
-# Object 对象的相关方法
+# Object 物件的相關方法
 
-JavaScript 在`Object`对象上面，提供了很多相关方法，处理面向对象编程的相关操作。本章介绍这些方法。
+JavaScript 在`Object`物件上面，提供了很多相關方法，處理面向物件程式設計的相關操作。本章介紹這些方法。
 
 ## Object.getPrototypeOf()
 
-`Object.getPrototypeOf`方法返回参数对象的原型。这是获取原型对象的标准方法。
+`Object.getPrototypeOf`方法返回引數物件的原型。這是獲取原型物件的標準方法。
 
 ```javascript
 var F = function () {};
@@ -12,25 +12,25 @@ var f = new F();
 Object.getPrototypeOf(f) === F.prototype // true
 ```
 
-上面代码中，实例对象`f`的原型是`F.prototype`。
+上面程式碼中，例項物件`f`的原型是`F.prototype`。
 
-下面是几种特殊对象的原型。
+下面是幾種特殊物件的原型。
 
 ```javascript
-// 空对象的原型是 Object.prototype
+// 空物件的原型是 Object.prototype
 Object.getPrototypeOf({}) === Object.prototype // true
 
 // Object.prototype 的原型是 null
 Object.getPrototypeOf(Object.prototype) === null // true
 
-// 函数的原型是 Function.prototype
+// 函式的原型是 Function.prototype
 function f() {}
 Object.getPrototypeOf(f) === Function.prototype // true
 ```
 
 ## Object.setPrototypeOf()
 
-`Object.setPrototypeOf`方法为参数对象设置原型，返回该参数对象。它接受两个参数，第一个是现有对象，第二个是原型对象。
+`Object.setPrototypeOf`方法為引數物件設定原型，返回該引數物件。它接受兩個引數，第一個是現有物件，第二個是原型物件。
 
 ```javascript
 var a = {};
@@ -41,9 +41,9 @@ Object.getPrototypeOf(a) === b // true
 a.x // 1
 ```
 
-上面代码中，`Object.setPrototypeOf`方法将对象`a`的原型，设置为对象`b`，因此`a`可以共享`b`的属性。
+上面程式碼中，`Object.setPrototypeOf`方法將物件`a`的原型，設定為物件`b`，因此`a`可以共享`b`的屬性。
 
-`new`命令可以使用`Object.setPrototypeOf`方法模拟。
+`new`命令可以使用`Object.setPrototypeOf`方法模擬。
 
 ```javascript
 var F = function () {
@@ -51,28 +51,28 @@ var F = function () {
 };
 
 var f = new F();
-// 等同于
+// 等同於
 var f = Object.setPrototypeOf({}, F.prototype);
 F.call(f);
 ```
 
-上面代码中，`new`命令新建实例对象，其实可以分成两步。第一步，将一个空对象的原型设为构造函数的`prototype`属性（上例是`F.prototype`）；第二步，将构造函数内部的`this`绑定这个空对象，然后执行构造函数，使得定义在`this`上面的方法和属性（上例是`this.foo`），都转移到这个空对象上。
+上面程式碼中，`new`命令新建例項物件，其實可以分成兩步。第一步，將一個空物件的原型設為建構函式的`prototype`屬性（上例是`F.prototype`）；第二步，將建構函式內部的`this`繫結這個空物件，然後執行建構函式，使得定義在`this`上面的方法和屬性（上例是`this.foo`），都轉移到這個空物件上。
 
 ## Object.create()
 
-生成实例对象的常用方法是，使用`new`命令让构造函数返回一个实例。但是很多时候，只能拿到一个实例对象，它可能根本不是由构建函数生成的，那么能不能从一个实例对象，生成另一个实例对象呢？
+生成例項物件的常用方法是，使用`new`命令讓建構函式返回一個例項。但是很多時候，只能拿到一個例項物件，它可能根本不是由構建函式生成的，那麼能不能從一個例項物件，生成另一個例項物件呢？
 
-JavaScript 提供了`Object.create()`方法，用来满足这种需求。该方法接受一个对象作为参数，然后以它为原型，返回一个实例对象。该实例完全继承原型对象的属性。
+JavaScript 提供了`Object.create()`方法，用來滿足這種需求。該方法接受一個物件作為引數，然後以它為原型，返回一個例項物件。該例項完全繼承原型物件的屬性。
 
 ```javascript
-// 原型对象
+// 原型物件
 var A = {
   print: function () {
     console.log('hello');
   }
 };
 
-// 实例对象
+// 例項物件
 var B = Object.create(A);
 
 Object.getPrototypeOf(B) === A // true
@@ -80,9 +80,9 @@ B.print() // hello
 B.print === A.print // true
 ```
 
-上面代码中，`Object.create()`方法以`A`对象为原型，生成了`B`对象。`B`继承了`A`的所有属性和方法。
+上面程式碼中，`Object.create()`方法以`A`物件為原型，生成了`B`物件。`B`繼承了`A`的所有屬性和方法。
 
-实际上，`Object.create()`方法可以用下面的代码代替。
+實際上，`Object.create()`方法可以用下面的程式碼代替。
 
 ```javascript
 if (typeof Object.create !== 'function') {
@@ -94,9 +94,9 @@ if (typeof Object.create !== 'function') {
 }
 ```
 
-上面代码表明，`Object.create()`方法的实质是新建一个空的构造函数`F`，然后让`F.prototype`属性指向参数对象`obj`，最后返回一个`F`的实例，从而实现让该实例继承`obj`的属性。
+上面程式碼表明，`Object.create()`方法的實質是新建一個空的建構函式`F`，然後讓`F.prototype`屬性指向引數物件`obj`，最後返回一個`F`的例項，從而實現讓該例項繼承`obj`的屬性。
 
-下面三种方式生成的新对象是等价的。
+下面三種方式生成的新物件是等價的。
 
 ```javascript
 var obj1 = Object.create({});
@@ -104,7 +104,7 @@ var obj2 = Object.create(Object.prototype);
 var obj3 = new Object();
 ```
 
-如果想要生成一个不继承任何属性（比如没有`toString()`和`valueOf()`方法）的对象，可以将`Object.create()`的参数设为`null`。
+如果想要生成一個不繼承任何屬性（比如沒有`toString()`和`valueOf()`方法）的物件，可以將`Object.create()`的引數設為`null`。
 
 ```javascript
 var obj = Object.create(null);
@@ -113,9 +113,9 @@ obj.valueOf()
 // TypeError: Object [object Object] has no method 'valueOf'
 ```
 
-上面代码中，对象`obj`的原型是`null`，它就不具备一些定义在`Object.prototype`对象上面的属性，比如`valueOf()`方法。
+上面程式碼中，物件`obj`的原型是`null`，它就不具備一些定義在`Object.prototype`物件上面的屬性，比如`valueOf()`方法。
 
-使用`Object.create()`方法的时候，必须提供对象原型，即参数不能为空，或者不是对象，否则会报错。
+使用`Object.create()`方法的時候，必須提供物件原型，即引數不能為空，或者不是物件，否則會報錯。
 
 ```javascript
 Object.create()
@@ -124,7 +124,7 @@ Object.create(123)
 // TypeError: Object prototype may only be an Object or null
 ```
 
-`Object.create()`方法生成的新对象，动态继承了原型。在原型上添加或修改任何方法，会立刻反映在新对象之上。
+`Object.create()`方法生成的新物件，動態繼承了原型。在原型上新增或修改任何方法，會立刻反映在新物件之上。
 
 ```javascript
 var obj1 = { p: 1 };
@@ -134,9 +134,9 @@ obj1.p = 2;
 obj2.p // 2
 ```
 
-上面代码中，修改对象原型`obj1`会影响到实例对象`obj2`。
+上面程式碼中，修改物件原型`obj1`會影響到例項物件`obj2`。
 
-除了对象的原型，`Object.create()`方法还可以接受第二个参数。该参数是一个属性描述对象，它所描述的对象属性，会添加到实例对象，作为该对象自身的属性。
+除了物件的原型，`Object.create()`方法還可以接受第二個引數。該引數是一個屬性描述物件，它所描述的物件屬性，會新增到例項物件，作為該物件自身的屬性。
 
 ```javascript
 var obj = Object.create({}, {
@@ -154,13 +154,13 @@ var obj = Object.create({}, {
   }
 });
 
-// 等同于
+// 等同於
 var obj = Object.create({});
 obj.p1 = 123;
 obj.p2 = 'abc';
 ```
 
-`Object.create()`方法生成的对象，继承了它的原型对象的构造函数。
+`Object.create()`方法生成的物件，繼承了它的原型物件的建構函式。
 
 ```javascript
 function A() {}
@@ -171,11 +171,11 @@ b.constructor === A // true
 b instanceof A // true
 ```
 
-上面代码中，`b`对象的原型是`a`对象，因此继承了`a`对象的构造函数`A`。
+上面程式碼中，`b`物件的原型是`a`物件，因此繼承了`a`物件的建構函式`A`。
 
 ## Object.prototype.isPrototypeOf()
 
-实例对象的`isPrototypeOf`方法，用来判断该对象是否为参数对象的原型。
+例項物件的`isPrototypeOf`方法，用來判斷該物件是否為引數物件的原型。
 
 ```javascript
 var o1 = {};
@@ -186,7 +186,7 @@ o2.isPrototypeOf(o3) // true
 o1.isPrototypeOf(o3) // true
 ```
 
-上面代码中，`o1`和`o2`都是`o3`的原型。这表明只要实例对象处在参数对象的原型链上，`isPrototypeOf`方法都返回`true`。
+上面程式碼中，`o1`和`o2`都是`o3`的原型。這表明只要例項物件處在引數物件的原型鏈上，`isPrototypeOf`方法都返回`true`。
 
 ```javascript
 Object.prototype.isPrototypeOf({}) // true
@@ -195,11 +195,11 @@ Object.prototype.isPrototypeOf(/xyz/) // true
 Object.prototype.isPrototypeOf(Object.create(null)) // false
 ```
 
-上面代码中，由于`Object.prototype`处于原型链的最顶端，所以对各种实例都返回`true`，只有直接继承自`null`的对象除外。
+上面程式碼中，由於`Object.prototype`處於原型鏈的最頂端，所以對各種例項都返回`true`，只有直接繼承自`null`的物件除外。
 
 ## Object.prototype.\_\_proto\_\_
 
-实例对象的`__proto__`属性（前后各两个下划线），返回该对象的原型。该属性可读写。
+例項物件的`__proto__`屬性（前後各兩個下劃線），返回該物件的原型。該屬性可讀寫。
 
 ```javascript
 var obj = {};
@@ -209,15 +209,15 @@ obj.__proto__ = p;
 Object.getPrototypeOf(obj) === p // true
 ```
 
-上面代码通过`__proto__`属性，将`p`对象设为`obj`对象的原型。
+上面程式碼透過`__proto__`屬性，將`p`物件設為`obj`物件的原型。
 
-根据语言标准，`__proto__`属性只有浏览器才需要部署，其他环境可以没有这个属性。它前后的两根下划线，表明它本质是一个内部属性，不应该对使用者暴露。因此，应该尽量少用这个属性，而是用`Object.getPrototypeOf()`和`Object.setPrototypeOf()`，进行原型对象的读写操作。
+根據語言標準，`__proto__`屬性只有瀏覽器才需要部署，其他環境可以沒有這個屬性。它前後的兩根下劃線，表明它本質是一個內部屬性，不應該對使用者暴露。因此，應該儘量少用這個屬性，而是用`Object.getPrototypeOf()`和`Object.setPrototypeOf()`，進行原型物件的讀寫操作。
 
-原型链可以用`__proto__`很直观地表示。
+原型鏈可以用`__proto__`很直觀地表示。
 
 ```javascript
 var A = {
-  name: '张三'
+  name: '張三'
 };
 var B = {
   name: '李四'
@@ -232,7 +232,7 @@ var proto = {
 A.__proto__ = proto;
 B.__proto__ = proto;
 
-A.print() // 张三
+A.print() // 張三
 B.print() // 李四
 
 A.print === B.print // true
@@ -240,11 +240,11 @@ A.print === proto.print // true
 B.print === proto.print // true
 ```
 
-上面代码中，`A`对象和`B`对象的原型都是`proto`对象，它们都共享`proto`对象的`print`方法。也就是说，`A`和`B`的`print`方法，都是在调用`proto`对象的`print`方法。
+上面程式碼中，`A`物件和`B`物件的原型都是`proto`物件，它們都共享`proto`物件的`print`方法。也就是說，`A`和`B`的`print`方法，都是在呼叫`proto`物件的`print`方法。
 
-## 获取原型对象方法的比较
+## 獲取原型物件方法的比較
 
-如前所述，`__proto__`属性指向当前对象的原型对象，即构造函数的`prototype`属性。
+如前所述，`__proto__`屬性指向當前物件的原型物件，即建構函式的`prototype`屬性。
 
 ```javascript
 var obj = new Object();
@@ -255,15 +255,15 @@ obj.__proto__ === obj.constructor.prototype
 // true
 ```
 
-上面代码首先新建了一个对象`obj`，它的`__proto__`属性，指向构造函数（`Object`或`obj.constructor`）的`prototype`属性。
+上面程式碼首先新建了一個物件`obj`，它的`__proto__`屬性，指向建構函式（`Object`或`obj.constructor`）的`prototype`屬性。
 
-因此，获取实例对象`obj`的原型对象，有三种方法。
+因此，獲取例項物件`obj`的原型物件，有三種方法。
 
 - `obj.__proto__`
 - `obj.constructor.prototype`
 - `Object.getPrototypeOf(obj)`
 
-上面三种方法之中，前两种都不是很可靠。`__proto__`属性只有浏览器才需要部署，其他环境可以不部署。而`obj.constructor.prototype`在手动改变原型对象时，可能会失效。
+上面三種方法之中，前兩種都不是很可靠。`__proto__`屬性只有瀏覽器才需要部署，其他環境可以不部署。而`obj.constructor.prototype`在手動改變原型物件時，可能會失效。
 
 ```javascript
 var P = function () {};
@@ -276,7 +276,7 @@ var c = new C();
 c.constructor.prototype === p // false
 ```
 
-上面代码中，构造函数`C`的原型对象被改成了`p`，但是实例对象的`c.constructor.prototype`却没有指向`p`。所以，在改变原型对象时，一般要同时设置`constructor`属性。
+上面程式碼中，建構函式`C`的原型物件被改成了`p`，但是例項物件的`c.constructor.prototype`卻沒有指向`p`。所以，在改變原型物件時，一般要同時設定`constructor`屬性。
 
 ```javascript
 C.prototype = p;
@@ -286,52 +286,52 @@ var c = new C();
 c.constructor.prototype === p // true
 ```
 
-因此，推荐使用第三种`Object.getPrototypeOf`方法，获取原型对象。
+因此，推薦使用第三種`Object.getPrototypeOf`方法，獲取原型物件。
 
 ## Object.getOwnPropertyNames()
 
-`Object.getOwnPropertyNames`方法返回一个数组，成员是参数对象本身的所有属性的键名，不包含继承的属性键名。
+`Object.getOwnPropertyNames`方法返回一個數組，成員是引數物件本身的所有屬性的鍵名，不包含繼承的屬性鍵名。
 
 ```javascript
 Object.getOwnPropertyNames(Date)
 // ["parse", "arguments", "UTC", "caller", "name", "prototype", "now", "length"]
 ```
 
-上面代码中，`Object.getOwnPropertyNames`方法返回`Date`所有自身的属性名。
+上面程式碼中，`Object.getOwnPropertyNames`方法返回`Date`所有自身的屬性名。
 
-对象本身的属性之中，有的是可以遍历的（enumerable），有的是不可以遍历的。`Object.getOwnPropertyNames`方法返回所有键名，不管是否可以遍历。只获取那些可以遍历的属性，使用`Object.keys`方法。
+物件本身的屬性之中，有的是可以遍歷的（enumerable），有的是不可以遍歷的。`Object.getOwnPropertyNames`方法返回所有鍵名，不管是否可以遍歷。只獲取那些可以遍歷的屬性，使用`Object.keys`方法。
 
 ```javascript
 Object.keys(Date) // []
 ```
 
-上面代码表明，`Date`对象所有自身的属性，都是不可以遍历的。
+上面程式碼表明，`Date`物件所有自身的屬性，都是不可以遍歷的。
 
 ## Object.prototype.hasOwnProperty()
 
-对象实例的`hasOwnProperty`方法返回一个布尔值，用于判断某个属性定义在对象自身，还是定义在原型链上。
+物件例項的`hasOwnProperty`方法返回一個布林值，用於判斷某個屬性定義在物件自身，還是定義在原型鏈上。
 
 ```javascript
 Date.hasOwnProperty('length') // true
 Date.hasOwnProperty('toString') // false
 ```
 
-上面代码表明，`Date.length`（构造函数`Date`可以接受多少个参数）是`Date`自身的属性，`Date.toString`是继承的属性。
+上面程式碼表明，`Date.length`（建構函式`Date`可以接受多少個引數）是`Date`自身的屬性，`Date.toString`是繼承的屬性。
 
-另外，`hasOwnProperty`方法是 JavaScript 之中唯一一个处理对象属性时，不会遍历原型链的方法。
+另外，`hasOwnProperty`方法是 JavaScript 之中唯一一個處理物件屬性時，不會遍歷原型鏈的方法。
 
-## in 运算符和 for...in 循环
+## in 運算子和 for...in 迴圈
 
-`in`运算符返回一个布尔值，表示一个对象是否具有某个属性。它不区分该属性是对象自身的属性，还是继承的属性。
+`in`運算子返回一個布林值，表示一個物件是否具有某個屬性。它不區分該屬性是物件自身的屬性，還是繼承的屬性。
 
 ```javascript
 'length' in Date // true
 'toString' in Date // true
 ```
 
-`in`运算符常用于检查一个属性是否存在。
+`in`運算子常用於檢查一個屬性是否存在。
 
-获得对象的所有可遍历属性（不管是自身的还是继承的），可以使用`for...in`循环。
+獲得物件的所有可遍歷屬性（不管是自身的還是繼承的），可以使用`for...in`迴圈。
 
 ```javascript
 var o1 = { p1: 123 };
@@ -347,9 +347,9 @@ for (p in o2) {
 // p1
 ```
 
-上面代码中，对象`o2`的`p2`属性是自身的，`p1`属性是继承的。这两个属性都会被`for...in`循环遍历。
+上面程式碼中，物件`o2`的`p2`屬性是自身的，`p1`屬性是繼承的。這兩個屬性都會被`for...in`迴圈遍歷。
 
-为了在`for...in`循环中获得对象自身的属性，可以采用`hasOwnProperty`方法判断一下。
+為了在`for...in`迴圈中獲得物件自身的屬性，可以採用`hasOwnProperty`方法判斷一下。
 
 ```javascript
 for ( var name in object ) {
@@ -359,7 +359,7 @@ for ( var name in object ) {
 }
 ```
 
-获得对象的所有属性（不管是自身的还是继承的，也不管是否可枚举），可以使用下面的函数。
+獲得物件的所有屬性（不管是自身的還是繼承的，也不管是否可列舉），可以使用下面的函式。
 
 ```javascript
 function inheritedPropertyNames(obj) {
@@ -374,9 +374,9 @@ function inheritedPropertyNames(obj) {
 }
 ```
 
-上面代码依次获取`obj`对象的每一级原型对象“自身”的属性，从而获取`obj`对象的“所有”属性，不管是否可遍历。
+上面程式碼依次獲取`obj`物件的每一級原型物件“自身”的屬性，從而獲取`obj`物件的“所有”屬性，不管是否可遍歷。
 
-下面是一个例子，列出`Date`对象的所有属性。
+下面是一個例子，列出`Date`物件的所有屬性。
 
 ```javascript
 inheritedPropertyNames(Date)
@@ -389,14 +389,14 @@ inheritedPropertyNames(Date)
 // ]
 ```
 
-## 对象的拷贝
+## 物件的複製
 
-如果要拷贝一个对象，需要做到下面两件事情。
+如果要複製一個物件，需要做到下面兩件事情。
 
-- 确保拷贝后的对象，与原对象具有同样的原型。
-- 确保拷贝后的对象，与原对象具有同样的实例属性。
+- 確保複製後的物件，與原物件具有同樣的原型。
+- 確保複製後的物件，與原物件具有同樣的例項屬性。
 
-下面就是根据上面两点，实现的对象拷贝函数。
+下面就是根據上面兩點，實現的物件複製函式。
 
 ```javascript
 function copyObject(orig) {
@@ -416,7 +416,7 @@ function copyOwnPropertiesFrom(target, source) {
 }
 ```
 
-另一种更简单的写法，是利用 ES2017 才引入标准的`Object.getOwnPropertyDescriptors`方法。
+另一種更簡單的寫法，是利用 ES2017 才引入標準的`Object.getOwnPropertyDescriptors`方法。
 
 ```javascript
 function copyObject(orig) {
@@ -427,6 +427,6 @@ function copyObject(orig) {
 }
 ```
 
-## 参考链接
+## 參考連結
 
 - Dr. Axel Rauschmayer, [JavaScript properties: inheritance and enumerability](http://www.2ality.com/2011/07/js-properties.html)

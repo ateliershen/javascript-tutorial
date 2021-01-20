@@ -1,36 +1,36 @@
-# Promise 对象
+# Promise 物件
 
 ## 概述
 
-Promise 对象是 JavaScript 的异步操作解决方案，为异步操作提供统一接口。它起到代理作用（proxy），充当异步操作与回调函数之间的中介，使得异步操作具备同步操作的接口。Promise 可以让异步操作写起来，就像在写同步操作的流程，而不必一层层地嵌套回调函数。
+Promise 物件是 JavaScript 的非同步操作解決方案，為非同步操作提供統一介面。它起到代理作用（proxy），充當非同步操作與回撥函式之間的中介，使得非同步操作具備同步操作的介面。Promise 可以讓非同步操作寫起來，就像在寫同步操作的流程，而不必一層層地巢狀回撥函式。
 
-注意，本章只是 Promise 对象的简单介绍。为了避免与后续教程的重复，更完整的介绍请看[《ES6 标准入门》](http://es6.ruanyifeng.com/)的[《Promise 对象》](http://es6.ruanyifeng.com/#docs/promise)一章。
+注意，本章只是 Promise 物件的簡單介紹。為了避免與後續教程的重複，更完整的介紹請看[《ES6 標準入門》](http://es6.ruanyifeng.com/)的[《Promise 物件》](http://es6.ruanyifeng.com/#docs/promise)一章。
 
-首先，Promise 是一个对象，也是一个构造函数。
+首先，Promise 是一個物件，也是一個建構函式。
 
 ```javascript
 function f1(resolve, reject) {
-  // 异步代码...
+  // 非同步程式碼...
 }
 
 var p1 = new Promise(f1);
 ```
 
-上面代码中，`Promise`构造函数接受一个回调函数`f1`作为参数，`f1`里面是异步操作的代码。然后，返回的`p1`就是一个 Promise 实例。
+上面程式碼中，`Promise`建構函式接受一個回撥函式`f1`作為引數，`f1`裡面是非同步操作的程式碼。然後，返回的`p1`就是一個 Promise 例項。
 
-Promise 的设计思想是，所有异步任务都返回一个 Promise 实例。Promise 实例有一个`then`方法，用来指定下一步的回调函数。
+Promise 的設計思想是，所有非同步任務都返回一個 Promise 例項。Promise 例項有一個`then`方法，用來指定下一步的回撥函式。
 
 ```javascript
 var p1 = new Promise(f1);
 p1.then(f2);
 ```
 
-上面代码中，`f1`的异步操作执行完成，就会执行`f2`。
+上面程式碼中，`f1`的非同步操作執行完成，就會執行`f2`。
 
-传统的写法可能需要把`f2`作为回调函数传入`f1`，比如写成`f1(f2)`，异步操作完成后，在`f1`内部调用`f2`。Promise 使得`f1`和`f2`变成了链式写法。不仅改善了可读性，而且对于多层嵌套的回调函数尤其方便。
+傳統的寫法可能需要把`f2`作為回撥函式傳入`f1`，比如寫成`f1(f2)`，非同步操作完成後，在`f1`內部呼叫`f2`。Promise 使得`f1`和`f2`變成了鏈式寫法。不僅改善了可讀性，而且對於多層巢狀的回撥函式尤其方便。
 
 ```javascript
-// 传统写法
+// 傳統寫法
 step1(function (value1) {
   step2(value1, function(value2) {
     step3(value2, function(value3) {
@@ -41,62 +41,62 @@ step1(function (value1) {
   });
 });
 
-// Promise 的写法
+// Promise 的寫法
 (new Promise(step1))
   .then(step2)
   .then(step3)
   .then(step4);
 ```
 
-从上面代码可以看到，采用 Promises 以后，程序流程变得非常清楚，十分易读。注意，为了便于理解，上面代码的`Promise`实例的生成格式，做了简化，真正的语法请参照下文。
+從上面程式碼可以看到，採用 Promises 以後，程式流程變得非常清楚，十分易讀。注意，為了便於理解，上面程式碼的`Promise`例項的生成格式，做了簡化，真正的語法請參照下文。
 
-总的来说，传统的回调函数写法使得代码混成一团，变得横向发展而不是向下发展。Promise 就是解决这个问题，使得异步流程可以写成同步流程。
+總的來說，傳統的回撥函式寫法使得程式碼混成一團，變得橫向發展而不是向下發展。Promise 就是解決這個問題，使得非同步流程可以寫成同步流程。
 
-Promise 原本只是社区提出的一个构想，一些函数库率先实现了这个功能。ECMAScript 6 将其写入语言标准，目前 JavaScript 原生支持 Promise 对象。
+Promise 原本只是社群提出的一個構想，一些函式庫率先實現了這個功能。ECMAScript 6 將其寫入語言標準，目前 JavaScript 原生支援 Promise 物件。
 
-## Promise 对象的状态
+## Promise 物件的狀態
 
-Promise 对象通过自身的状态，来控制异步操作。Promise 实例具有三种状态。
+Promise 物件透過自身的狀態，來控制非同步操作。Promise 例項具有三種狀態。
 
-- 异步操作未完成（pending）
-- 异步操作成功（fulfilled）
-- 异步操作失败（rejected）
+- 非同步操作未完成（pending）
+- 非同步操作成功（fulfilled）
+- 非同步操作失敗（rejected）
 
-上面三种状态里面，`fulfilled`和`rejected`合在一起称为`resolved`（已定型）。
+上面三種狀態裡面，`fulfilled`和`rejected`合在一起稱為`resolved`（已定型）。
 
-这三种的状态的变化途径只有两种。
+這三種的狀態的變化途徑只有兩種。
 
-- 从“未完成”到“成功”
-- 从“未完成”到“失败”
+- 從“未完成”到“成功”
+- 從“未完成”到“失敗”
 
-一旦状态发生变化，就凝固了，不会再有新的状态变化。这也是 Promise 这个名字的由来，它的英语意思是“承诺”，一旦承诺成效，就不得再改变了。这也意味着，Promise 实例的状态变化只可能发生一次。
+一旦狀態發生變化，就凝固了，不會再有新的狀態變化。這也是 Promise 這個名字的由來，它的英語意思是“承諾”，一旦承諾成效，就不得再改變了。這也意味著，Promise 例項的狀態變化只可能發生一次。
 
-因此，Promise 的最终结果只有两种。
+因此，Promise 的最終結果只有兩種。
 
-- 异步操作成功，Promise 实例传回一个值（value），状态变为`fulfilled`。
-- 异步操作失败，Promise 实例抛出一个错误（error），状态变为`rejected`。
+- 非同步操作成功，Promise 例項傳回一個值（value），狀態變為`fulfilled`。
+- 非同步操作失敗，Promise 例項丟擲一個錯誤（error），狀態變為`rejected`。
 
-## Promise 构造函数
+## Promise 建構函式
 
-JavaScript 提供原生的`Promise`构造函数，用来生成 Promise 实例。
+JavaScript 提供原生的`Promise`建構函式，用來生成 Promise 例項。
 
 ```javascript
 var promise = new Promise(function (resolve, reject) {
   // ...
 
-  if (/* 异步操作成功 */){
+  if (/* 非同步操作成功 */){
     resolve(value);
-  } else { /* 异步操作失败 */
+  } else { /* 非同步操作失敗 */
     reject(new Error());
   }
 });
 ```
 
-上面代码中，`Promise`构造函数接受一个函数作为参数，该函数的两个参数分别是`resolve`和`reject`。它们是两个函数，由 JavaScript 引擎提供，不用自己实现。
+上面程式碼中，`Promise`建構函式接受一個函式作為引數，該函式的兩個引數分別是`resolve`和`reject`。它們是兩個函式，由 JavaScript 引擎提供，不用自己實現。
 
-`resolve`函数的作用是，将`Promise`实例的状态从“未完成”变为“成功”（即从`pending`变为`fulfilled`），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去。`reject`函数的作用是，将`Promise`实例的状态从“未完成”变为“失败”（即从`pending`变为`rejected`），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。
+`resolve`函式的作用是，將`Promise`例項的狀態從“未完成”變為“成功”（即從`pending`變為`fulfilled`），在非同步操作成功時呼叫，並將非同步操作的結果，作為引數傳遞出去。`reject`函式的作用是，將`Promise`例項的狀態從“未完成”變為“失敗”（即從`pending`變為`rejected`），在非同步操作失敗時呼叫，並將非同步操作報出的錯誤，作為引數傳遞出去。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
 function timeout(ms) {
@@ -108,13 +108,13 @@ function timeout(ms) {
 timeout(100)
 ```
 
-上面代码中，`timeout(100)`返回一个 Promise 实例。100毫秒以后，该实例的状态会变为`fulfilled`。
+上面程式碼中，`timeout(100)`返回一個 Promise 例項。100毫秒以後，該例項的狀態會變為`fulfilled`。
 
 ## Promise.prototype.then()
 
-Promise 实例的`then`方法，用来添加回调函数。
+Promise 例項的`then`方法，用來添加回調函式。
 
-`then`方法可以接受两个回调函数，第一个是异步操作成功时（变为`fulfilled`状态）的回调函数，第二个是异步操作失败（变为`rejected`）时的回调函数（该参数可以省略）。一旦状态改变，就调用相应的回调函数。
+`then`方法可以接受兩個回撥函式，第一個是非同步操作成功時（變為`fulfilled`狀態）的回撥函式，第二個是非同步操作失敗（變為`rejected`）時的回撥函式（該引數可以省略）。一旦狀態改變，就呼叫相應的回撥函式。
 
 ```javascript
 var p1 = new Promise(function (resolve, reject) {
@@ -124,15 +124,15 @@ p1.then(console.log, console.error);
 // "成功"
 
 var p2 = new Promise(function (resolve, reject) {
-  reject(new Error('失败'));
+  reject(new Error('失敗'));
 });
 p2.then(console.log, console.error);
-// Error: 失败
+// Error: 失敗
 ```
 
-上面代码中，`p1`和`p2`都是Promise 实例，它们的`then`方法绑定两个回调函数：成功时的回调函数`console.log`，失败时的回调函数`console.error`（可以省略）。`p1`的状态变为成功，`p2`的状态变为失败，对应的回调函数会收到异步操作传回的值，然后在控制台输出。
+上面程式碼中，`p1`和`p2`都是Promise 例項，它們的`then`方法繫結兩個回撥函式：成功時的回撥函式`console.log`，失敗時的回撥函式`console.error`（可以省略）。`p1`的狀態變為成功，`p2`的狀態變為失敗，對應的回撥函式會收到非同步操作傳回的值，然後在控制檯輸出。
 
-`then`方法可以链式使用。
+`then`方法可以鏈式使用。
 
 ```javascript
 p1
@@ -145,33 +145,33 @@ p1
   );
 ```
 
-上面代码中，`p1`后面有四个`then`，意味依次有四个回调函数。只要前一步的状态变为`fulfilled`，就会依次执行紧跟在后面的回调函数。
+上面程式碼中，`p1`後面有四個`then`，意味依次有四個回撥函式。只要前一步的狀態變為`fulfilled`，就會依次執行緊跟在後面的回撥函式。
 
-最后一个`then`方法，回调函数是`console.log`和`console.error`，用法上有一点重要的区别。`console.log`只显示`step3`的返回值，而`console.error`可以显示`p1`、`step1`、`step2`、`step3`之中任意一个发生的错误。举例来说，如果`step1`的状态变为`rejected`，那么`step2`和`step3`都不会执行了（因为它们是`resolved`的回调函数）。Promise 开始寻找，接下来第一个为`rejected`的回调函数，在上面代码中是`console.error`。这就是说，Promise 对象的报错具有传递性。
+最後一個`then`方法，回撥函式是`console.log`和`console.error`，用法上有一點重要的區別。`console.log`只顯示`step3`的返回值，而`console.error`可以顯示`p1`、`step1`、`step2`、`step3`之中任意一個發生的錯誤。舉例來說，如果`step1`的狀態變為`rejected`，那麼`step2`和`step3`都不會執行了（因為它們是`resolved`的回撥函式）。Promise 開始尋找，接下來第一個為`rejected`的回撥函式，在上面程式碼中是`console.error`。這就是說，Promise 物件的報錯具有傳遞性。
 
 ## then() 用法辨析
 
-Promise 的用法，简单说就是一句话：使用`then`方法添加回调函数。但是，不同的写法有一些细微的差别，请看下面四种写法，它们的差别在哪里？
+Promise 的用法，簡單說就是一句話：使用`then`方法添加回調函式。但是，不同的寫法有一些細微的差別，請看下面四種寫法，它們的差別在哪裡？
 
 ```javascript
-// 写法一
+// 寫法一
 f1().then(function () {
   return f2();
 });
 
-// 写法二
+// 寫法二
 f1().then(function () {
   f2();
 });
 
-// 写法三
+// 寫法三
 f1().then(f2());
 
-// 写法四
+// 寫法四
 f1().then(f2);
 ```
 
-为了便于讲解，下面这四种写法都再用`then`方法接一个回调函数`f3`。写法一的`f3`回调函数的参数，是`f2`函数的运行结果。
+為了便於講解，下面這四種寫法都再用`then`方法接一個回撥函式`f3`。寫法一的`f3`回撥函式的引數，是`f2`函式的執行結果。
 
 ```javascript
 f1().then(function () {
@@ -179,7 +179,7 @@ f1().then(function () {
 }).then(f3);
 ```
 
-写法二的`f3`回调函数的参数是`undefined`。
+寫法二的`f3`回撥函式的引數是`undefined`。
 
 ```javascript
 f1().then(function () {
@@ -188,23 +188,23 @@ f1().then(function () {
 }).then(f3);
 ```
 
-写法三的`f3`回调函数的参数，是`f2`函数返回的函数的运行结果。
+寫法三的`f3`回撥函式的引數，是`f2`函式返回的函式的執行結果。
 
 ```javascript
 f1().then(f2())
   .then(f3);
 ```
 
-写法四与写法一只有一个差别，那就是`f2`会接收到`f1()`返回的结果。
+寫法四與寫法一隻有一個差別，那就是`f2`會接收到`f1()`返回的結果。
 
 ```javascript
 f1().then(f2)
   .then(f3);
 ```
 
-## 实例：图片加载
+## 例項：圖片載入
 
-下面是使用 Promise 完成图片的加载。
+下面是使用 Promise 完成圖片的載入。
 
 ```javascript
 var preloadImage = function (path) {
@@ -217,29 +217,29 @@ var preloadImage = function (path) {
 };
 ```
 
-上面代码中，`image`是一个图片对象的实例。它有两个事件监听属性，`onload`属性在图片加载成功后调用，`onerror`属性在加载失败调用。
+上面程式碼中，`image`是一個圖片物件的例項。它有兩個事件監聽屬性，`onload`屬性在圖片載入成功後呼叫，`onerror`屬性在載入失敗呼叫。
 
-上面的`preloadImage()`函数用法如下。
+上面的`preloadImage()`函式用法如下。
 
 ```javascript
 preloadImage('https://example.com/my.jpg')
   .then(function (e) { document.body.append(e.target) })
-  .then(function () { console.log('加载成功') })
+  .then(function () { console.log('載入成功') })
 ```
 
-上面代码中，图片加载成功以后，`onload`属性会返回一个事件对象，因此第一个`then()`方法的回调函数，会接收到这个事件对象。该对象的`target`属性就是图片加载后生成的 DOM 节点。
+上面程式碼中，圖片載入成功以後，`onload`屬性會返回一個事件物件，因此第一個`then()`方法的回撥函式，會接收到這個事件物件。該物件的`target`屬性就是圖片載入後生成的 DOM 節點。
 
-## 小结
+## 小結
 
-Promise 的优点在于，让回调函数变成了规范的链式写法，程序流程可以看得很清楚。它有一整套接口，可以实现许多强大的功能，比如同时执行多个异步操作，等到它们的状态都改变以后，再执行一个回调函数；再比如，为多个回调函数中抛出的错误，统一指定处理方法等等。
+Promise 的優點在於，讓回撥函式變成了規範的鏈式寫法，程式流程可以看得很清楚。它有一整套介面，可以實現許多強大的功能，比如同時執行多個非同步操作，等到它們的狀態都改變以後，再執行一個回撥函式；再比如，為多個回撥函式中丟擲的錯誤，統一指定處理方法等等。
 
-而且，Promise 还有一个传统写法没有的好处：它的状态一旦改变，无论何时查询，都能得到这个状态。这意味着，无论何时为 Promise 实例添加回调函数，该函数都能正确执行。所以，你不用担心是否错过了某个事件或信号。如果是传统写法，通过监听事件来执行回调函数，一旦错过了事件，再添加回调函数是不会执行的。
+而且，Promise 還有一個傳統寫法沒有的好處：它的狀態一旦改變，無論何時查詢，都能得到這個狀態。這意味著，無論何時為 Promise 例項添加回調函式，該函式都能正確執行。所以，你不用擔心是否錯過了某個事件或訊號。如果是傳統寫法，透過監聽事件來執行回撥函式，一旦錯過了事件，再添加回調函式是不會執行的。
 
-Promise 的缺点是，编写的难度比传统写法高，而且阅读代码也不是一眼可以看懂。你只会看到一堆`then`，必须自己在`then`的回调函数里面理清逻辑。
+Promise 的缺點是，編寫的難度比傳統寫法高，而且閱讀程式碼也不是一眼可以看懂。你只會看到一堆`then`，必須自己在`then`的回撥函式裡面理清邏輯。
 
-## 微任务
+## 微任務
 
-Promise 的回调函数属于异步任务，会在同步任务之后执行。
+Promise 的回撥函式屬於非同步任務，會在同步任務之後執行。
 
 ```javascript
 new Promise(function (resolve, reject) {
@@ -251,9 +251,9 @@ console.log(2);
 // 1
 ```
 
-上面代码会先输出2，再输出1。因为`console.log(2)`是同步任务，而`then`的回调函数属于异步任务，一定晚于同步任务执行。
+上面程式碼會先輸出2，再輸出1。因為`console.log(2)`是同步任務，而`then`的回撥函式屬於非同步任務，一定晚於同步任務執行。
 
-但是，Promise 的回调函数不是正常的异步任务，而是微任务（microtask）。它们的区别在于，正常任务追加到下一轮事件循环，微任务追加到本轮事件循环。这意味着，微任务的执行时间一定早于正常任务。
+但是，Promise 的回撥函式不是正常的非同步任務，而是微任務（microtask）。它們的區別在於，正常任務追加到下一輪事件迴圈，微任務追加到本輪事件迴圈。這意味著，微任務的執行時間一定早於正常任務。
 
 ```javascript
 setTimeout(function() {
@@ -270,9 +270,9 @@ console.log(3);
 // 1
 ```
 
-上面代码的输出结果是`321`。这说明`then`的回调函数的执行时间，早于`setTimeout(fn, 0)`。因为`then`是本轮事件循环执行，`setTimeout(fn, 0)`在下一轮事件循环开始时执行。
+上面程式碼的輸出結果是`321`。這說明`then`的回撥函式的執行時間，早於`setTimeout(fn, 0)`。因為`then`是本輪事件迴圈執行，`setTimeout(fn, 0)`在下一輪事件迴圈開始時執行。
 
-## 参考链接
+## 參考連結
 
 - Sebastian Porto, [Asynchronous JS: Callbacks, Listeners, Control Flow Libs and Promises](http://sporto.github.com/blog/2012/12/09/callbacks-listeners-promises/)
 - Rhys Brett-Bowen, [Promises/A+ - understanding the spec through implementation](http://modernjavascript.blogspot.com/2013/08/promisesa-understanding-by-doing.html)

@@ -1,149 +1,149 @@
-# Node 接口
+# Node 介面
 
-所有 DOM 节点对象都继承了 Node 接口，拥有一些共同的属性和方法。这是 DOM 操作的基础。
+所有 DOM 節點物件都繼承了 Node 介面，擁有一些共同的屬性和方法。這是 DOM 操作的基礎。
 
-## 属性
+## 屬性
 
 ### Node.prototype.nodeType
 
-`nodeType`属性返回一个整数值，表示节点的类型。
+`nodeType`屬性返回一個整數值，表示節點的型別。
 
 ```javascript
 document.nodeType // 9
 ```
 
-上面代码中，文档节点的类型值为9。
+上面程式碼中，文件節點的型別值為9。
 
-Node 对象定义了几个常量，对应这些类型值。
+Node 物件定義了幾個常量，對應這些型別值。
 
 ```javascript
 document.nodeType === Node.DOCUMENT_NODE // true
 ```
 
-上面代码中，文档节点的`nodeType`属性等于常量`Node.DOCUMENT_NODE`。
+上面程式碼中，文件節點的`nodeType`屬性等於常量`Node.DOCUMENT_NODE`。
 
-不同节点的`nodeType`属性值和对应的常量如下。
+不同節點的`nodeType`屬性值和對應的常量如下。
 
-- 文档节点（document）：9，对应常量`Node.DOCUMENT_NODE`
-- 元素节点（element）：1，对应常量`Node.ELEMENT_NODE`
-- 属性节点（attr）：2，对应常量`Node.ATTRIBUTE_NODE`
-- 文本节点（text）：3，对应常量`Node.TEXT_NODE`
-- 文档片断节点（DocumentFragment）：11，对应常量`Node.DOCUMENT_FRAGMENT_NODE`
-- 文档类型节点（DocumentType）：10，对应常量`Node.DOCUMENT_TYPE_NODE`
-- 注释节点（Comment）：8，对应常量`Node.COMMENT_NODE`
+- 文件節點（document）：9，對應常量`Node.DOCUMENT_NODE`
+- 元素節點（element）：1，對應常量`Node.ELEMENT_NODE`
+- 屬性節點（attr）：2，對應常量`Node.ATTRIBUTE_NODE`
+- 文字節點（text）：3，對應常量`Node.TEXT_NODE`
+- 文件片斷節點（DocumentFragment）：11，對應常量`Node.DOCUMENT_FRAGMENT_NODE`
+- 文件型別節點（DocumentType）：10，對應常量`Node.DOCUMENT_TYPE_NODE`
+- 註釋節點（Comment）：8，對應常量`Node.COMMENT_NODE`
 
-确定节点类型时，使用`nodeType`属性是常用方法。
+確定節點型別時，使用`nodeType`屬性是常用方法。
 
 ```javascript
 var node = document.documentElement.firstChild;
 if (node.nodeType === Node.ELEMENT_NODE) {
-  console.log('该节点是元素节点');
+  console.log('該節點是元素節點');
 }
 ```
 
 ### Node.prototype.nodeName
 
-`nodeName`属性返回节点的名称。
+`nodeName`屬性返回節點的名稱。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <div id="d1">hello world</div>
 var div = document.getElementById('d1');
 div.nodeName // "DIV"
 ```
 
-上面代码中，元素节点`<div>`的`nodeName`属性就是大写的标签名`DIV`。
+上面程式碼中，元素節點`<div>`的`nodeName`屬性就是大寫的標籤名`DIV`。
 
-不同节点的`nodeName`属性值如下。
+不同節點的`nodeName`屬性值如下。
 
-- 文档节点（document）：`#document`
-- 元素节点（element）：大写的标签名
-- 属性节点（attr）：属性的名称
-- 文本节点（text）：`#text`
-- 文档片断节点（DocumentFragment）：`#document-fragment`
-- 文档类型节点（DocumentType）：文档的类型
-- 注释节点（Comment）：`#comment`
+- 文件節點（document）：`#document`
+- 元素節點（element）：大寫的標籤名
+- 屬性節點（attr）：屬性的名稱
+- 文字節點（text）：`#text`
+- 文件片斷節點（DocumentFragment）：`#document-fragment`
+- 文件型別節點（DocumentType）：文件的型別
+- 註釋節點（Comment）：`#comment`
 
 ### Node.prototype.nodeValue
 
-`nodeValue`属性返回一个字符串，表示当前节点本身的文本值，该属性可读写。
+`nodeValue`屬性返回一個字串，表示當前節點本身的文字值，該屬性可讀寫。
 
-只有文本节点（text）、注释节点（comment）和属性节点（attr）有文本值，因此这三类节点的`nodeValue`可以返回结果，其他类型的节点一律返回`null`。同样的，也只有这三类节点可以设置`nodeValue`属性的值，其他类型的节点设置无效。
+只有文字節點（text）、註釋節點（comment）和屬性節點（attr）有文字值，因此這三類節點的`nodeValue`可以返回結果，其他型別的節點一律返回`null`。同樣的，也只有這三類節點可以設定`nodeValue`屬性的值，其他型別的節點設定無效。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <div id="d1">hello world</div>
 var div = document.getElementById('d1');
 div.nodeValue // null
 div.firstChild.nodeValue // "hello world"
 ```
 
-上面代码中，`div`是元素节点，`nodeValue`属性返回`null`。`div.firstChild`是文本节点，所以可以返回文本值。
+上面程式碼中，`div`是元素節點，`nodeValue`屬性返回`null`。`div.firstChild`是文字節點，所以可以返回文字值。
 
 ### Node.prototype.textContent
 
-`textContent`属性返回当前节点和它的所有后代节点的文本内容。
+`textContent`屬性返回當前節點和它的所有後代節點的文字內容。
 
 ```javascript
-// HTML 代码为
+// HTML 程式碼為
 // <div id="divA">This is <span>some</span> text</div>
 
 document.getElementById('divA').textContent
 // This is some text
 ```
 
-`textContent`属性自动忽略当前节点内部的 HTML 标签，返回所有文本内容。
+`textContent`屬性自動忽略當前節點內部的 HTML 標籤，返回所有文字內容。
 
-该属性是可读写的，设置该属性的值，会用一个新的文本节点，替换所有原来的子节点。它还有一个好处，就是自动对 HTML 标签转义。这很适合用于用户提供的内容。
+該屬性是可讀寫的，設定該屬性的值，會用一個新的文字節點，替換所有原來的子節點。它還有一個好處，就是自動對 HTML 標籤轉義。這很適合用於使用者提供的內容。
 
 ```javascript
 document.getElementById('foo').textContent = '<p>GoodBye!</p>';
 ```
 
-上面代码在插入文本时，会将`<p>`标签解释为文本，而不会当作标签处理。
+上面程式碼在插入文字時，會將`<p>`標籤解釋為文字，而不會當作標籤處理。
 
-对于文本节点（text）、注释节点（comment）和属性节点（attr），`textContent`属性的值与`nodeValue`属性相同。对于其他类型的节点，该属性会将每个子节点（不包括注释节点）的内容连接在一起返回。如果一个节点没有子节点，则返回空字符串。
+對於文字節點（text）、註釋節點（comment）和屬性節點（attr），`textContent`屬性的值與`nodeValue`屬性相同。對於其他型別的節點，該屬性會將每個子節點（不包括註釋節點）的內容連線在一起返回。如果一個節點沒有子節點，則返回空字串。
 
-文档节点（document）和文档类型节点（doctype）的`textContent`属性为`null`。如果要读取整个文档的内容，可以使用`document.documentElement.textContent`。
+文件節點（document）和文件型別節點（doctype）的`textContent`屬性為`null`。如果要讀取整個文件的內容，可以使用`document.documentElement.textContent`。
 
 ### Node.prototype.baseURI
 
-`baseURI`属性返回一个字符串，表示当前网页的绝对路径。浏览器根据这个属性，计算网页上的相对路径的 URL。该属性为只读。
+`baseURI`屬性返回一個字串，表示當前網頁的絕對路徑。瀏覽器根據這個屬性，計算網頁上的相對路徑的 URL。該屬性為只讀。
 
 ```javascript
-// 当前网页的网址为
+// 當前網頁的網址為
 // http://www.example.com/index.html
 document.baseURI
 // "http://www.example.com/index.html"
 ```
 
-如果无法读到网页的 URL，`baseURI`属性返回`null`。
+如果無法讀到網頁的 URL，`baseURI`屬性返回`null`。
 
-该属性的值一般由当前网址的 URL（即`window.location`属性）决定，但是可以使用 HTML 的`<base>`标签，改变该属性的值。
+該屬性的值一般由當前網址的 URL（即`window.location`屬性）決定，但是可以使用 HTML 的`<base>`標籤，改變該屬性的值。
 
 ```html
 <base href="http://www.example.com/page.html">
 ```
 
-设置了以后，`baseURI`属性就返回`<base>`标签设置的值。
+設定了以後，`baseURI`屬性就返回`<base>`標籤設定的值。
 
 ### Node.prototype.ownerDocument
 
-`Node.ownerDocument`属性返回当前节点所在的顶层文档对象，即`document`对象。
+`Node.ownerDocument`屬性返回當前節點所在的頂層文件物件，即`document`物件。
 
 ```javascript
 var d = p.ownerDocument;
 d === document // true
 ```
 
-`document`对象本身的`ownerDocument`属性，返回`null`。
+`document`物件本身的`ownerDocument`屬性，返回`null`。
 
 ### Node.prototype.nextSibling
 
-`Node.nextSibling`属性返回紧跟在当前节点后面的第一个同级节点。如果当前节点后面没有同级节点，则返回`null`。
+`Node.nextSibling`屬性返回緊跟在當前節點後面的第一個同級節點。如果當前節點後面沒有同級節點，則返回`null`。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <div id="d1">hello</div><div id="d2">world</div>
 var d1 = document.getElementById('d1');
 var d2 = document.getElementById('d2');
@@ -151,11 +151,11 @@ var d2 = document.getElementById('d2');
 d1.nextSibling === d2 // true
 ```
 
-上面代码中，`d1.nextSibling`就是紧跟在`d1`后面的同级节点`d2`。
+上面程式碼中，`d1.nextSibling`就是緊跟在`d1`後面的同級節點`d2`。
 
-注意，该属性还包括文本节点和注释节点（`<!-- comment -->`）。因此如果当前节点后面有空格，该属性会返回一个文本节点，内容为空格。
+注意，該屬性還包括文字節點和註釋節點（`<!-- comment -->`）。因此如果當前節點後面有空格，該屬性會返回一個文字節點，內容為空格。
 
-`nextSibling`属性可以用来遍历所有子节点。
+`nextSibling`屬性可以用來遍歷所有子節點。
 
 ```javascript
 var el = document.getElementById('div1').firstChild;
@@ -166,14 +166,14 @@ while (el !== null) {
 }
 ```
 
-上面代码遍历`div1`节点的所有子节点。
+上面程式碼遍歷`div1`節點的所有子節點。
 
 ### Node.prototype.previousSibling
 
-`previousSibling`属性返回当前节点前面的、距离最近的一个同级节点。如果当前节点前面没有同级节点，则返回`null`。
+`previousSibling`屬性返回當前節點前面的、距離最近的一個同級節點。如果當前節點前面沒有同級節點，則返回`null`。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <div id="d1">hello</div><div id="d2">world</div>
 var d1 = document.getElementById('d1');
 var d2 = document.getElementById('d2');
@@ -181,13 +181,13 @@ var d2 = document.getElementById('d2');
 d2.previousSibling === d1 // true
 ```
 
-上面代码中，`d2.previousSibling`就是`d2`前面的同级节点`d1`。
+上面程式碼中，`d2.previousSibling`就是`d2`前面的同級節點`d1`。
 
-注意，该属性还包括文本节点和注释节点。因此如果当前节点前面有空格，该属性会返回一个文本节点，内容为空格。
+注意，該屬性還包括文字節點和註釋節點。因此如果當前節點前面有空格，該屬性會返回一個文字節點，內容為空格。
 
 ### Node.prototype.parentNode
 
-`parentNode`属性返回当前节点的父节点。对于一个节点来说，它的父节点只可能是三种类型：元素节点（element）、文档节点（document）和文档片段节点（documentfragment）。
+`parentNode`屬性返回當前節點的父節點。對於一個節點來說，它的父節點只可能是三種類型：元素節點（element）、文件節點（document）和文件片段節點（documentfragment）。
 
 ```javascript
 if (node.parentNode) {
@@ -195,13 +195,13 @@ if (node.parentNode) {
 }
 ```
 
-上面代码中，通过`node.parentNode`属性将`node`节点从文档里面移除。
+上面程式碼中，透過`node.parentNode`屬性將`node`節點從文件裡面移除。
 
-文档节点（document）和文档片段节点（documentfragment）的父节点都是`null`。另外，对于那些生成后还没插入 DOM 树的节点，父节点也是`null`。
+文件節點（document）和文件片段節點（documentfragment）的父節點都是`null`。另外，對於那些生成後還沒插入 DOM 樹的節點，父節點也是`null`。
 
 ### Node.prototype.parentElement
 
-`parentElement`属性返回当前节点的父元素节点。如果当前节点没有父节点，或者父节点类型不是元素节点，则返回`null`。
+`parentElement`屬性返回當前節點的父元素節點。如果當前節點沒有父節點，或者父節點型別不是元素節點，則返回`null`。
 
 ```javascript
 if (node.parentElement) {
@@ -209,27 +209,27 @@ if (node.parentElement) {
 }
 ```
 
-上面代码中，父元素节点的样式设定了红色。
+上面程式碼中，父元素節點的樣式設定了紅色。
 
-由于父节点只可能是三种类型：元素节点、文档节点（document）和文档片段节点（documentfragment）。`parentElement`属性相当于把后两种父节点都排除了。
+由於父節點只可能是三種類型：元素節點、文件節點（document）和文件片段節點（documentfragment）。`parentElement`屬性相當於把後兩種父節點都排除了。
 
 ### Node.prototype.firstChild，Node.prototype.lastChild
 
-`firstChild`属性返回当前节点的第一个子节点，如果当前节点没有子节点，则返回`null`。
+`firstChild`屬性返回當前節點的第一個子節點，如果當前節點沒有子節點，則返回`null`。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <p id="p1"><span>First span</span></p>
 var p1 = document.getElementById('p1');
 p1.firstChild.nodeName // "SPAN"
 ```
 
-上面代码中，`p`元素的第一个子节点是`span`元素。
+上面程式碼中，`p`元素的第一個子節點是`span`元素。
 
-注意，`firstChild`返回的除了元素节点，还可能是文本节点或注释节点。
+注意，`firstChild`返回的除了元素節點，還可能是文字節點或註釋節點。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <p id="p1">
 //   <span>First span</span>
 //  </p>
@@ -237,21 +237,21 @@ var p1 = document.getElementById('p1');
 p1.firstChild.nodeName // "#text"
 ```
 
-上面代码中，`p`元素与`span`元素之间有空白字符，这导致`firstChild`返回的是文本节点。
+上面程式碼中，`p`元素與`span`元素之間有空白字元，這導致`firstChild`返回的是文字節點。
 
-`lastChild`属性返回当前节点的最后一个子节点，如果当前节点没有子节点，则返回`null`。用法与`firstChild`属性相同。
+`lastChild`屬性返回當前節點的最後一個子節點，如果當前節點沒有子節點，則返回`null`。用法與`firstChild`屬性相同。
 
 ### Node.prototype.childNodes
 
-`childNodes`属性返回一个类似数组的对象（`NodeList`集合），成员包括当前节点的所有子节点。
+`childNodes`屬性返回一個類似陣列的物件（`NodeList`集合），成員包括當前節點的所有子節點。
 
 ```javascript
 var children = document.querySelector('ul').childNodes;
 ```
 
-上面代码中，`children`就是`ul`元素的所有子节点。
+上面程式碼中，`children`就是`ul`元素的所有子節點。
 
-使用该属性，可以遍历某个节点的所有子节点。
+使用該屬性，可以遍歷某個節點的所有子節點。
 
 ```javascript
 var div = document.getElementById('div1');
@@ -262,7 +262,7 @@ for (var i = 0; i < children.length; i++) {
 }
 ```
 
-文档节点（document）就有两个子节点：文档类型节点（docType）和 HTML 根元素节点。
+文件節點（document）就有兩個子節點：文件型別節點（docType）和 HTML 根元素節點。
 
 ```javascript
 var children = document.childNodes;
@@ -273,13 +273,13 @@ for (var i = 0; i < children.length; i++) {
 // 1
 ```
 
-上面代码中，文档节点的第一个子节点的类型是10（即文档类型节点），第二个子节点的类型是1（即元素节点）。
+上面程式碼中，文件節點的第一個子節點的型別是10（即文件型別節點），第二個子節點的型別是1（即元素節點）。
 
-注意，除了元素节点，`childNodes`属性的返回值还包括文本节点和注释节点。如果当前节点不包括任何子节点，则返回一个空的`NodeList`集合。由于`NodeList`对象是一个动态集合，一旦子节点发生变化，立刻会反映在返回结果之中。
+注意，除了元素節點，`childNodes`屬性的返回值還包括文字節點和註釋節點。如果當前節點不包括任何子節點，則返回一個空的`NodeList`集合。由於`NodeList`物件是一個動態集合，一旦子節點發生變化，立刻會反映在返回結果之中。
 
 ### Node.prototype.isConnected
 
-`isConnected`属性返回一个布尔值，表示当前节点是否在文档之中。
+`isConnected`屬性返回一個布林值，表示當前節點是否在文件之中。
 
 ```javascript
 var test = document.createElement('p');
@@ -289,35 +289,35 @@ document.body.appendChild(test);
 test.isConnected // true
 ```
 
-上面代码中，`test`节点是脚本生成的节点，没有插入文档之前，`isConnected`属性返回`false`，插入之后返回`true`。
+上面程式碼中，`test`節點是指令碼生成的節點，沒有插入文件之前，`isConnected`屬性返回`false`，插入之後返回`true`。
 
 ## 方法
 
 ### Node.prototype.appendChild()
 
-`appendChild()`方法接受一个节点对象作为参数，将其作为最后一个子节点，插入当前节点。该方法的返回值就是插入文档的子节点。
+`appendChild()`方法接受一個節點物件作為引數，將其作為最後一個子節點，插入當前節點。該方法的返回值就是插入文件的子節點。
 
 ```javascript
 var p = document.createElement('p');
 document.body.appendChild(p);
 ```
 
-上面代码新建一个`<p>`节点，将其插入`document.body`的尾部。
+上面程式碼新建一個`<p>`節點，將其插入`document.body`的尾部。
 
-如果参数节点是 DOM 已经存在的节点，`appendChild()`方法会将其从原来的位置，移动到新位置。
+如果引數節點是 DOM 已經存在的節點，`appendChild()`方法會將其從原來的位置，移動到新位置。
 
 ```javascript
 var div = document.getElementById('myDiv');
 document.body.appendChild(div);
 ```
 
-上面代码中，插入的是一个已经存在的节点`myDiv`，结果就是该节点会从原来的位置，移动到`document.body`的尾部。
+上面程式碼中，插入的是一個已經存在的節點`myDiv`，結果就是該節點會從原來的位置，移動到`document.body`的尾部。
 
-如果`appendChild()`方法的参数是`DocumentFragment`节点，那么插入的是`DocumentFragment`的所有子节点，而不是`DocumentFragment`节点本身。返回值是一个空的`DocumentFragment`节点。
+如果`appendChild()`方法的引數是`DocumentFragment`節點，那麼插入的是`DocumentFragment`的所有子節點，而不是`DocumentFragment`節點本身。返回值是一個空的`DocumentFragment`節點。
 
 ### Node.prototype.hasChildNodes()
 
-`hasChildNodes`方法返回一个布尔值，表示当前节点是否有子节点。
+`hasChildNodes`方法返回一個布林值，表示當前節點是否有子節點。
 
 ```javascript
 var foo = document.getElementById('foo');
@@ -327,17 +327,17 @@ if (foo.hasChildNodes()) {
 }
 ```
 
-上面代码表示，如果`foo`节点有子节点，就移除第一个子节点。
+上面程式碼表示，如果`foo`節點有子節點，就移除第一個子節點。
 
-注意，子节点包括所有类型的节点，并不仅仅是元素节点。哪怕节点只包含一个空格，`hasChildNodes`方法也会返回`true`。
+注意，子節點包括所有型別的節點，並不僅僅是元素節點。哪怕節點只包含一個空格，`hasChildNodes`方法也會返回`true`。
 
-判断一个节点有没有子节点，有许多种方法，下面是其中的三种。
+判斷一個節點有沒有子節點，有許多種方法，下面是其中的三種。
 
 - `node.hasChildNodes()`
 - `node.firstChild !== null`
 - `node.childNodes && node.childNodes.length > 0`
 
-`hasChildNodes`方法结合`firstChild`属性和`nextSibling`属性，可以遍历当前节点的所有后代节点。
+`hasChildNodes`方法結合`firstChild`屬性和`nextSibling`屬性，可以遍歷當前節點的所有後代節點。
 
 ```javascript
 function DOMComb(parent, callback) {
@@ -353,74 +353,74 @@ function DOMComb(parent, callback) {
 DOMComb(document.body, console.log)
 ```
 
-上面代码中，`DOMComb`函数的第一个参数是某个指定的节点，第二个参数是回调函数。这个回调函数会依次作用于指定节点，以及指定节点的所有后代节点。
+上面程式碼中，`DOMComb`函式的第一個引數是某個指定的節點，第二個引數是回撥函式。這個回撥函式會依次作用於指定節點，以及指定節點的所有後代節點。
 
 ### Node.prototype.cloneNode()
 
-`cloneNode`方法用于克隆一个节点。它接受一个布尔值作为参数，表示是否同时克隆子节点。它的返回值是一个克隆出来的新节点。
+`cloneNode`方法用於克隆一個節點。它接受一個布林值作為引數，表示是否同時克隆子節點。它的返回值是一個克隆出來的新節點。
 
 ```javascript
 var cloneUL = document.querySelector('ul').cloneNode(true);
 ```
 
-该方法有一些使用注意点。
+該方法有一些使用注意點。
 
-（1）克隆一个节点，会拷贝该节点的所有属性，但是会丧失`addEventListener`方法和`on-`属性（即`node.onclick = fn`），添加在这个节点上的事件回调函数。
+（1）克隆一個節點，會複製該節點的所有屬性，但是會喪失`addEventListener`方法和`on-`屬性（即`node.onclick = fn`），新增在這個節點上的事件回撥函式。
 
-（2）该方法返回的节点不在文档之中，即没有任何父节点，必须使用诸如`Node.appendChild`这样的方法添加到文档之中。
+（2）該方法返回的節點不在文件之中，即沒有任何父節點，必須使用諸如`Node.appendChild`這樣的方法新增到文件之中。
 
-（3）克隆一个节点之后，DOM 有可能出现两个有相同`id`属性（即`id="xxx"`）的网页元素，这时应该修改其中一个元素的`id`属性。如果原节点有`name`属性，可能也需要修改。
+（3）克隆一個節點之後，DOM 有可能出現兩個有相同`id`屬性（即`id="xxx"`）的網頁元素，這時應該修改其中一個元素的`id`屬性。如果原節點有`name`屬性，可能也需要修改。
 
 ### Node.prototype.insertBefore()
 
-`insertBefore`方法用于将某个节点插入父节点内部的指定位置。
+`insertBefore`方法用於將某個節點插入父節點內部的指定位置。
 
 ```javascript
 var insertedNode = parentNode.insertBefore(newNode, referenceNode);
 ```
 
-`insertBefore`方法接受两个参数，第一个参数是所要插入的节点`newNode`，第二个参数是父节点`parentNode`内部的一个子节点`referenceNode`。`newNode`将插在`referenceNode`这个子节点的前面。返回值是插入的新节点`newNode`。
+`insertBefore`方法接受兩個引數，第一個引數是所要插入的節點`newNode`，第二個引數是父節點`parentNode`內部的一個子節點`referenceNode`。`newNode`將插在`referenceNode`這個子節點的前面。返回值是插入的新節點`newNode`。
 
 ```javascript
 var p = document.createElement('p');
 document.body.insertBefore(p, document.body.firstChild);
 ```
 
-上面代码中，新建一个`<p>`节点，插在`document.body.firstChild`的前面，也就是成为`document.body`的第一个子节点。
+上面程式碼中，新建一個`<p>`節點，插在`document.body.firstChild`的前面，也就是成為`document.body`的第一個子節點。
 
-如果`insertBefore`方法的第二个参数为`null`，则新节点将插在当前节点内部的最后位置，即变成最后一个子节点。
+如果`insertBefore`方法的第二個引數為`null`，則新節點將插在當前節點內部的最後位置，即變成最後一個子節點。
 
 ```javascript
 var p = document.createElement('p');
 document.body.insertBefore(p, null);
 ```
 
-上面代码中，`p`将成为`document.body`的最后一个子节点。这也说明`insertBefore`的第二个参数不能省略。
+上面程式碼中，`p`將成為`document.body`的最後一個子節點。這也說明`insertBefore`的第二個引數不能省略。
 
-注意，如果所要插入的节点是当前 DOM 现有的节点，则该节点将从原有的位置移除，插入新的位置。
+注意，如果所要插入的節點是當前 DOM 現有的節點，則該節點將從原有的位置移除，插入新的位置。
 
-由于不存在`insertAfter`方法，如果新节点要插在父节点的某个子节点后面，可以用`insertBefore`方法结合`nextSibling`属性模拟。
+由於不存在`insertAfter`方法，如果新節點要插在父節點的某個子節點後面，可以用`insertBefore`方法結合`nextSibling`屬性模擬。
 
 ```javascript
 parent.insertBefore(s1, s2.nextSibling);
 ```
 
-上面代码中，`parent`是父节点，`s1`是一个全新的节点，`s2`是可以将`s1`节点，插在`s2`节点的后面。如果`s2`是当前节点的最后一个子节点，则`s2.nextSibling`返回`null`，这时`s1`节点会插在当前节点的最后，变成当前节点的最后一个子节点，等于紧跟在`s2`的后面。
+上面程式碼中，`parent`是父節點，`s1`是一個全新的節點，`s2`是可以將`s1`節點，插在`s2`節點的後面。如果`s2`是當前節點的最後一個子節點，則`s2.nextSibling`返回`null`，這時`s1`節點會插在當前節點的最後，變成當前節點的最後一個子節點，等於緊跟在`s2`的後面。
 
-如果要插入的节点是`DocumentFragment`类型，那么插入的将是`DocumentFragment`的所有子节点，而不是`DocumentFragment`节点本身。返回值将是一个空的`DocumentFragment`节点。
+如果要插入的節點是`DocumentFragment`型別，那麼插入的將是`DocumentFragment`的所有子節點，而不是`DocumentFragment`節點本身。返回值將是一個空的`DocumentFragment`節點。
 
 ### Node.prototype.removeChild()
 
-`removeChild`方法接受一个子节点作为参数，用于从当前节点移除该子节点。返回值是移除的子节点。
+`removeChild`方法接受一個子節點作為引數，用於從當前節點移除該子節點。返回值是移除的子節點。
 
 ```javascript
 var divA = document.getElementById('A');
 divA.parentNode.removeChild(divA);
 ```
 
-上面代码移除了`divA`节点。注意，这个方法是在`divA`的父节点上调用的，不是在`divA`上调用的。
+上面程式碼移除了`divA`節點。注意，這個方法是在`divA`的父節點上呼叫的，不是在`divA`上呼叫的。
 
-下面是如何移除当前节点的所有子节点。
+下面是如何移除當前節點的所有子節點。
 
 ```javascript
 var element = document.getElementById('top');
@@ -429,19 +429,19 @@ while (element.firstChild) {
 }
 ```
 
-被移除的节点依然存在于内存之中，但不再是 DOM 的一部分。所以，一个节点移除以后，依然可以使用它，比如插入到另一个节点下面。
+被移除的節點依然存在於記憶體之中，但不再是 DOM 的一部分。所以，一個節點移除以後，依然可以使用它，比如插入到另一個節點下面。
 
-如果参数节点不是当前节点的子节点，`removeChild`方法将报错。
+如果引數節點不是當前節點的子節點，`removeChild`方法將報錯。
 
 ### Node.prototype.replaceChild()
 
-`replaceChild`方法用于将一个新的节点，替换当前节点的某一个子节点。
+`replaceChild`方法用於將一個新的節點，替換當前節點的某一個子節點。
 
 ```javascript
 var replacedNode = parentNode.replaceChild(newChild, oldChild);
 ```
 
-上面代码中，`replaceChild`方法接受两个参数，第一个参数`newChild`是用来替换的新节点，第二个参数`oldChild`是将要替换走的子节点。返回值是替换走的那个节点`oldChild`。
+上面程式碼中，`replaceChild`方法接受兩個引數，第一個引數`newChild`是用來替換的新節點，第二個引數`oldChild`是將要替換走的子節點。返回值是替換走的那個節點`oldChild`。
 
 ```javascript
 var divA = document.getElementById('divA');
@@ -450,23 +450,23 @@ newSpan.textContent = 'Hello World!';
 divA.parentNode.replaceChild(newSpan, divA);
 ```
 
-上面代码是如何将指定节点`divA`替换走。
+上面程式碼是如何將指定節點`divA`替換走。
 
 ### Node.prototype.contains()
 
-`contains`方法返回一个布尔值，表示参数节点是否满足以下三个条件之一。
+`contains`方法返回一個布林值，表示引數節點是否滿足以下三個條件之一。
 
-- 参数节点为当前节点。
-- 参数节点为当前节点的子节点。
-- 参数节点为当前节点的后代节点。
+- 引數節點為當前節點。
+- 引數節點為當前節點的子節點。
+- 引數節點為當前節點的後代節點。
 
 ```javascript
 document.body.contains(node)
 ```
 
-上面代码检查参数节点`node`，是否包含在当前文档之中。
+上面程式碼檢查引數節點`node`，是否包含在當前文件之中。
 
-注意，当前节点传入`contains`方法，返回`true`。
+注意，當前節點傳入`contains`方法，返回`true`。
 
 ```javascript
 nodeA.contains(nodeA) // true
@@ -474,20 +474,20 @@ nodeA.contains(nodeA) // true
 
 ### Node.prototype.compareDocumentPosition()
 
-`compareDocumentPosition`方法的用法，与`contains`方法完全一致，返回一个六个比特位的二进制值，表示参数节点与当前节点的关系。
+`compareDocumentPosition`方法的用法，與`contains`方法完全一致，返回一個六個位元位的二進位制值，表示引數節點與當前節點的關係。
 
-二进制值 | 十进制值 | 含义
+二進位制值 | 十進位制值 | 含義
 ---------|------|-----
-000000 | 0 | 两个节点相同
-000001 | 1 | 两个节点不在同一个文档（即有一个节点不在当前文档）
-000010 | 2 | 参数节点在当前节点的前面
-000100 | 4 | 参数节点在当前节点的后面
-001000 | 8 | 参数节点包含当前节点
-010000 | 16 | 当前节点包含参数节点
-100000 | 32 | 浏览器内部使用
+000000 | 0 | 兩個節點相同
+000001 | 1 | 兩個節點不在同一個文件（即有一個節點不在當前文件）
+000010 | 2 | 引數節點在當前節點的前面
+000100 | 4 | 引數節點在當前節點的後面
+001000 | 8 | 引數節點包含當前節點
+010000 | 16 | 當前節點包含引數節點
+100000 | 32 | 瀏覽器內部使用
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <div id="mydiv">
 //   <form><input id="test" /></form>
 // </div>
@@ -499,25 +499,25 @@ div.compareDocumentPosition(input) // 20
 input.compareDocumentPosition(div) // 10
 ```
 
-上面代码中，节点`div`包含节点`input`（二进制`010000`），而且节点`input`在节点`div`的后面（二进制`000100`），所以第一个`compareDocumentPosition`方法返回`20`（二进制`010100`，即`010000 + 000100`），第二个`compareDocumentPosition`方法返回`10`（二进制`001010`）。
+上面程式碼中，節點`div`包含節點`input`（二進位制`010000`），而且節點`input`在節點`div`的後面（二進位制`000100`），所以第一個`compareDocumentPosition`方法返回`20`（二進位制`010100`，即`010000 + 000100`），第二個`compareDocumentPosition`方法返回`10`（二進位制`001010`）。
 
-由于`compareDocumentPosition`返回值的含义，定义在每一个比特位上，所以如果要检查某一种特定的含义，就需要使用比特位运算符。
+由於`compareDocumentPosition`返回值的含義，定義在每一個位元位上，所以如果要檢查某一種特定的含義，就需要使用位元位運算子。
 
 ```javascript
 var head = document.head;
 var body = document.body;
 if (head.compareDocumentPosition(body) & 4) {
-  console.log('文档结构正确');
+  console.log('文件結構正確');
 } else {
   console.log('<body> 不能在 <head> 前面');
 }
 ```
 
-上面代码中，`compareDocumentPosition`的返回值与`4`（又称掩码）进行与运算（`&`），得到一个布尔值，表示`<head>`是否在`<body>`前面。
+上面程式碼中，`compareDocumentPosition`的返回值與`4`（又稱掩碼）進行與運算（`&`），得到一個布林值，表示`<head>`是否在`<body>`前面。
 
 ### Node.prototype.isEqualNode()，Node.prototype.isSameNode()
 
-`isEqualNode`方法返回一个布尔值，用于检查两个节点是否相等。所谓相等的节点，指的是两个节点的类型相同、属性相同、子节点相同。
+`isEqualNode`方法返回一個布林值，用於檢查兩個節點是否相等。所謂相等的節點，指的是兩個節點的型別相同、屬性相同、子節點相同。
 
 ```javascript
 var p1 = document.createElement('p');
@@ -526,7 +526,7 @@ var p2 = document.createElement('p');
 p1.isEqualNode(p2) // true
 ```
 
-`isSameNode`方法返回一个布尔值，表示两个节点是否为同一个节点。
+`isSameNode`方法返回一個布林值，表示兩個節點是否為同一個節點。
 
 ```javascript
 var p1 = document.createElement('p');
@@ -538,7 +538,7 @@ p1.isSameNode(p1) // true
 
 ### Node.prototype.normalize()
 
-`normalize`方法用于清理当前节点内部的所有文本节点（text）。它会去除空的文本节点，并且将毗邻的文本节点合并成一个，也就是说不存在空的文本节点，以及毗邻的文本节点。
+`normalize`方法用於清理當前節點內部的所有文字節點（text）。它會去除空的文字節點，並且將毗鄰的文字節點合併成一個，也就是說不存在空的文字節點，以及毗鄰的文字節點。
 
 ```javascript
 var wrapper = document.createElement('div');
@@ -551,13 +551,13 @@ wrapper.normalize();
 wrapper.childNodes.length // 1
 ```
 
-上面代码使用`normalize`方法之前，`wrapper`节点有两个毗邻的文本子节点。使用`normalize`方法之后，两个文本子节点被合并成一个。
+上面程式碼使用`normalize`方法之前，`wrapper`節點有兩個毗鄰的文字子節點。使用`normalize`方法之後，兩個文字子節點被合併成一個。
 
-该方法是`Text.splitText`的逆方法，可以查看《Text 节点对象》一章，了解更多内容。
+該方法是`Text.splitText`的逆方法，可以檢視《Text 節點物件》一章，瞭解更多內容。
 
 ### Node.prototype.getRootNode()
 
-`getRootNode()`方法返回当前节点所在文档的根节点`document`，与`ownerDocument`属性的作用相同。
+`getRootNode()`方法返回當前節點所在文件的根節點`document`，與`ownerDocument`屬性的作用相同。
 
 ```javascript
 document.body.firstChild.getRootNode() === document
@@ -566,7 +566,7 @@ document.body.firstChild.getRootNode() === document.body.firstChild.ownerDocumen
 // true
 ```
 
-该方法可用于`document`节点自身，这一点与`document.ownerDocument`不同。
+該方法可用於`document`節點自身，這一點與`document.ownerDocument`不同。
 
 ```javascript
 document.getRootNode() // document

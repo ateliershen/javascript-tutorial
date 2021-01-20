@@ -1,37 +1,37 @@
-# XMLHttpRequest 对象
+# XMLHttpRequest 物件
 
-## 简介
+## 簡介
 
-浏览器与服务器之间，采用 HTTP 协议通信。用户在浏览器地址栏键入一个网址，或者通过网页表单向服务器提交内容，这时浏览器就会向服务器发出 HTTP 请求。
+瀏覽器與伺服器之間，採用 HTTP 協議通訊。使用者在瀏覽器位址列鍵入一個網址，或者透過網頁表單向伺服器提交內容，這時瀏覽器就會向伺服器發出 HTTP 請求。
 
-1999年，微软公司发布 IE 浏览器5.0版，第一次引入新功能：允许 JavaScript 脚本向服务器发起 HTTP 请求。这个功能当时并没有引起注意，直到2004年 Gmail 发布和2005年 Google Map 发布，才引起广泛重视。2005年2月，AJAX 这个词第一次正式提出，它是 Asynchronous JavaScript and XML 的缩写，指的是通过 JavaScript 的异步通信，从服务器获取 XML 文档从中提取数据，再更新当前网页的对应部分，而不用刷新整个网页。后来，AJAX 这个词就成为 JavaScript 脚本发起 HTTP 通信的代名词，也就是说，只要用脚本发起通信，就可以叫做 AJAX 通信。W3C 也在2006年发布了它的国际标准。
+1999年，微軟公司釋出 IE 瀏覽器5.0版，第一次引入新功能：允許 JavaScript 指令碼向伺服器發起 HTTP 請求。這個功能當時並沒有引起注意，直到2004年 Gmail 釋出和2005年 Google Map 釋出，才引起廣泛重視。2005年2月，AJAX 這個詞第一次正式提出，它是 Asynchronous JavaScript and XML 的縮寫，指的是透過 JavaScript 的非同步通訊，從伺服器獲取 XML 文件從中提取資料，再更新當前網頁的對應部分，而不用重新整理整個網頁。後來，AJAX 這個詞就成為 JavaScript 指令碼發起 HTTP 通訊的代名詞，也就是說，只要用指令碼發起通訊，就可以叫做 AJAX 通訊。W3C 也在2006年釋出了它的國際標準。
 
-具体来说，AJAX 包括以下几个步骤。
+具體來說，AJAX 包括以下幾個步驟。
 
-1. 创建 XMLHttpRequest 实例
-1. 发出 HTTP 请求
-1. 接收服务器传回的数据
-1. 更新网页数据
+1. 建立 XMLHttpRequest 例項
+1. 發出 HTTP 請求
+1. 接收伺服器傳回的資料
+1. 更新網頁資料
 
-概括起来，就是一句话，AJAX 通过原生的`XMLHttpRequest`对象发出 HTTP 请求，得到服务器返回的数据后，再进行处理。现在，服务器返回的都是 JSON 格式的数据，XML 格式已经过时了，但是 AJAX 这个名字已经成了一个通用名词，字面含义已经消失了。
+概括起來，就是一句話，AJAX 透過原生的`XMLHttpRequest`物件發出 HTTP 請求，得到伺服器返回的資料後，再進行處理。現在，伺服器返回的都是 JSON 格式的資料，XML 格式已經過時了，但是 AJAX 這個名字已經成了一個通用名詞，字面含義已經消失了。
 
-`XMLHttpRequest`对象是 AJAX 的主要接口，用于浏览器与服务器之间的通信。尽管名字里面有`XML`和`Http`，它实际上可以使用多种协议（比如`file`或`ftp`），发送任何格式的数据（包括字符串和二进制）。
+`XMLHttpRequest`物件是 AJAX 的主要介面，用於瀏覽器與伺服器之間的通訊。儘管名字裡面有`XML`和`Http`，它實際上可以使用多種協議（比如`file`或`ftp`），傳送任何格式的資料（包括字串和二進位制）。
 
-`XMLHttpRequest`本身是一个构造函数，可以使用`new`命令生成实例。它没有任何参数。
+`XMLHttpRequest`本身是一個建構函式，可以使用`new`命令生成例項。它沒有任何引數。
 
 ```javascript
 var xhr = new XMLHttpRequest();
 ```
 
-一旦新建实例，就可以使用`open()`方法指定建立 HTTP 连接的一些细节。
+一旦新建例項，就可以使用`open()`方法指定建立 HTTP 連線的一些細節。
 
 ```javascript
 xhr.open('GET', 'http://www.example.com/page.php', true);
 ```
 
-上面代码指定使用 GET 方法，跟指定的服务器网址建立连接。第三个参数`true`，表示请求是异步的。
+上面程式碼指定使用 GET 方法，跟指定的伺服器網址建立連線。第三個引數`true`，表示請求是非同步的。
 
-然后，指定回调函数，监听通信状态（`readyState`属性）的变化。
+然後，指定回撥函式，監聽通訊狀態（`readyState`屬性）的變化。
 
 ```javascript
 xhr.onreadystatechange = handleStateChange;
@@ -41,27 +41,27 @@ function handleStateChange() {
 }
 ```
 
-上面代码中，一旦`XMLHttpRequest`实例的状态发生变化，就会调用监听函数`handleStateChange`
+上面程式碼中，一旦`XMLHttpRequest`例項的狀態發生變化，就會呼叫監聽函式`handleStateChange`
 
-最后使用`send()`方法，实际发出请求。
+最後使用`send()`方法，實際發出請求。
 
 ```javascript
 xhr.send(null);
 ```
 
-上面代码中，`send()`的参数为`null`，表示发送请求的时候，不带有数据体。如果发送的是 POST 请求，这里就需要指定数据体。
+上面程式碼中，`send()`的引數為`null`，表示傳送請求的時候，不帶有資料體。如果傳送的是 POST 請求，這裡就需要指定資料體。
 
-一旦拿到服务器返回的数据，AJAX 不会刷新整个网页，而是只更新网页里面的相关部分，从而不打断用户正在做的事情。
+一旦拿到伺服器返回的資料，AJAX 不會重新整理整個網頁，而是隻更新網頁裡面的相關部分，從而不打斷使用者正在做的事情。
 
-注意，AJAX 只能向同源网址（协议、域名、端口都相同）发出 HTTP 请求，如果发出跨域请求，就会报错（详见《同源政策》和《CORS 通信》两章）。
+注意，AJAX 只能向同源網址（協議、域名、埠都相同）發出 HTTP 請求，如果發出跨域請求，就會報錯（詳見《同源政策》和《CORS 通訊》兩章）。
 
-下面是`XMLHttpRequest`对象简单用法的完整例子。
+下面是`XMLHttpRequest`物件簡單用法的完整例子。
 
 ```javascript
 var xhr = new XMLHttpRequest();
 
 xhr.onreadystatechange = function(){
-  // 通信成功时，状态值为4
+  // 通訊成功時，狀態值為4
   if (xhr.readyState === 4){
     if (xhr.status === 200){
       console.log(xhr.responseText);
@@ -79,39 +79,39 @@ xhr.open('GET', '/endpoint', true);
 xhr.send(null);
 ```
 
-## XMLHttpRequest 的实例属性
+## XMLHttpRequest 的例項屬性
 
 ### XMLHttpRequest.readyState
 
-`XMLHttpRequest.readyState`返回一个整数，表示实例对象的当前状态。该属性只读。它可能返回以下值。
+`XMLHttpRequest.readyState`返回一個整數，表示例項物件的當前狀態。該屬性只讀。它可能返回以下值。
 
-- 0，表示 XMLHttpRequest 实例已经生成，但是实例的`open()`方法还没有被调用。
-- 1，表示`open()`方法已经调用，但是实例的`send()`方法还没有调用，仍然可以使用实例的`setRequestHeader()`方法，设定 HTTP 请求的头信息。
-- 2，表示实例的`send()`方法已经调用，并且服务器返回的头信息和状态码已经收到。
-- 3，表示正在接收服务器传来的数据体（body 部分）。这时，如果实例的`responseType`属性等于`text`或者空字符串，`responseText`属性就会包含已经收到的部分信息。
-- 4，表示服务器返回的数据已经完全接收，或者本次接收已经失败。
+- 0，表示 XMLHttpRequest 例項已經生成，但是例項的`open()`方法還沒有被呼叫。
+- 1，表示`open()`方法已經呼叫，但是例項的`send()`方法還沒有呼叫，仍然可以使用例項的`setRequestHeader()`方法，設定 HTTP 請求的頭資訊。
+- 2，表示例項的`send()`方法已經呼叫，並且伺服器返回的頭資訊和狀態碼已經收到。
+- 3，表示正在接收伺服器傳來的資料體（body 部分）。這時，如果例項的`responseType`屬性等於`text`或者空字串，`responseText`屬性就會包含已經收到的部分資訊。
+- 4，表示伺服器返回的資料已經完全接收，或者本次接收已經失敗。
 
-通信过程中，每当实例对象发生状态变化，它的`readyState`属性的值就会改变。这个值每一次变化，都会触发`readyStateChange`事件。
+通訊過程中，每當例項物件發生狀態變化，它的`readyState`屬性的值就會改變。這個值每一次變化，都會觸發`readyStateChange`事件。
 
 ```javascript
 var xhr = new XMLHttpRequest();
 
 if (xhr.readyState === 4) {
-  // 请求结束，处理服务器返回的数据
+  // 請求結束，處理伺服器返回的資料
 } else {
-  // 显示提示“加载中……”
+  // 顯示提示“載入中……”
 }
 ```
 
-上面代码中，`xhr.readyState`等于`4`时，表明脚本发出的 HTTP 请求已经完成。其他情况，都表示 HTTP 请求还在进行中。
+上面程式碼中，`xhr.readyState`等於`4`時，表明指令碼發出的 HTTP 請求已經完成。其他情況，都表示 HTTP 請求還在進行中。
 
 ### XMLHttpRequest.onreadystatechange
 
-`XMLHttpRequest.onreadystatechange`属性指向一个监听函数。`readystatechange`事件发生时（实例的`readyState`属性变化），就会执行这个属性。
+`XMLHttpRequest.onreadystatechange`屬性指向一個監聽函式。`readystatechange`事件發生時（例項的`readyState`屬性變化），就會執行這個屬性。
 
-另外，如果使用实例的`abort()`方法，终止 XMLHttpRequest 请求，也会造成`readyState`属性变化，导致调用`XMLHttpRequest.onreadystatechange`属性。
+另外，如果使用例項的`abort()`方法，終止 XMLHttpRequest 請求，也會造成`readyState`屬性變化，導致呼叫`XMLHttpRequest.onreadystatechange`屬性。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -127,9 +127,9 @@ xhr.send();
 
 ### XMLHttpRequest.response
 
-`XMLHttpRequest.response`属性表示服务器返回的数据体（即 HTTP 回应的 body 部分）。它可能是任何数据类型，比如字符串、对象、二进制对象等等，具体的类型由`XMLHttpRequest.responseType`属性决定。该属性只读。
+`XMLHttpRequest.response`屬性表示伺服器返回的資料體（即 HTTP 迴應的 body 部分）。它可能是任何資料型別，比如字串、物件、二進位制物件等等，具體的型別由`XMLHttpRequest.responseType`屬性決定。該屬性只讀。
 
-如果本次请求没有成功或者数据不完整，该属性等于`null`。但是，如果`responseType`属性等于`text`或空字符串，在请求没有结束之前（`readyState`等于3的阶段），`response`属性包含服务器已经返回的部分数据。
+如果本次請求沒有成功或者資料不完整，該屬性等於`null`。但是，如果`responseType`屬性等於`text`或空字串，在請求沒有結束之前（`readyState`等於3的階段），`response`屬性包含伺服器已經返回的部分資料。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -143,18 +143,18 @@ xhr.onreadystatechange = function () {
 
 ### XMLHttpRequest.responseType
 
-`XMLHttpRequest.responseType`属性是一个字符串，表示服务器返回数据的类型。这个属性是可写的，可以在调用`open()`方法之后、调用`send()`方法之前，设置这个属性的值，告诉浏览器如何解读返回的数据。如果`responseType`设为空字符串，就等同于默认值`text`。
+`XMLHttpRequest.responseType`屬性是一個字串，表示伺服器返回資料的型別。這個屬性是可寫的，可以在呼叫`open()`方法之後、呼叫`send()`方法之前，設定這個屬性的值，告訴瀏覽器如何解讀返回的資料。如果`responseType`設為空字串，就等同於預設值`text`。
 
-`XMLHttpRequest.responseType`属性可以等于以下值。
+`XMLHttpRequest.responseType`屬性可以等於以下值。
 
-- ""（空字符串）：等同于`text`，表示服务器返回文本数据。
-- "arraybuffer"：ArrayBuffer 对象，表示服务器返回二进制数组。
-- "blob"：Blob 对象，表示服务器返回二进制对象。
-- "document"：Document 对象，表示服务器返回一个文档对象。
-- "json"：JSON 对象。
-- "text"：字符串。
+- ""（空字串）：等同於`text`，表示伺服器返回文字資料。
+- "arraybuffer"：ArrayBuffer 物件，表示伺服器返回二進位制陣列。
+- "blob"：Blob 物件，表示伺服器返回二進位制物件。
+- "document"：Document 物件，表示伺服器返回一個文件物件。
+- "json"：JSON 物件。
+- "text"：字串。
 
-上面几种类型之中，`text`类型适合大多数情况，而且直接处理文本也比较方便。`document`类型适合返回 HTML / XML 文档的情况，这意味着，对于那些打开 CORS 的网站，可以直接用 Ajax 抓取网页，然后不用解析 HTML 字符串，直接对抓取回来的数据进行 DOM 操作。`blob`类型适合读取二进制数据，比如图片文件。
+上面幾種型別之中，`text`型別適合大多數情況，而且直接處理文字也比較方便。`document`型別適合返回 HTML / XML 文件的情況，這意味著，對於那些開啟 CORS 的網站，可以直接用 Ajax 抓取網頁，然後不用解析 HTML 字串，直接對抓取回來的資料進行 DOM 操作。`blob`型別適合讀取二進位制資料，比如圖片檔案。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -172,7 +172,7 @@ xhr.onload = function(e) {
 xhr.send();
 ```
 
-如果将这个属性设为`ArrayBuffer`，就可以按照数组的方式处理二进制数据。
+如果將這個屬性設為`ArrayBuffer`，就可以按照陣列的方式處理二進位制資料。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -189,11 +189,11 @@ xhr.onload = function(e) {
 xhr.send();
 ```
 
-如果将这个属性设为`json`，浏览器就会自动对返回数据调用`JSON.parse()`方法。也就是说，从`xhr.response`属性（注意，不是`xhr.responseText`属性）得到的不是文本，而是一个 JSON 对象。
+如果將這個屬性設為`json`，瀏覽器就會自動對返回資料呼叫`JSON.parse()`方法。也就是說，從`xhr.response`屬性（注意，不是`xhr.responseText`屬性）得到的不是文字，而是一個 JSON 物件。
 
 ### XMLHttpRequest.responseText
 
-`XMLHttpRequest.responseText`属性返回从服务器接收到的字符串，该属性为只读。只有 HTTP 请求完成接收以后，该属性才会包含完整的数据。
+`XMLHttpRequest.responseText`屬性返回從伺服器接收到的字串，該屬性為只讀。只有 HTTP 請求完成接收以後，該屬性才會包含完整的資料。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -211,11 +211,11 @@ xhr.send(null);
 
 ### XMLHttpRequest.responseXML
 
-`XMLHttpRequest.responseXML`属性返回从服务器接收到的 HTML 或 XML 文档对象，该属性为只读。如果本次请求没有成功，或者收到的数据不能被解析为 XML 或 HTML，该属性等于`null`。
+`XMLHttpRequest.responseXML`屬性返回從伺服器接收到的 HTML 或 XML 文件物件，該屬性為只讀。如果本次請求沒有成功，或者收到的資料不能被解析為 XML 或 HTML，該屬性等於`null`。
 
-该属性生效的前提是 HTTP 回应的`Content-Type`头信息等于`text/xml`或`application/xml`。这要求在发送请求前，`XMLHttpRequest.responseType`属性要设为`document`。如果 HTTP 回应的`Content-Type`头信息不等于`text/xml`和`application/xml`，但是想从`responseXML`拿到数据（即把数据按照 DOM 格式解析），那么需要手动调用`XMLHttpRequest.overrideMimeType()`方法，强制进行 XML 解析。
+該屬性生效的前提是 HTTP 迴應的`Content-Type`頭資訊等於`text/xml`或`application/xml`。這要求在傳送請求前，`XMLHttpRequest.responseType`屬性要設為`document`。如果 HTTP 迴應的`Content-Type`頭資訊不等於`text/xml`和`application/xml`，但是想從`responseXML`拿到資料（即把資料按照 DOM 格式解析），那麼需要手動呼叫`XMLHttpRequest.overrideMimeType()`方法，強制進行 XML 解析。
 
-该属性得到的数据，是直接解析后的文档 DOM 树。
+該屬性得到的資料，是直接解析後的文件 DOM 樹。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -235,7 +235,7 @@ xhr.send(null);
 
 ### XMLHttpRequest.responseURL
 
-`XMLHttpRequest.responseURL`属性是字符串，表示发送数据的服务器的网址。
+`XMLHttpRequest.responseURL`屬性是字串，表示傳送資料的伺服器的網址。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -247,44 +247,44 @@ xhr.onload = function () {
 xhr.send(null);
 ```
 
-注意，这个属性的值与`open()`方法指定的请求网址不一定相同。如果服务器端发生跳转，这个属性返回最后实际返回数据的网址。另外，如果原始 URL 包括锚点（fragment），该属性会把锚点剥离。
+注意，這個屬性的值與`open()`方法指定的請求網址不一定相同。如果伺服器端發生跳轉，這個屬性返回最後實際返回資料的網址。另外，如果原始 URL 包括錨點（fragment），該屬性會把錨點剝離。
 
 ### XMLHttpRequest.status，XMLHttpRequest.statusText
 
-`XMLHttpRequest.status`属性返回一个整数，表示服务器回应的 HTTP 状态码。一般来说，如果通信成功的话，这个状态码是200；如果服务器没有返回状态码，那么这个属性默认是200。请求发出之前，该属性为`0`。该属性只读。
+`XMLHttpRequest.status`屬性返回一個整數，表示伺服器迴應的 HTTP 狀態碼。一般來說，如果通訊成功的話，這個狀態碼是200；如果伺服器沒有返回狀態碼，那麼這個屬性預設是200。請求發出之前，該屬性為`0`。該屬性只讀。
 
-- 200, OK，访问正常
-- 301, Moved Permanently，永久移动
-- 302, Moved temporarily，暂时移动
+- 200, OK，訪問正常
+- 301, Moved Permanently，永久移動
+- 302, Moved temporarily，暫時移動
 - 304, Not Modified，未修改
-- 307, Temporary Redirect，暂时重定向
-- 401, Unauthorized，未授权
-- 403, Forbidden，禁止访问
-- 404, Not Found，未发现指定网址
-- 500, Internal Server Error，服务器发生错误
+- 307, Temporary Redirect，暫時重定向
+- 401, Unauthorized，未授權
+- 403, Forbidden，禁止訪問
+- 404, Not Found，未發現指定網址
+- 500, Internal Server Error，伺服器發生錯誤
 
-基本上，只有2xx和304的状态码，表示服务器返回是正常状态。
+基本上，只有2xx和304的狀態碼，表示伺服器返回是正常狀態。
 
 ```javascript
 if (xhr.readyState === 4) {
   if ( (xhr.status >= 200 && xhr.status < 300)
     || (xhr.status === 304) ) {
-    // 处理服务器的返回数据
+    // 處理伺服器的返回資料
   } else {
-    // 出错
+    // 出錯
   }
 }
 ```
 
-`XMLHttpRequest.statusText`属性返回一个字符串，表示服务器发送的状态提示。不同于`status`属性，该属性包含整个状态信息，比如“OK”和“Not Found”。在请求发送之前（即调用`open()`方法之前），该属性的值是空字符串；如果服务器没有返回状态提示，该属性的值默认为“OK”。该属性为只读属性。
+`XMLHttpRequest.statusText`屬性返回一個字串，表示伺服器傳送的狀態提示。不同於`status`屬性，該屬性包含整個狀態資訊，比如“OK”和“Not Found”。在請求傳送之前（即呼叫`open()`方法之前），該屬性的值是空字串；如果伺服器沒有返回狀態提示，該屬性的值預設為“OK”。該屬性為只讀屬性。
 
 ### XMLHttpRequest.timeout，XMLHttpRequestEventTarget.ontimeout
 
-`XMLHttpRequest.timeout`属性返回一个整数，表示多少毫秒后，如果请求仍然没有得到结果，就会自动终止。如果该属性等于0，就表示没有时间限制。
+`XMLHttpRequest.timeout`屬性返回一個整數，表示多少毫秒後，如果請求仍然沒有得到結果，就會自動終止。如果該屬性等於0，就表示沒有時間限制。
 
-`XMLHttpRequestEventTarget.ontimeout`属性用于设置一个监听函数，如果发生 timeout 事件，就会执行这个监听函数。
+`XMLHttpRequestEventTarget.ontimeout`屬性用於設定一個監聽函式，如果發生 timeout 事件，就會執行這個監聽函式。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -297,7 +297,7 @@ xhr.ontimeout = function () {
 xhr.onload = function() {
   if (xhr.readyState === 4) {
     if (xhr.status === 200) {
-      // 处理服务器返回的数据
+      // 處理伺服器返回的資料
     } else {
       console.error(xhr.statusText);
     }
@@ -305,24 +305,24 @@ xhr.onload = function() {
 };
 
 xhr.open('GET', url, true);
-// 指定 10 秒钟超时
+// 指定 10 秒鐘超時
 xhr.timeout = 10 * 1000;
 xhr.send(null);
 ```
 
-### 事件监听属性
+### 事件監聽屬性
 
-XMLHttpRequest 对象可以对以下事件指定监听函数。
+XMLHttpRequest 物件可以對以下事件指定監聽函式。
 
-- XMLHttpRequest.onloadstart：loadstart 事件（HTTP 请求发出）的监听函数
-- XMLHttpRequest.onprogress：progress事件（正在发送和加载数据）的监听函数
-- XMLHttpRequest.onabort：abort 事件（请求中止，比如用户调用了`abort()`方法）的监听函数
-- XMLHttpRequest.onerror：error 事件（请求失败）的监听函数
-- XMLHttpRequest.onload：load 事件（请求成功完成）的监听函数
-- XMLHttpRequest.ontimeout：timeout 事件（用户指定的时限超过了，请求还未完成）的监听函数
-- XMLHttpRequest.onloadend：loadend 事件（请求完成，不管成功或失败）的监听函数
+- XMLHttpRequest.onloadstart：loadstart 事件（HTTP 請求發出）的監聽函式
+- XMLHttpRequest.onprogress：progress事件（正在傳送和載入資料）的監聽函式
+- XMLHttpRequest.onabort：abort 事件（請求中止，比如使用者呼叫了`abort()`方法）的監聽函式
+- XMLHttpRequest.onerror：error 事件（請求失敗）的監聽函式
+- XMLHttpRequest.onload：load 事件（請求成功完成）的監聽函式
+- XMLHttpRequest.ontimeout：timeout 事件（使用者指定的時限超過了，請求還未完成）的監聽函式
+- XMLHttpRequest.onloadend：loadend 事件（請求完成，不管成功或失敗）的監聽函式
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
 xhr.onload = function() {
@@ -345,15 +345,15 @@ xhr.onerror = function() {
 };
 ```
 
-`progress`事件的监听函数有一个事件对象参数，该对象有三个属性：`loaded`属性返回已经传输的数据量，`total`属性返回总的数据量，`lengthComputable`属性返回一个布尔值，表示加载的进度是否可以计算。所有这些监听函数里面，只有`progress`事件的监听函数有参数，其他函数都没有参数。
+`progress`事件的監聽函式有一個事件物件引數，該物件有三個屬性：`loaded`屬性返回已經傳輸的資料量，`total`屬性返回總的資料量，`lengthComputable`屬性返回一個布林值，表示載入的進度是否可以計算。所有這些監聽函式裡面，只有`progress`事件的監聽函式有引數，其他函式都沒有引數。
 
-注意，如果发生网络错误（比如服务器无法连通），`onerror`事件无法获取报错信息。也就是说，可能没有错误对象，所以这样只能显示报错的提示。
+注意，如果發生網路錯誤（比如伺服器無法連通），`onerror`事件無法獲取報錯資訊。也就是說，可能沒有錯誤物件，所以這樣只能顯示報錯的提示。
 
 ### XMLHttpRequest.withCredentials
 
-`XMLHttpRequest.withCredentials`属性是一个布尔值，表示跨域请求时，用户信息（比如 Cookie 和认证的 HTTP 头信息）是否会包含在请求之中，默认为`false`，即向`example.com`发出跨域请求时，不会发送`example.com`设置在本机上的 Cookie（如果有的话）。
+`XMLHttpRequest.withCredentials`屬性是一個布林值，表示跨域請求時，使用者資訊（比如 Cookie 和認證的 HTTP 頭資訊）是否會包含在請求之中，預設為`false`，即向`example.com`發出跨域請求時，不會發送`example.com`設定在本機上的 Cookie（如果有的話）。
 
-如果需要跨域 AJAX 请求发送 Cookie，需要`withCredentials`属性设为`true`。注意，同源的请求不需要设置这个属性。
+如果需要跨域 AJAX 請求傳送 Cookie，需要`withCredentials`屬性設為`true`。注意，同源的請求不需要設定這個屬性。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -362,27 +362,27 @@ xhr.withCredentials = true;
 xhr.send(null);
 ```
 
-为了让这个属性生效，服务器必须显式返回`Access-Control-Allow-Credentials`这个头信息。
+為了讓這個屬性生效，伺服器必須顯式返回`Access-Control-Allow-Credentials`這個頭資訊。
 
 ```javascript
 Access-Control-Allow-Credentials: true
 ```
 
-`withCredentials`属性打开的话，跨域请求不仅会发送 Cookie，还会设置远程主机指定的 Cookie。反之也成立，如果`withCredentials`属性没有打开，那么跨域的 AJAX 请求即使明确要求浏览器设置 Cookie，浏览器也会忽略。
+`withCredentials`屬性開啟的話，跨域請求不僅會發送 Cookie，還會設定遠端主機指定的 Cookie。反之也成立，如果`withCredentials`屬性沒有開啟，那麼跨域的 AJAX 請求即使明確要求瀏覽器設定 Cookie，瀏覽器也會忽略。
 
-注意，脚本总是遵守同源政策，无法从`document.cookie`或者 HTTP 回应的头信息之中，读取跨域的 Cookie，`withCredentials`属性不影响这一点。
+注意，指令碼總是遵守同源政策，無法從`document.cookie`或者 HTTP 迴應的頭資訊之中，讀取跨域的 Cookie，`withCredentials`屬性不影響這一點。
 
 ### XMLHttpRequest.upload
 
-XMLHttpRequest 不仅可以发送请求，还可以发送文件，这就是 AJAX 文件上传。发送文件以后，通过`XMLHttpRequest.upload`属性可以得到一个对象，通过观察这个对象，可以得知上传的进展。主要方法就是监听这个对象的各种事件：loadstart、loadend、load、abort、error、progress、timeout。
+XMLHttpRequest 不僅可以傳送請求，還可以傳送檔案，這就是 AJAX 檔案上傳。傳送檔案以後，透過`XMLHttpRequest.upload`屬性可以得到一個物件，透過觀察這個物件，可以得知上傳的進展。主要方法就是監聽這個物件的各種事件：loadstart、loadend、load、abort、error、progress、timeout。
 
-假定网页上有一个`<progress>`元素。
+假定網頁上有一個`<progress>`元素。
 
 ```http
 <progress min="0" max="100" value="0">0% complete</progress>
 ```
 
-文件上传时，对`upload`属性指定`progress`事件的监听函数，即可获得上传的进度。
+檔案上傳時，對`upload`屬性指定`progress`事件的監聽函式，即可獲得上傳的進度。
 
 ```javascript
 function upload(blobOrFile) {
@@ -394,7 +394,7 @@ function upload(blobOrFile) {
   xhr.upload.onprogress = function (e) {
     if (e.lengthComputable) {
       progressBar.value = (e.loaded / e.total) * 100;
-      // 兼容不支持 <progress> 元素的老式浏览器
+      // 相容不支援 <progress> 元素的老式瀏覽器
       progressBar.textContent = progressBar.value;
     }
   };
@@ -405,11 +405,11 @@ function upload(blobOrFile) {
 upload(new Blob(['hello world'], {type: 'text/plain'}));
 ```
 
-## XMLHttpRequest 的实例方法
+## XMLHttpRequest 的例項方法
 
 ### XMLHttpRequest.open()
 
-`XMLHttpRequest.open()`方法用于指定 HTTP 请求的参数，或者说初始化 XMLHttpRequest 实例对象。它一共可以接受五个参数。
+`XMLHttpRequest.open()`方法用於指定 HTTP 請求的引數，或者說初始化 XMLHttpRequest 例項物件。它一共可以接受五個引數。
 
 ```javascript
 void open(
@@ -421,15 +421,15 @@ void open(
 );
 ```
 
-- `method`：表示 HTTP 动词方法，比如`GET`、`POST`、`PUT`、`DELETE`、`HEAD`等。
-- `url`: 表示请求发送目标 URL。
-- `async`: 布尔值，表示请求是否为异步，默认为`true`。如果设为`false`，则`send()`方法只有等到收到服务器返回了结果，才会进行下一步操作。该参数可选。由于同步 AJAX 请求会造成浏览器失去响应，许多浏览器已经禁止在主线程使用，只允许 Worker 里面使用。所以，这个参数轻易不应该设为`false`。
-- `user`：表示用于认证的用户名，默认为空字符串。该参数可选。
-- `password`：表示用于认证的密码，默认为空字符串。该参数可选。
+- `method`：表示 HTTP 動詞方法，比如`GET`、`POST`、`PUT`、`DELETE`、`HEAD`等。
+- `url`: 表示請求傳送目標 URL。
+- `async`: 布林值，表示請求是否為非同步，預設為`true`。如果設為`false`，則`send()`方法只有等到收到伺服器返回了結果，才會進行下一步操作。該引數可選。由於同步 AJAX 請求會造成瀏覽器失去響應，許多瀏覽器已經禁止在主執行緒使用，只允許 Worker 裡面使用。所以，這個引數輕易不應該設為`false`。
+- `user`：表示用於認證的使用者名稱，預設為空字串。該引數可選。
+- `password`：表示用於認證的密碼，預設為空字串。該引數可選。
 
-注意，如果对使用过`open()`方法的 AJAX 请求，再次使用这个方法，等同于调用`abort()`，即终止请求。
+注意，如果對使用過`open()`方法的 AJAX 請求，再次使用這個方法，等同於呼叫`abort()`，即終止請求。
 
-下面发送 POST 请求的例子。
+下面傳送 POST 請求的例子。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -438,9 +438,9 @@ xhr.open('POST', encodeURI('someURL'));
 
 ### XMLHttpRequest.send()
 
-`XMLHttpRequest.send()`方法用于实际发出 HTTP 请求。它的参数是可选的，如果不带参数，就表示 HTTP 请求只有一个 URL，没有数据体，典型例子就是 GET 请求；如果带有参数，就表示除了头信息，还带有包含具体数据的信息体，典型例子就是 POST 请求。
+`XMLHttpRequest.send()`方法用於實際發出 HTTP 請求。它的引數是可選的，如果不帶引數，就表示 HTTP 請求只有一個 URL，沒有資料體，典型例子就是 GET 請求；如果帶有引數，就表示除了頭資訊，還帶有包含具體資料的資訊體，典型例子就是 POST 請求。
 
-下面是 GET 请求的例子。
+下面是 GET 請求的例子。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -451,9 +451,9 @@ xhr.open('GET',
 xhr.send(null);
 ```
 
-上面代码中，`GET`请求的参数，作为查询字符串附加在 URL 后面。
+上面程式碼中，`GET`請求的引數，作為查詢字串附加在 URL 後面。
 
-下面是发送 POST 请求的例子。
+下面是傳送 POST 請求的例子。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -467,9 +467,9 @@ xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 xhr.send(data);
 ```
 
-注意，所有 XMLHttpRequest 的监听事件，都必须在`send()`方法调用之前设定。
+注意，所有 XMLHttpRequest 的監聽事件，都必須在`send()`方法呼叫之前設定。
 
-`send`方法的参数就是发送的数据。多种格式的数据，都可以作为它的参数。
+`send`方法的引數就是傳送的資料。多種格式的資料，都可以作為它的引數。
 
 ```javascript
 void send();
@@ -480,14 +480,14 @@ void send(String data);
 void send(FormData data);
 ```
 
-如果`send()`发送 DOM 对象，在发送之前，数据会先被串行化。如果发送二进制数据，最好是发送`ArrayBufferView`或`Blob`对象，这使得通过 Ajax 上传文件成为可能。
+如果`send()`傳送 DOM 物件，在傳送之前，資料會先被序列化。如果傳送二進位制資料，最好是傳送`ArrayBufferView`或`Blob`物件，這使得透過 Ajax 上傳檔案成為可能。
 
-下面是发送表单数据的例子。`FormData`对象可以用于构造表单数据。
+下面是傳送表單資料的例子。`FormData`物件可以用於構造表單資料。
 
 ```javascript
 var formData = new FormData();
 
-formData.append('username', '张三');
+formData.append('username', '張三');
 formData.append('email', 'zhangsan@example.com');
 formData.append('birthDate', 1940);
 
@@ -496,18 +496,18 @@ xhr.open('POST', '/register');
 xhr.send(formData);
 ```
 
-上面代码中，`FormData`对象构造了表单数据，然后使用`send()`方法发送。它的效果与发送下面的表单数据是一样的。
+上面程式碼中，`FormData`物件構造了表單資料，然後使用`send()`方法傳送。它的效果與傳送下面的表單資料是一樣的。
 
 ```html
 <form id='registration' name='registration' action='/register'>
-  <input type='text' name='username' value='张三'>
+  <input type='text' name='username' value='張三'>
   <input type='email' name='email' value='zhangsan@example.com'>
   <input type='number' name='birthDate' value='1940'>
   <input type='submit' onclick='return sendForm(this.form);'>
 </form>
 ```
 
-下面的例子是使用`FormData`对象加工表单数据，然后再发送。
+下面的例子是使用`FormData`物件加工表單資料，然後再發送。
 
 ```javascript
 function sendForm(form) {
@@ -530,9 +530,9 @@ sendForm(form);
 
 ### XMLHttpRequest.setRequestHeader()
 
-`XMLHttpRequest.setRequestHeader()`方法用于设置浏览器发送的 HTTP 请求的头信息。该方法必须在`open()`之后、`send()`之前调用。如果该方法多次调用，设定同一个字段，则每一次调用的值会被合并成一个单一的值发送。
+`XMLHttpRequest.setRequestHeader()`方法用於設定瀏覽器傳送的 HTTP 請求的頭資訊。該方法必須在`open()`之後、`send()`之前呼叫。如果該方法多次呼叫，設定同一個欄位，則每一次呼叫的值會被合併成一個單一的值傳送。
 
-该方法接受两个参数。第一个参数是字符串，表示头信息的字段名，第二个参数是字段值。
+該方法接受兩個引數。第一個引數是字串，表示頭資訊的欄位名，第二個引數是欄位值。
 
 ```javascript
 xhr.setRequestHeader('Content-Type', 'application/json');
@@ -540,19 +540,19 @@ xhr.setRequestHeader('Content-Length', JSON.stringify(data).length);
 xhr.send(JSON.stringify(data));
 ```
 
-上面代码首先设置头信息`Content-Type`，表示发送 JSON 格式的数据；然后设置`Content-Length`，表示数据长度；最后发送 JSON 数据。
+上面程式碼首先設定頭資訊`Content-Type`，表示傳送 JSON 格式的資料；然後設定`Content-Length`，表示資料長度；最後傳送 JSON 資料。
 
 ### XMLHttpRequest.overrideMimeType()
 
-`XMLHttpRequest.overrideMimeType()`方法用来指定 MIME 类型，覆盖服务器返回的真正的 MIME 类型，从而让浏览器进行不一样的处理。举例来说，服务器返回的数据类型是`text/xml`，由于种种原因浏览器解析不成功报错，这时就拿不到数据了。为了拿到原始数据，我们可以把 MIME 类型改成`text/plain`，这样浏览器就不会去自动解析，从而我们就可以拿到原始文本了。
+`XMLHttpRequest.overrideMimeType()`方法用來指定 MIME 型別，覆蓋伺服器返回的真正的 MIME 型別，從而讓瀏覽器進行不一樣的處理。舉例來說，伺服器返回的資料型別是`text/xml`，由於種種原因瀏覽器解析不成功報錯，這時就拿不到資料了。為了拿到原始資料，我們可以把 MIME 型別改成`text/plain`，這樣瀏覽器就不會去自動解析，從而我們就可以拿到原始文字了。
 
 ```javascript
 xhr.overrideMimeType('text/plain')
 ```
 
-注意，该方法必须在`send()`方法之前调用。
+注意，該方法必須在`send()`方法之前呼叫。
 
-修改服务器返回的数据类型，不是正常情况下应该采取的方法。如果希望服务器返回指定的数据类型，可以用`responseType`属性告诉服务器，就像下面的例子。只有在服务器无法返回某种数据类型时，才使用`overrideMimeType()`方法。
+修改伺服器返回的資料型別，不是正常情況下應該採取的方法。如果希望伺服器返回指定的資料型別，可以用`responseType`屬性告訴伺服器，就像下面的例子。只有在伺服器無法返回某種資料型別時，才使用`overrideMimeType()`方法。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -567,7 +567,7 @@ xhr.send();
 
 ### XMLHttpRequest.getResponseHeader()
 
-`XMLHttpRequest.getResponseHeader()`方法返回 HTTP 头信息指定字段的值，如果还没有收到服务器回应或者指定字段不存在，返回`null`。该方法的参数不区分大小写。
+`XMLHttpRequest.getResponseHeader()`方法返回 HTTP 頭資訊指定欄位的值，如果還沒有收到伺服器迴應或者指定欄位不存在，返回`null`。該方法的引數不區分大小寫。
 
 ```javascript
 function getHeaderTime() {
@@ -580,11 +580,11 @@ xhr.onload = getHeaderTime;
 xhr.send();
 ```
 
-如果有多个字段同名，它们的值会被连接为一个字符串，每个字段之间使用“逗号+空格”分隔。
+如果有多個欄位同名，它們的值會被連線為一個字串，每個欄位之間使用“逗號+空格”分隔。
 
 ### XMLHttpRequest.getAllResponseHeaders()
 
-`XMLHttpRequest.getAllResponseHeaders()`方法返回一个字符串，表示服务器发来的所有 HTTP 头信息。格式为字符串，每个头信息之间使用`CRLF`分隔（回车+换行），如果没有收到服务器回应，该属性为`null`。如果发生网络错误，该属性为空字符串。
+`XMLHttpRequest.getAllResponseHeaders()`方法返回一個字串，表示伺服器發來的所有 HTTP 頭資訊。格式為字串，每個頭資訊之間使用`CRLF`分隔（回車+換行），如果沒有收到伺服器迴應，該屬性為`null`。如果發生網路錯誤，該屬性為空字串。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -598,7 +598,7 @@ xhr.onreadystatechange = function () {
 }
 ```
 
-上面代码用于获取服务器返回的所有头信息。它可能是下面这样的字符串。
+上面程式碼用於獲取伺服器返回的所有頭資訊。它可能是下面這樣的字串。
 
 ```http
 date: Fri, 08 Dec 2017 21:04:30 GMT\r\n
@@ -614,7 +614,7 @@ content-length: 6502\r\n
 x-xss-protection: 1; mode=block\r\n
 ```
 
-然后，对这个字符串进行处理。
+然後，對這個字串進行處理。
 
 ```javascript
 var arr = headers.trim().split(/[\r\n]+/);
@@ -632,7 +632,7 @@ headerMap['content-length'] // "6502"
 
 ### XMLHttpRequest.abort()
 
-`XMLHttpRequest.abort()`方法用来终止已经发出的 HTTP 请求。调用这个方法以后，`readyState`属性变为`4`，`status`属性变为`0`。
+`XMLHttpRequest.abort()`方法用來終止已經發出的 HTTP 請求。呼叫這個方法以後，`readyState`屬性變為`4`，`status`屬性變為`0`。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -645,19 +645,19 @@ setTimeout(function () {
 }, 5000);
 ```
 
-上面代码在发出5秒之后，终止一个 AJAX 请求。
+上面程式碼在發出5秒之後，終止一個 AJAX 請求。
 
-## XMLHttpRequest 实例的事件
+## XMLHttpRequest 例項的事件
 
 ### readyStateChange 事件
 
-`readyState`属性的值发生改变，就会触发 readyStateChange 事件。
+`readyState`屬性的值發生改變，就會觸發 readyStateChange 事件。
 
-我们可以通过`onReadyStateChange`属性，指定这个事件的监听函数，对不同状态进行不同处理。尤其是当状态变为`4`的时候，表示通信成功，这时回调函数就可以处理服务器传送回来的数据。
+我們可以透過`onReadyStateChange`屬性，指定這個事件的監聽函式，對不同狀態進行不同處理。尤其是當狀態變為`4`的時候，表示通訊成功，這時回撥函式就可以處理伺服器傳送回來的資料。
 
 ### progress 事件
 
-上传文件时，XMLHttpRequest 实例对象本身和实例的`upload`属性，都有一个`progress`事件，会不断返回上传的进度。
+上傳檔案時，XMLHttpRequest 例項物件本身和例項的`upload`屬性，都有一個`progress`事件，會不斷返回上傳的進度。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -666,7 +666,7 @@ function updateProgress (oEvent) {
   if (oEvent.lengthComputable) {
     var percentComplete = oEvent.loaded / oEvent.total;
   } else {
-    console.log('无法计算进展');
+    console.log('無法計算進展');
   }
 }
 
@@ -677,7 +677,7 @@ xhr.open();
 
 ### load 事件、error 事件、abort 事件
 
-load 事件表示服务器传来的数据接收完毕，error 事件表示请求出错，abort 事件表示请求被中断（比如用户取消请求）。
+load 事件表示伺服器傳來的資料接收完畢，error 事件表示請求出錯，abort 事件表示請求被中斷（比如使用者取消請求）。
 
 ```javascript
 var xhr = new XMLHttpRequest();
@@ -689,39 +689,39 @@ xhr.addEventListener('abort', transferCanceled);
 xhr.open();
 
 function transferComplete() {
-  console.log('数据接收完毕');
+  console.log('資料接收完畢');
 }
 
 function transferFailed() {
-  console.log('数据接收出错');
+  console.log('資料接收出錯');
 }
 
 function transferCanceled() {
-  console.log('用户取消接收');
+  console.log('使用者取消接收');
 }
 ```
 
 ### loadend 事件
 
-`abort`、`load`和`error`这三个事件，会伴随一个`loadend`事件，表示请求结束，但不知道其是否成功。
+`abort`、`load`和`error`這三個事件，會伴隨一個`loadend`事件，表示請求結束，但不知道其是否成功。
 
 ```javascript
 xhr.addEventListener('loadend', loadEnd);
 
 function loadEnd(e) {
-  console.log('请求结束，状态未知');
+  console.log('請求結束，狀態未知');
 }
 ```
 
 ### timeout 事件
 
-服务器超过指定时间还没有返回结果，就会触发 timeout 事件，具体的例子参见`timeout`属性一节。
+伺服器超過指定時間還沒有返回結果，就會觸發 timeout 事件，具體的例子參見`timeout`屬性一節。
 
 ## Navigator.sendBeacon()
 
-用户卸载网页的时候，有时需要向服务器发一些数据。很自然的做法是在`unload`事件或`beforeunload`事件的监听函数里面，使用`XMLHttpRequest`对象发送数据。但是，这样做不是很可靠，因为`XMLHttpRequest`对象是异步发送，很可能在它即将发送的时候，页面已经卸载了，从而导致发送取消或者发送失败。
+使用者解除安裝網頁的時候，有時需要向伺服器發一些資料。很自然的做法是在`unload`事件或`beforeunload`事件的監聽函式裡面，使用`XMLHttpRequest`物件傳送資料。但是，這樣做不是很可靠，因為`XMLHttpRequest`物件是非同步傳送，很可能在它即將傳送的時候，頁面已經解除安裝了，從而導致傳送取消或者傳送失敗。
 
-解决方法就是`unload`事件里面，加一些很耗时的同步操作。这样就能留出足够的时间，保证异步 AJAX 能够发送成功。
+解決方法就是`unload`事件裡面，加一些很耗時的同步操作。這樣就能留出足夠的時間，保證非同步 AJAX 能夠傳送成功。
 
 ```javascript
 function log() {
@@ -741,12 +741,12 @@ window.addEventListener('unload', function(event) {
 });
 ```
 
-上面代码中，强制执行了一次双重循环，拖长了`unload`事件的执行时间，导致异步 AJAX 能够发送成功。
+上面程式碼中，強制執行了一次雙重迴圈，拖長了`unload`事件的執行時間，導致非同步 AJAX 能夠傳送成功。
 
-类似的还可以使用`setTimeout`。下面是追踪用户点击的例子。
+類似的還可以使用`setTimeout`。下面是追蹤使用者點選的例子。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <a id="target" href="https://baidu.com">click</a>
 const clickTime = 350;
 const theLink = document.getElementById('target');
@@ -768,11 +768,11 @@ theLink.addEventListener('click', function (event) {
 });
 ```
 
-上面代码使用`setTimeout`，拖延了350毫秒，才让页面跳转，因此使得异步 AJAX 有时间发出。
+上面程式碼使用`setTimeout`，拖延了350毫秒，才讓頁面跳轉，因此使得非同步 AJAX 有時間發出。
 
-这些做法的共同问题是，卸载的时间被硬生生拖长了，后面页面的加载被推迟了，用户体验不好。
+這些做法的共同問題是，解除安裝的時間被硬生生拖長了，後面頁面的載入被推遲了，使用者體驗不好。
 
-为了解决这个问题，浏览器引入了`Navigator.sendBeacon()`方法。这个方法还是异步发出请求，但是请求与当前页面线程脱钩，作为浏览器进程的任务，因此可以保证会把数据发出去，不拖延卸载流程。
+為了解決這個問題，瀏覽器引入了`Navigator.sendBeacon()`方法。這個方法還是非同步發出請求，但是請求與當前頁面執行緒脫鉤，作為瀏覽器程序的任務，因此可以保證會把資料發出去，不拖延解除安裝流程。
 
 ```javascript
 window.addEventListener('unload', logData, false);
@@ -782,20 +782,20 @@ function logData() {
 }
 ```
 
-`Navigator.sendBeacon`方法接受两个参数，第一个参数是目标服务器的 URL，第二个参数是所要发送的数据（可选），可以是任意类型（字符串、表单对象、二进制对象等等）。
+`Navigator.sendBeacon`方法接受兩個引數，第一個引數是目標伺服器的 URL，第二個引數是所要傳送的資料（可選），可以是任意型別（字串、表單物件、二進位制物件等等）。
 
 ```javascript
 navigator.sendBeacon(url, data)
 ```
 
-这个方法的返回值是一个布尔值，成功发送数据为`true`，否则为`false`。
+這個方法的返回值是一個布林值，成功傳送資料為`true`，否則為`false`。
 
-该方法发送数据的 HTTP 方法是 POST，可以跨域，类似于表单提交数据。它不能指定回调函数。
+該方法傳送資料的 HTTP 方法是 POST，可以跨域，類似於表單提交資料。它不能指定回撥函式。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <body onload="analytics('start')" onunload="analytics('end')">
 
 function analytics(state) {

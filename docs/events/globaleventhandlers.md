@@ -1,29 +1,29 @@
-# GlobalEventHandlers 接口
+# GlobalEventHandlers 介面
 
-指定事件的回调函数，推荐使用的方法是元素的`addEventListener`方法。
+指定事件的回撥函式，推薦使用的方法是元素的`addEventListener`方法。
 
 ```javascript
 div.addEventListener('click', clickHandler, false);
 ```
 
-除了之外，还有一种方法可以直接指定事件的回调函数。
+除了之外，還有一種方法可以直接指定事件的回撥函式。
 
 ```javascript
 div.onclick = clickHandler;
 ```
 
-这个接口是由`GlobalEventHandlers`接口提供的。它的优点是使用比较方便，缺点是只能为每个事件指定一个回调函数，并且无法指定事件触发的阶段（捕获阶段还是冒泡阶段）。
+這個介面是由`GlobalEventHandlers`介面提供的。它的優點是使用比較方便，缺點是隻能為每個事件指定一個回撥函式，並且無法指定事件觸發的階段（捕獲階段還是冒泡階段）。
 
-`HTMLElement`、`Document`和`Window`都继承了这个接口，也就是说，各种 HTML 元素、`document`对象、`window`对象上面都可以使用`GlobalEventHandlers`接口提供的属性。下面就列出这个接口提供的主要的事件属性。
+`HTMLElement`、`Document`和`Window`都繼承了這個介面，也就是說，各種 HTML 元素、`document`物件、`window`物件上面都可以使用`GlobalEventHandlers`介面提供的屬性。下面就列出這個介面提供的主要的事件屬性。
 
 ## GlobalEventHandlers.onabort
 
-某个对象的`abort`事件（停止加载）发生时，就会调用`onabort`属性指定的回调函数。
+某個物件的`abort`事件（停止載入）發生時，就會呼叫`onabort`屬性指定的回撥函式。
 
-各种元素的停止加载事件，到底如何触发，目前并没有统一的规定。因此实际上，这个属性现在一般只用在`<img>`元素上面。
+各種元素的停止載入事件，到底如何觸發，目前並沒有統一的規定。因此實際上，這個屬性現在一般只用在`<img>`元素上面。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <img src="example.jpg" id="img">
 var img = document.getElementById('img');
 img.onabort = function () {
@@ -33,11 +33,11 @@ img.onabort = function () {
 
 ## GlobalEventHandlers.onerror
 
-`error`事件发生时，就会调用`onerror`属性指定的回调函数。
+`error`事件發生時，就會呼叫`onerror`屬性指定的回撥函式。
 
-`error`事件分成两种。
+`error`事件分成兩種。
 
-一种是 JavaScript 的运行时错误，这会传到`window`对象，导致`window.onerror()`。
+一種是 JavaScript 的執行時錯誤，這會傳到`window`物件，導致`window.onerror()`。
 
 ```javascript
 window.onerror = function (message, source, lineno, colno, error) {
@@ -45,15 +45,15 @@ window.onerror = function (message, source, lineno, colno, error) {
 }
 ```
 
-`window.onerror`的处理函数共接受五个参数，含义如下。
+`window.onerror`的處理函式共接受五個引數，含義如下。
 
-- message：错误信息字符串
-- source：报错脚本的 URL
-- lineno：报错的行号，是一个整数
-- colno：报错的列号，是一个整数
-- error： 错误对象
+- message：錯誤資訊字串
+- source：報錯指令碼的 URL
+- lineno：報錯的行號，是一個整數
+- colno：報錯的列號，是一個整數
+- error： 錯誤物件
 
-另一种是资源加载错误，比如`<img>`或`<script>`加载的资源出现加载错误。这时，Error 对象会传到对应的元素，导致该元素的`onerror`属性开始执行。
+另一種是資源載入錯誤，比如`<img>`或`<script>`載入的資源出現載入錯誤。這時，Error 物件會傳到對應的元素，導致該元素的`onerror`屬性開始執行。
 
 ```javascript
 element.onerror = function (event) {
@@ -61,17 +61,17 @@ element.onerror = function (event) {
 }
 ```
 
-注意，一般来说，资源的加载错误不会触发`window.onerror`。
+注意，一般來說，資源的載入錯誤不會觸發`window.onerror`。
 
 ## GlobalEventHandlers.onload、GlobalEventHandlers.onloadstart
 
-元素完成加载时，会触发`load`事件，执行`onload()`。它的典型使用场景是`window`对象和`<img>`元素。对于`window`对象来说，只有页面的所有资源加载完成（包括图片、脚本、样式表、字体等所有外部资源），才会触发`load`事件。
+元素完成載入時，會觸發`load`事件，執行`onload()`。它的典型使用場景是`window`物件和`<img>`元素。對於`window`物件來說，只有頁面的所有資源載入完成（包括圖片、指令碼、樣式表、字型等所有外部資源），才會觸發`load`事件。
 
-对于`<img>`和`<video>`等元素，加载开始时还会触发`loadstart`事件，导致执行`onloadstart`。
+對於`<img>`和`<video>`等元素，載入開始時還會觸發`loadstart`事件，導致執行`onloadstart`。
 
 ## GlobalEventHandlers.onfocus，GlobalEventHandlers.onblur
 
-当前元素获得焦点时，会触发`element.onfocus`；失去焦点时，会触发`element.onblur`。
+當前元素獲得焦點時，會觸發`element.onfocus`；失去焦點時，會觸發`element.onblur`。
 
 ```javascript
 element.onfocus = function () {
@@ -82,15 +82,15 @@ element.onblur = function () {
 };
 ```
 
-注意，如果不是可以接受用户输入的元素，要触发`onfocus`，该元素必须有`tabindex`属性。
+注意，如果不是可以接受使用者輸入的元素，要觸發`onfocus`，該元素必須有`tabindex`屬性。
 
 ## GlobalEventHandlers.onscroll
 
-页面或元素滚动时，会触发`scroll`事件，导致执行`onscroll()`。
+頁面或元素滾動時，會觸發`scroll`事件，導致執行`onscroll()`。
 
 ## GlobalEventHandlers.oncontextmenu，GlobalEventHandlers.onshow
 
-用户在页面上按下鼠标的右键，会触发`contextmenu`事件，导致执行`oncontextmenu()`。如果该属性执行后返回`false`，就等于禁止了右键菜单。`document.oncontextmenu`与`window.oncontextmenu`效果一样。
+使用者在頁面上按下滑鼠的右鍵，會觸發`contextmenu`事件，導致執行`oncontextmenu()`。如果該屬性執行後返回`false`，就等於禁止了右鍵選單。`document.oncontextmenu`與`window.oncontextmenu`效果一樣。
 
 ```javascript
 document.oncontextmenu = function () {
@@ -98,13 +98,13 @@ document.oncontextmenu = function () {
 };
 ```
 
-上面代码中，`oncontextmenu`属性执行后返回`false`，右键菜单就不会出现。
+上面程式碼中，`oncontextmenu`屬性執行後返回`false`，右鍵選單就不會出現。
 
-元素的右键菜单显示时，会触发该元素的`onshow`监听函数。
+元素的右鍵選單顯示時，會觸發該元素的`onshow`監聽函式。
 
-## 其他的事件属性
+## 其他的事件屬性
 
-鼠标的事件属性。
+滑鼠的事件屬性。
 
 - onclick
 - ondblclick
@@ -117,18 +117,18 @@ document.oncontextmenu = function () {
 - onmouseup
 - onwheel
 
-键盘的事件属性。
+鍵盤的事件屬性。
 
 - onkeydown
 - onkeypress
 - onkeyup
 
-焦点的事件属性。
+焦點的事件屬性。
 
 - onblur
 - onfocus
 
-表单的事件属性。
+表單的事件屬性。
 
 - oninput
 - onchange
@@ -137,29 +137,29 @@ document.oncontextmenu = function () {
 - oninvalid
 - onselect
 
-触摸的事件属性。
+觸控的事件屬性。
 
 - ontouchcancel
 - ontouchend
 - ontouchmove
 - ontouchstart
 
-拖动的事件属性分成两类：一类与被拖动元素相关，另一类与接收被拖动元素的容器元素相关。
+拖動的事件屬性分成兩類：一類與被拖動元素相關，另一類與接收被拖動元素的容器元素相關。
 
-被拖动元素的事件属性。
+被拖動元素的事件屬性。
 
-- ondragstart：拖动开始
-- ondrag：拖动过程中，每隔几百毫秒触发一次
-- ondragend：拖动结束
+- ondragstart：拖動開始
+- ondrag：拖動過程中，每隔幾百毫秒觸發一次
+- ondragend：拖動結束
 
-接收被拖动元素的容器元素的事件属性。
+接收被拖動元素的容器元素的事件屬性。
 
-- ondragenter：被拖动元素进入容器元素。
-- ondragleave：被拖动元素离开容器元素。
-- ondragover：被拖动元素在容器元素上方，每隔几百毫秒触发一次。
-- ondrop：松开鼠标后，被拖动元素放入容器元素。
+- ondragenter：被拖動元素進入容器元素。
+- ondragleave：被拖動元素離開容器元素。
+- ondragover：被拖動元素在容器元素上方，每隔幾百毫秒觸發一次。
+- ondrop：鬆開滑鼠後，被拖動元素放入容器元素。
 
-`<dialog>`对话框元素的事件属性。
+`<dialog>`對話方塊元素的事件屬性。
 
 - oncancel
 - onclose

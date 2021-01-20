@@ -1,20 +1,20 @@
-# Storage 接口
+# Storage 介面
 
 ## 概述
 
-Storage 接口用于脚本在浏览器保存数据。两个对象部署了这个接口：`window.sessionStorage`和`window.localStorage`。
+Storage 介面用於指令碼在瀏覽器儲存資料。兩個物件部署了這個介面：`window.sessionStorage`和`window.localStorage`。
 
-`sessionStorage`保存的数据用于浏览器的一次会话（session），当会话结束（通常是窗口关闭），数据被清空；`localStorage`保存的数据长期存在，下一次访问该网站的时候，网页可以直接读取以前保存的数据。除了保存期限的长短不同，这两个对象的其他方面都一致。
+`sessionStorage`儲存的資料用於瀏覽器的一次會話（session），當會話結束（通常是視窗關閉），資料被清空；`localStorage`儲存的資料長期存在，下一次訪問該網站的時候，網頁可以直接讀取以前儲存的資料。除了儲存期限的長短不同，這兩個物件的其他方面都一致。
 
-保存的数据都以“键值对”的形式存在。也就是说，每一项数据都有一个键名和对应的值。所有的数据都是以文本格式保存。
+儲存的資料都以“鍵值對”的形式存在。也就是說，每一項資料都有一個鍵名和對應的值。所有的資料都是以文字格式儲存。
 
-这个接口很像 Cookie 的强化版，能够使用大得多的存储空间。目前，每个域名的存储上限视浏览器而定，Chrome 是 2.5MB，Firefox 和 Opera 是 5MB，IE 是 10MB。其中，Firefox 的存储空间由一级域名决定，而其他浏览器没有这个限制。也就是说，Firefox 中，`a.example.com`和`b.example.com`共享 5MB 的存储空间。另外，与 Cookie 一样，它们也受同域限制。某个网页存入的数据，只有同域下的网页才能读取，如果跨域操作会报错。
+這個介面很像 Cookie 的強化版，能夠使用大得多的儲存空間。目前，每個域名的儲存上限視瀏覽器而定，Chrome 是 2.5MB，Firefox 和 Opera 是 5MB，IE 是 10MB。其中，Firefox 的儲存空間由一級域名決定，而其他瀏覽器沒有這個限制。也就是說，Firefox 中，`a.example.com`和`b.example.com`共享 5MB 的儲存空間。另外，與 Cookie 一樣，它們也受同域限制。某個網頁存入的資料，只有同域下的網頁才能讀取，如果跨域操作會報錯。
 
-## 属性和方法
+## 屬性和方法
 
-Storage 接口只有一个属性。
+Storage 介面只有一個屬性。
 
-- `Storage.length`：返回保存的数据项个数。
+- `Storage.length`：返回儲存的資料項個數。
 
 ```javascript
 window.localStorage.setItem('foo', 'a');
@@ -24,32 +24,32 @@ window.localStorage.setItem('baz', 'c');
 window.localStorage.length // 3
 ```
 
-该接口提供5个方法。
+該介面提供5個方法。
 
 ### Storage.setItem()
 
-`Storage.setItem()`方法用于存入数据。它接受两个参数，第一个是键名，第二个是保存的数据。如果键名已经存在，该方法会更新已有的键值。该方法没有返回值。
+`Storage.setItem()`方法用於存入資料。它接受兩個引數，第一個是鍵名，第二個是儲存的資料。如果鍵名已經存在，該方法會更新已有的鍵值。該方法沒有返回值。
 
 ```javascript
 window.sessionStorage.setItem('key', 'value');
 window.localStorage.setItem('key', 'value');
 ```
 
-注意，`Storage.setItem()`两个参数都是字符串。如果不是字符串，会自动转成字符串，再存入浏览器。
+注意，`Storage.setItem()`兩個引數都是字串。如果不是字串，會自動轉成字串，再存入瀏覽器。
 
 ```javascript
 window.sessionStorage.setItem(3, { foo: 1 });
 window.sessionStorage.getItem('3') // "[object Object]"
 ```
 
-上面代码中，`setItem`方法的两个参数都不是字符串，但是存入的值都是字符串。
+上面程式碼中，`setItem`方法的兩個引數都不是字串，但是存入的值都是字串。
 
-如果储存空间已满，该方法会抛错。
+如果儲存空間已滿，該方法會拋錯。
 
-写入不一定要用这个方法，直接赋值也是可以的。
+寫入不一定要用這個方法，直接賦值也是可以的。
 
 ```javascript
-// 下面三种写法等价
+// 下面三種寫法等價
 window.localStorage.foo = '123';
 window.localStorage['foo'] = '123';
 window.localStorage.setItem('foo', '123');
@@ -57,18 +57,18 @@ window.localStorage.setItem('foo', '123');
 
 ### Storage.getItem()
 
-`Storage.getItem()`方法用于读取数据。它只有一个参数，就是键名。如果键名不存在，该方法返回`null`。
+`Storage.getItem()`方法用於讀取資料。它只有一個引數，就是鍵名。如果鍵名不存在，該方法返回`null`。
 
 ```javascript
 window.sessionStorage.getItem('key')
 window.localStorage.getItem('key')
 ```
 
-键名应该是一个字符串，否则会被自动转为字符串。
+鍵名應該是一個字串，否則會被自動轉為字串。
 
 ### Storage.removeItem()
 
-`Storage.removeItem()`方法用于清除某个键名对应的键值。它接受键名作为参数，如果键名不存在，该方法不会做任何事情。
+`Storage.removeItem()`方法用於清除某個鍵名對應的鍵值。它接受鍵名作為引數，如果鍵名不存在，該方法不會做任何事情。
 
 ```javascript
 sessionStorage.removeItem('key');
@@ -77,7 +77,7 @@ localStorage.removeItem('key');
 
 ### Storage.clear()
 
-`Storage.clear()`方法用于清除所有保存的数据。该方法的返回值是`undefined`。
+`Storage.clear()`方法用於清除所有儲存的資料。該方法的返回值是`undefined`。
 
 ```javascript
 window.sessionStorage.clear()
@@ -86,14 +86,14 @@ window.localStorage.clear()
 
 ### Storage.key()
 
-`Storage.key()`接受一个整数作为参数（从零开始），返回该位置对应的键值。
+`Storage.key()`接受一個整數作為引數（從零開始），返回該位置對應的鍵值。
 
 ```javascript
 window.sessionStorage.setItem('key', 'value');
 window.sessionStorage.key(0) // "key"
 ```
 
-结合使用`Storage.length`属性和`Storage.key()`方法，可以遍历所有的键。
+結合使用`Storage.length`屬性和`Storage.key()`方法，可以遍歷所有的鍵。
 
 ```javascript
 for (var i = 0; i < window.localStorage.length; i++) {
@@ -103,21 +103,21 @@ for (var i = 0; i < window.localStorage.length; i++) {
 
 ## storage 事件
 
-Storage 接口储存的数据发生变化时，会触发 storage 事件，可以指定这个事件的监听函数。
+Storage 介面儲存的資料發生變化時，會觸發 storage 事件，可以指定這個事件的監聽函式。
 
 ```javascript
 window.addEventListener('storage', onStorageChange);
 ```
 
-监听函数接受一个`event`实例对象作为参数。这个实例对象继承了 StorageEvent 接口，有几个特有的属性，都是只读属性。
+監聽函式接受一個`event`例項物件作為引數。這個例項物件繼承了 StorageEvent 介面，有幾個特有的屬性，都是隻讀屬性。
 
-- `StorageEvent.key`：字符串，表示发生变动的键名。如果 storage 事件是由`clear()`方法引起，该属性返回`null`。
-- `StorageEvent.newValue`：字符串，表示新的键值。如果 storage 事件是由`clear()`方法或删除该键值对引发的，该属性返回`null`。
-- `StorageEvent.oldValue`：字符串，表示旧的键值。如果该键值对是新增的，该属性返回`null`。
-- `StorageEvent.storageArea`：对象，返回键值对所在的整个对象。也说是说，可以从这个属性上面拿到当前域名储存的所有键值对。
-- `StorageEvent.url`：字符串，表示原始触发 storage 事件的那个网页的网址。
+- `StorageEvent.key`：字串，表示發生變動的鍵名。如果 storage 事件是由`clear()`方法引起，該屬性返回`null`。
+- `StorageEvent.newValue`：字串，表示新的鍵值。如果 storage 事件是由`clear()`方法或刪除該鍵值對引發的，該屬性返回`null`。
+- `StorageEvent.oldValue`：字串，表示舊的鍵值。如果該鍵值對是新增的，該屬性返回`null`。
+- `StorageEvent.storageArea`：物件，返回鍵值對所在的整個物件。也說是說，可以從這個屬性上面拿到當前域名儲存的所有鍵值對。
+- `StorageEvent.url`：字串，表示原始觸發 storage 事件的那個網頁的網址。
 
-下面是`StorageEvent.key`属性的例子。
+下面是`StorageEvent.key`屬性的例子。
 
 ```javascript
 function onStorageChange(e) {
@@ -127,9 +127,9 @@ function onStorageChange(e) {
 window.addEventListener('storage', onStorageChange);
 ```
 
-注意，该事件有一个很特别的地方，就是它不在导致数据变化的当前页面触发，而是在同一个域名的其他窗口触发。也就是说，如果浏览器只打开一个窗口，可能观察不到这个事件。比如同时打开多个窗口，当其中的一个窗口导致储存的数据发生改变时，只有在其他窗口才能观察到监听函数的执行。可以通过这种机制，实现多个窗口之间的通信。
+注意，該事件有一個很特別的地方，就是它不在導致資料變化的當前頁面觸發，而是在同一個域名的其他視窗觸發。也就是說，如果瀏覽器只打開一個視窗，可能觀察不到這個事件。比如同時開啟多個視窗，當其中的一個視窗導致儲存的資料發生改變時，只有在其他窗口才能觀察到監聽函式的執行。可以透過這種機制，實現多個視窗之間的通訊。
 
-## 参考链接
+## 參考連結
 
 - Ryan Stewart，[Introducing the HTML5 storage APIs](http://www.adobe.com/devnet/html5/articles/html5-storage-apis.html)
 - [Getting Started with LocalStorage](http://codular.com/localstorage)

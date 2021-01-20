@@ -1,10 +1,10 @@
-# 属性描述对象
+# 屬性描述物件
 
 ## 概述
 
-JavaScript 提供了一个内部数据结构，用来描述对象的属性，控制它的行为，比如该属性是否可写、可遍历等等。这个内部数据结构称为“属性描述对象”（attributes object）。每个属性都有自己对应的属性描述对象，保存该属性的一些元信息。
+JavaScript 提供了一個內部資料結構，用來描述物件的屬性，控制它的行為，比如該屬性是否可寫、可遍歷等等。這個內部資料結構稱為“屬性描述物件”（attributes object）。每個屬性都有自己對應的屬性描述物件，儲存該屬性的一些元資訊。
 
-下面是属性描述对象的一个例子。
+下面是屬性描述物件的一個例子。
 
 ```javascript
 {
@@ -17,35 +17,35 @@ JavaScript 提供了一个内部数据结构，用来描述对象的属性，控
 }
 ```
 
-属性描述对象提供6个元属性。
+屬性描述物件提供6個元屬性。
 
 （1）`value`
 
-`value`是该属性的属性值，默认为`undefined`。
+`value`是該屬性的屬性值，預設為`undefined`。
 
 （2）`writable`
 
-`writable`是一个布尔值，表示属性值（value）是否可改变（即是否可写），默认为`true`。
+`writable`是一個布林值，表示屬性值（value）是否可改變（即是否可寫），預設為`true`。
 
 （3）`enumerable`
 
-`enumerable`是一个布尔值，表示该属性是否可遍历，默认为`true`。如果设为`false`，会使得某些操作（比如`for...in`循环、`Object.keys()`）跳过该属性。
+`enumerable`是一個布林值，表示該屬性是否可遍歷，預設為`true`。如果設為`false`，會使得某些操作（比如`for...in`迴圈、`Object.keys()`）跳過該屬性。
 
 （4）`configurable`
 
-`configurable`是一个布尔值，表示可配置性，默认为`true`。如果设为`false`，将阻止某些操作改写该属性，比如无法删除该属性，也不得改变该属性的属性描述对象（`value`属性除外）。也就是说，`configurable`属性控制了属性描述对象的可写性。
+`configurable`是一個布林值，表示可配置性，預設為`true`。如果設為`false`，將阻止某些操作改寫該屬性，比如無法刪除該屬性，也不得改變該屬性的屬性描述物件（`value`屬性除外）。也就是說，`configurable`屬性控制了屬性描述物件的可寫性。
 
 （5）`get`
 
-`get`是一个函数，表示该属性的取值函数（getter），默认为`undefined`。
+`get`是一個函式，表示該屬性的取值函式（getter），預設為`undefined`。
 
 （6）`set`
 
-`set`是一个函数，表示该属性的存值函数（setter），默认为`undefined`。
+`set`是一個函式，表示該屬性的存值函式（setter），預設為`undefined`。
 
 ## Object.getOwnPropertyDescriptor()
 
-`Object.getOwnPropertyDescriptor()`方法可以获取属性描述对象。它的第一个参数是目标对象，第二个参数是一个字符串，对应目标对象的某个属性名。
+`Object.getOwnPropertyDescriptor()`方法可以獲取屬性描述物件。它的第一個引數是目標物件，第二個引數是一個字串，對應目標物件的某個屬性名。
 
 ```javascript
 var obj = { p: 'a' };
@@ -58,9 +58,9 @@ Object.getOwnPropertyDescriptor(obj, 'p')
 // }
 ```
 
-上面代码中，`Object.getOwnPropertyDescriptor()`方法获取`obj.p`的属性描述对象。
+上面程式碼中，`Object.getOwnPropertyDescriptor()`方法獲取`obj.p`的屬性描述物件。
 
-注意，`Object.getOwnPropertyDescriptor()`方法只能用于对象自身的属性，不能用于继承的属性。
+注意，`Object.getOwnPropertyDescriptor()`方法只能用於物件自身的屬性，不能用於繼承的屬性。
 
 ```javascript
 var obj = { p: 'a' };
@@ -69,11 +69,11 @@ Object.getOwnPropertyDescriptor(obj, 'toString')
 // undefined
 ```
 
-上面代码中，`toString`是`obj`对象继承的属性，`Object.getOwnPropertyDescriptor()`无法获取。
+上面程式碼中，`toString`是`obj`物件繼承的屬性，`Object.getOwnPropertyDescriptor()`無法獲取。
 
 ## Object.getOwnPropertyNames()
 
-`Object.getOwnPropertyNames`方法返回一个数组，成员是参数对象自身的全部属性的属性名，不管该属性是否可遍历。
+`Object.getOwnPropertyNames`方法返回一個數組，成員是引數物件自身的全部屬性的屬性名，不管該屬性是否可遍歷。
 
 ```javascript
 var obj = Object.defineProperties({}, {
@@ -85,9 +85,9 @@ Object.getOwnPropertyNames(obj)
 // ["p1", "p2"]
 ```
 
-上面代码中，`obj.p1`是可遍历的，`obj.p2`是不可遍历的。`Object.getOwnPropertyNames`会将它们都返回。
+上面程式碼中，`obj.p1`是可遍歷的，`obj.p2`是不可遍歷的。`Object.getOwnPropertyNames`會將它們都返回。
 
-这跟`Object.keys`的行为不同，`Object.keys`只返回对象自身的可遍历属性的全部属性名。
+這跟`Object.keys`的行為不同，`Object.keys`只返回物件自身的可遍歷屬性的全部屬性名。
 
 ```javascript
 Object.keys([]) // []
@@ -104,23 +104,23 @@ Object.getOwnPropertyNames(Object.prototype)
 //  'toString']
 ```
 
-上面代码中，数组自身的`length`属性是不可遍历的，`Object.keys`不会返回该属性。第二个例子的`Object.prototype`也是一个对象，所有实例对象都会继承它，它自身的属性都是不可遍历的。
+上面程式碼中，陣列自身的`length`屬性是不可遍歷的，`Object.keys`不會返回該屬性。第二個例子的`Object.prototype`也是一個物件，所有例項物件都會繼承它，它自身的屬性都是不可遍歷的。
 
 ## Object.defineProperty()，Object.defineProperties()
 
-`Object.defineProperty()`方法允许通过属性描述对象，定义或修改一个属性，然后返回修改后的对象，它的用法如下。
+`Object.defineProperty()`方法允許透過屬性描述物件，定義或修改一個屬性，然後返回修改後的物件，它的用法如下。
 
 ```javascript
 Object.defineProperty(object, propertyName, attributesObject)
 ```
 
-`Object.defineProperty`方法接受三个参数，依次如下。
+`Object.defineProperty`方法接受三個引數，依次如下。
 
-- object：属性所在的对象
-- propertyName：字符串，表示属性名
-- attributesObject：属性描述对象
+- object：屬性所在的物件
+- propertyName：字串，表示屬性名
+- attributesObject：屬性描述物件
 
-举例来说，定义`obj.p`可以写成下面这样。
+舉例來說，定義`obj.p`可以寫成下面這樣。
 
 ```javascript
 var obj = Object.defineProperty({}, 'p', {
@@ -136,11 +136,11 @@ obj.p = 246;
 obj.p // 123
 ```
 
-上面代码中，`Object.defineProperty()`方法定义了`obj.p`属性。由于属性描述对象的`writable`属性为`false`，所以`obj.p`属性不可写。注意，这里的`Object.defineProperty`方法的第一个参数是`{}`（一个新建的空对象），`p`属性直接定义在这个空对象上面，然后返回这个对象，这是`Object.defineProperty()`的常见用法。
+上面程式碼中，`Object.defineProperty()`方法定義了`obj.p`屬性。由於屬性描述物件的`writable`屬性為`false`，所以`obj.p`屬性不可寫。注意，這裡的`Object.defineProperty`方法的第一個引數是`{}`（一個新建的空物件），`p`屬性直接定義在這個空物件上面，然後返回這個物件，這是`Object.defineProperty()`的常見用法。
 
-如果属性已经存在，`Object.defineProperty()`方法相当于更新该属性的属性描述对象。
+如果屬性已經存在，`Object.defineProperty()`方法相當於更新該屬性的屬性描述物件。
 
-如果一次性定义或修改多个属性，可以使用`Object.defineProperties()`方法。
+如果一次性定義或修改多個屬性，可以使用`Object.defineProperties()`方法。
 
 ```javascript
 var obj = Object.defineProperties({}, {
@@ -157,9 +157,9 @@ obj.p2 // "abc"
 obj.p3 // "123abc"
 ```
 
-上面代码中，`Object.defineProperties()`同时定义了`obj`对象的三个属性。其中，`p3`属性定义了取值函数`get`，即每次读取该属性，都会调用这个取值函数。
+上面程式碼中，`Object.defineProperties()`同時定義了`obj`物件的三個屬性。其中，`p3`屬性定義了取值函式`get`，即每次讀取該屬性，都會呼叫這個取值函式。
 
-注意，一旦定义了取值函数`get`（或存值函数`set`），就不能将`writable`属性设为`true`，或者同时定义`value`属性，否则会报错。
+注意，一旦定義了取值函式`get`（或存值函式`set`），就不能將`writable`屬性設為`true`，或者同時定義`value`屬性，否則會報錯。
 
 ```javascript
 var obj = {};
@@ -179,9 +179,9 @@ Object.defineProperty(obj, 'p', {
 // Cannot both specify accessors and a value or writable attribute
 ```
 
-上面代码中，同时定义了`get`属性和`value`属性，以及将`writable`属性设为`true`，就会报错。
+上面程式碼中，同時定義了`get`屬性和`value`屬性，以及將`writable`屬性設為`true`，就會報錯。
 
-`Object.defineProperty()`和`Object.defineProperties()`参数里面的属性描述对象，`writable`、`configurable`、`enumerable`这三个属性的默认值都为`false`。
+`Object.defineProperty()`和`Object.defineProperties()`引數裡面的屬性描述物件，`writable`、`configurable`、`enumerable`這三個屬性的預設值都為`false`。
 
 ```javascript
 var obj = {};
@@ -195,11 +195,11 @@ Object.getOwnPropertyDescriptor(obj, 'foo')
 // }
 ```
 
-上面代码中，定义`obj.foo`时用了一个空的属性描述对象，就可以看到各个元属性的默认值。
+上面程式碼中，定義`obj.foo`時用了一個空的屬性描述物件，就可以看到各個元屬性的預設值。
 
 ## Object.prototype.propertyIsEnumerable()
 
-实例对象的`propertyIsEnumerable()`方法返回一个布尔值，用来判断某个属性是否可遍历。注意，这个方法只能用于判断对象自身的属性，对于继承的属性一律返回`false`。
+例項物件的`propertyIsEnumerable()`方法返回一個布林值，用來判斷某個屬性是否可遍歷。注意，這個方法只能用於判斷物件自身的屬性，對於繼承的屬性一律返回`false`。
 
 ```javascript
 var obj = {};
@@ -209,15 +209,15 @@ obj.propertyIsEnumerable('p') // true
 obj.propertyIsEnumerable('toString') // false
 ```
 
-上面代码中，`obj.p`是可遍历的，而`obj.toString`是继承的属性。
+上面程式碼中，`obj.p`是可遍歷的，而`obj.toString`是繼承的屬性。
 
-## 元属性
+## 元屬性
 
-属性描述对象的各个属性称为“元属性”，因为它们可以看作是控制属性的属性。
+屬性描述物件的各個屬性稱為“元屬性”，因為它們可以看作是控制屬性的屬性。
 
 ### value
 
-`value`属性是目标属性的值。
+`value`屬性是目標屬性的值。
 
 ```javascript
 var obj = {};
@@ -230,11 +230,11 @@ Object.defineProperty(obj, 'p', { value: 246 });
 obj.p // 246
 ```
 
-上面代码是通过`value`属性，读取或改写`obj.p`的例子。
+上面程式碼是透過`value`屬性，讀取或改寫`obj.p`的例子。
 
 ### writable
 
-`writable`属性是一个布尔值，决定了目标属性的值（value）是否可以被改变。
+`writable`屬性是一個布林值，決定了目標屬性的值（value）是否可以被改變。
 
 ```javascript
 var obj = {};
@@ -249,9 +249,9 @@ obj.a = 25;
 obj.a // 37
 ```
 
-上面代码中，`obj.a`的`writable`属性是`false`。然后，改变`obj.a`的值，不会有任何效果。
+上面程式碼中，`obj.a`的`writable`屬性是`false`。然後，改變`obj.a`的值，不會有任何效果。
 
-注意，正常模式下，对`writable`为`false`的属性赋值不会报错，只会默默失败。但是，严格模式下会报错，即使对`a`属性重新赋予一个同样的值。
+注意，正常模式下，對`writable`為`false`的屬性賦值不會報錯，只會默默失敗。但是，嚴格模式下會報錯，即使對`a`屬性重新賦予一個同樣的值。
 
 ```javascript
 'use strict';
@@ -266,9 +266,9 @@ obj.a = 37;
 // Uncaught TypeError: Cannot assign to read only property 'a' of object
 ```
 
-上面代码是严格模式，对`obj.a`任何赋值行为都会报错。
+上面程式碼是嚴格模式，對`obj.a`任何賦值行為都會報錯。
 
-如果原型对象的某个属性的`writable`为`false`，那么子对象将无法自定义这个属性。
+如果原型物件的某個屬性的`writable`為`false`，那麼子物件將無法自定義這個屬性。
 
 ```javascript
 var proto = Object.defineProperty({}, 'foo', {
@@ -282,9 +282,9 @@ obj.foo = 'b';
 obj.foo // 'a'
 ```
 
-上面代码中，`proto`是原型对象，它的`foo`属性不可写。`obj`对象继承`proto`，也不可以再自定义这个属性了。如果是严格模式，这样做还会抛出一个错误。
+上面程式碼中，`proto`是原型物件，它的`foo`屬性不可寫。`obj`物件繼承`proto`，也不可以再自定義這個屬性了。如果是嚴格模式，這樣做還會丟擲一個錯誤。
 
-但是，有一个规避方法，就是通过覆盖属性描述对象，绕过这个限制。原因是这种情况下，原型链会被完全忽视。
+但是，有一個規避方法，就是透過覆蓋屬性描述物件，繞過這個限制。原因是這種情況下，原型鏈會被完全忽視。
 
 ```javascript
 var proto = Object.defineProperty({}, 'foo', {
@@ -302,26 +302,26 @@ obj.foo // "b"
 
 ### enumerable
 
-`enumerable`（可遍历性）返回一个布尔值，表示目标属性是否可遍历。
+`enumerable`（可遍歷性）返回一個布林值，表示目標屬性是否可遍歷。
 
-JavaScript 的早期版本，`for...in`循环是基于`in`运算符的。我们知道，`in`运算符不管某个属性是对象自身的还是继承的，都会返回`true`。
+JavaScript 的早期版本，`for...in`迴圈是基於`in`運算子的。我們知道，`in`運算子不管某個屬性是物件自身的還是繼承的，都會返回`true`。
 
 ```javascript
 var obj = {};
 'toString' in obj // true
 ```
 
-上面代码中，`toString`不是`obj`对象自身的属性，但是`in`运算符也返回`true`，这导致了`toString`属性也会被`for...in`循环遍历。
+上面程式碼中，`toString`不是`obj`物件自身的屬性，但是`in`運算子也返回`true`，這導致了`toString`屬性也會被`for...in`迴圈遍歷。
 
-这显然不太合理，后来就引入了“可遍历性”这个概念。只有可遍历的属性，才会被`for...in`循环遍历，同时还规定`toString`这一类实例对象继承的原生属性，都是不可遍历的，这样就保证了`for...in`循环的可用性。
+這顯然不太合理，後來就引入了“可遍歷性”這個概念。只有可遍歷的屬性，才會被`for...in`迴圈遍歷，同時還規定`toString`這一類例項物件繼承的原生屬性，都是不可遍歷的，這樣就保證了`for...in`迴圈的可用性。
 
-具体来说，如果一个属性的`enumerable`为`false`，下面三个操作不会取到该属性。
+具體來說，如果一個屬性的`enumerable`為`false`，下面三個操作不會取到該屬性。
 
-- `for..in`循环
+- `for..in`迴圈
 - `Object.keys`方法
 - `JSON.stringify`方法
 
-因此，`enumerable`可以用来设置“秘密”属性。
+因此，`enumerable`可以用來設定“祕密”屬性。
 
 ```javascript
 var obj = {};
@@ -342,15 +342,15 @@ Object.keys(obj)  // []
 JSON.stringify(obj) // "{}"
 ```
 
-上面代码中，`obj.x`属性的`enumerable`为`false`，所以一般的遍历操作都无法获取该属性，使得它有点像“秘密”属性，但不是真正的私有属性，还是可以直接获取它的值。
+上面程式碼中，`obj.x`屬性的`enumerable`為`false`，所以一般的遍歷操作都無法獲取該屬性，使得它有點像“祕密”屬性，但不是真正的私有屬性，還是可以直接獲取它的值。
 
-注意，`for...in`循环包括继承的属性，`Object.keys`方法不包括继承的属性。如果需要获取对象自身的所有属性，不管是否可遍历，可以使用`Object.getOwnPropertyNames`方法。
+注意，`for...in`迴圈包括繼承的屬性，`Object.keys`方法不包括繼承的屬性。如果需要獲取物件自身的所有屬性，不管是否可遍歷，可以使用`Object.getOwnPropertyNames`方法。
 
-另外，`JSON.stringify`方法会排除`enumerable`为`false`的属性，有时可以利用这一点。如果对象的 JSON 格式输出要排除某些属性，就可以把这些属性的`enumerable`设为`false`。
+另外，`JSON.stringify`方法會排除`enumerable`為`false`的屬性，有時可以利用這一點。如果物件的 JSON 格式輸出要排除某些屬性，就可以把這些屬性的`enumerable`設為`false`。
 
 ### configurable
 
-`configurable`(可配置性）返回一个布尔值，决定了是否可以修改属性描述对象。也就是说，`configurable`为`false`时，`value`、`writable`、`enumerable`和`configurable`都不能被修改了。
+`configurable`(可配置性）返回一個布林值，決定了是否可以修改屬性描述物件。也就是說，`configurable`為`false`時，`value`、`writable`、`enumerable`和`configurable`都不能被修改了。
 
 ```javascript
 var obj = Object.defineProperty({}, 'p', {
@@ -373,9 +373,9 @@ Object.defineProperty(obj, 'p', {configurable: true})
 // TypeError: Cannot redefine property: p
 ```
 
-上面代码中，`obj.p`的`configurable`为`false`。然后，改动`value`、`writable`、`enumerable`、`configurable`，结果都报错。
+上面程式碼中，`obj.p`的`configurable`為`false`。然後，改動`value`、`writable`、`enumerable`、`configurable`，結果都報錯。
 
-注意，`writable`只有在`false`改为`true`会报错，`true`改为`false`是允许的。
+注意，`writable`只有在`false`改為`true`會報錯，`true`改為`false`是允許的。
 
 ```javascript
 var obj = Object.defineProperty({}, 'p', {
@@ -387,7 +387,7 @@ Object.defineProperty(obj, 'p', {writable: false})
 // 修改成功
 ```
 
-至于`value`，只要`writable`和`configurable`有一个为`true`，就允许改动。
+至於`value`，只要`writable`和`configurable`有一個為`true`，就允許改動。
 
 ```javascript
 var o1 = Object.defineProperty({}, 'p', {
@@ -409,7 +409,7 @@ Object.defineProperty(o2, 'p', {value: 2})
 // 修改成功
 ```
 
-另外，`writable`为`false`时，直接目标属性赋值，不报错，但不会成功。
+另外，`writable`為`false`時，直接目標屬性賦值，不報錯，但不會成功。
 
 ```javascript
 var obj = Object.defineProperty({}, 'p', {
@@ -422,9 +422,9 @@ obj.p = 2;
 obj.p // 1
 ```
 
-上面代码中，`obj.p`的`writable`为`false`，对`obj.p`直接赋值不会生效。如果是严格模式，还会报错。
+上面程式碼中，`obj.p`的`writable`為`false`，對`obj.p`直接賦值不會生效。如果是嚴格模式，還會報錯。
 
-可配置性决定了目标属性是否可以被删除（delete）。
+可配置性決定了目標屬性是否可以被刪除（delete）。
 
 ```javascript
 var obj = Object.defineProperties({}, {
@@ -439,13 +439,13 @@ obj.p1 // undefined
 obj.p2 // 2
 ```
 
-上面代码中，`obj.p1`的`configurable`是`true`，所以可以被删除，`obj.p2`就无法删除。
+上面程式碼中，`obj.p1`的`configurable`是`true`，所以可以被刪除，`obj.p2`就無法刪除。
 
 ## 存取器
 
-除了直接定义以外，属性还可以用存取器（accessor）定义。其中，存值函数称为`setter`，使用属性描述对象的`set`属性；取值函数称为`getter`，使用属性描述对象的`get`属性。
+除了直接定義以外，屬性還可以用存取器（accessor）定義。其中，存值函式稱為`setter`，使用屬性描述物件的`set`屬性；取值函式稱為`getter`，使用屬性描述物件的`get`屬性。
 
-一旦对目标属性定义了存取器，那么存取的时候，都将执行对应的函数。利用这个功能，可以实现许多高级特性，比如定制属性的读取和赋值行为。
+一旦對目標屬性定義了存取器，那麼存取的時候，都將執行對應的函式。利用這個功能，可以實現許多高階特性，比如定製屬性的讀取和賦值行為。
 
 ```javascript
 var obj = Object.defineProperty({}, 'p', {
@@ -461,12 +461,12 @@ obj.p // "getter"
 obj.p = 123 // "setter: 123"
 ```
 
-上面代码中，`obj.p`定义了`get`和`set`属性。`obj.p`取值时，就会调用`get`；赋值时，就会调用`set`。
+上面程式碼中，`obj.p`定義了`get`和`set`屬性。`obj.p`取值時，就會呼叫`get`；賦值時，就會呼叫`set`。
 
-JavaScript 还提供了存取器的另一种写法。
+JavaScript 還提供了存取器的另一種寫法。
 
 ```javascript
-// 写法二
+// 寫法二
 var obj = {
   get p() {
     return 'getter';
@@ -477,11 +477,11 @@ var obj = {
 };
 ```
 
-上面两种写法，虽然属性`p`的读取和赋值行为是一样的，但是有一些细微的区别。第一种写法，属性`p`的`configurable`和`enumerable`都为`false`，从而导致属性`p`是不可遍历的；第二种写法，属性`p`的`configurable`和`enumerable`都为`true`，因此属性`p`是可遍历的。实际开发中，写法二更常用。
+上面兩種寫法，雖然屬性`p`的讀取和賦值行為是一樣的，但是有一些細微的區別。第一種寫法，屬性`p`的`configurable`和`enumerable`都為`false`，從而導致屬性`p`是不可遍歷的；第二種寫法，屬性`p`的`configurable`和`enumerable`都為`true`，因此屬性`p`是可遍歷的。實際開發中，寫法二更常用。
 
-注意，取值函数`get`不能接受参数，存值函数`set`只能接受一个参数（即属性的值）。
+注意，取值函式`get`不能接受引數，存值函式`set`只能接受一個引數（即屬性的值）。
 
-存取器往往用于，属性的值依赖对象内部数据的场合。
+存取器往往用於，屬性的值依賴物件內部資料的場合。
 
 ```javascript
 var obj ={
@@ -489,7 +489,7 @@ var obj ={
   get next() { return this.$n++ },
   set next(n) {
     if (n >= this.$n) this.$n = n;
-    else throw new Error('新的值必须大于当前值');
+    else throw new Error('新的值必須大於當前值');
   }
 };
 
@@ -499,14 +499,14 @@ obj.next = 10;
 obj.next // 10
 
 obj.next = 5;
-// Uncaught Error: 新的值必须大于当前值
+// Uncaught Error: 新的值必須大於當前值
 ```
 
-上面代码中，`next`属性的存值函数和取值函数，都依赖于内部属性`$n`。
+上面程式碼中，`next`屬性的存值函式和取值函式，都依賴於內部屬性`$n`。
 
-## 对象的拷贝
+## 物件的複製
 
-有时，我们需要将一个对象的所有属性，拷贝到另一个对象，可以用下面的方法实现。
+有時，我們需要將一個物件的所有屬性，複製到另一個物件，可以用下面的方法實現。
 
 ```javascript
 var extend = function (to, from) {
@@ -523,7 +523,7 @@ extend({}, {
 // {a: 1}
 ```
 
-上面这个方法的问题在于，如果遇到存取器定义的属性，会只拷贝值。
+上面這個方法的問題在於，如果遇到存取器定義的屬性，會只複製值。
 
 ```javascript
 extend({}, {
@@ -532,7 +532,7 @@ extend({}, {
 // {a: 1}
 ```
 
-为了解决这个问题，我们可以通过`Object.defineProperty`方法来拷贝属性。
+為了解決這個問題，我們可以透過`Object.defineProperty`方法來複製屬性。
 
 ```javascript
 var extend = function (to, from) {
@@ -552,15 +552,15 @@ extend({}, { get a(){ return 1 } })
 // { get a(){ return 1 } })
 ```
 
-上面代码中，`hasOwnProperty`那一行用来过滤掉继承的属性，否则可能会报错，因为`Object.getOwnPropertyDescriptor`读不到继承属性的属性描述对象。
+上面程式碼中，`hasOwnProperty`那一行用來過濾掉繼承的屬性，否則可能會報錯，因為`Object.getOwnPropertyDescriptor`讀不到繼承屬性的屬性描述物件。
 
-## 控制对象状态
+## 控制物件狀態
 
-有时需要冻结对象的读写状态，防止对象被改变。JavaScript 提供了三种冻结方法，最弱的一种是`Object.preventExtensions`，其次是`Object.seal`，最强的是`Object.freeze`。
+有時需要凍結物件的讀寫狀態，防止物件被改變。JavaScript 提供了三種凍結方法，最弱的一種是`Object.preventExtensions`，其次是`Object.seal`，最強的是`Object.freeze`。
 
 ### Object.preventExtensions()
 
-`Object.preventExtensions`方法可以使得一个对象无法再添加新的属性。
+`Object.preventExtensions`方法可以使得一個物件無法再新增新的屬性。
 
 ```javascript
 var obj = new Object();
@@ -575,11 +575,11 @@ obj.p = 1;
 obj.p // undefined
 ```
 
-上面代码中，`obj`对象经过`Object.preventExtensions`以后，就无法添加新属性了。
+上面程式碼中，`obj`物件經過`Object.preventExtensions`以後，就無法新增新屬性了。
 
 ### Object.isExtensible()
 
-`Object.isExtensible`方法用于检查一个对象是否使用了`Object.preventExtensions`方法。也就是说，检查是否可以为一个对象添加属性。
+`Object.isExtensible`方法用於檢查一個物件是否使用了`Object.preventExtensions`方法。也就是說，檢查是否可以為一個物件新增屬性。
 
 ```javascript
 var obj = new Object();
@@ -589,11 +589,11 @@ Object.preventExtensions(obj);
 Object.isExtensible(obj) // false
 ```
 
-上面代码中，对`obj`对象使用`Object.preventExtensions`方法以后，再使用`Object.isExtensible`方法，返回`false`，表示已经不能添加新属性了。
+上面程式碼中，對`obj`物件使用`Object.preventExtensions`方法以後，再使用`Object.isExtensible`方法，返回`false`，表示已經不能新增新屬性了。
 
 ### Object.seal()
 
-`Object.seal`方法使得一个对象既无法添加新属性，也无法删除旧属性。
+`Object.seal`方法使得一個物件既無法新增新屬性，也無法刪除舊屬性。
 
 ```javascript
 var obj = { p: 'hello' };
@@ -606,9 +606,9 @@ obj.x = 'world';
 obj.x // undefined
 ```
 
-上面代码中，`obj`对象执行`Object.seal`方法以后，就无法添加新属性和删除旧属性了。
+上面程式碼中，`obj`物件執行`Object.seal`方法以後，就無法新增新屬性和刪除舊屬性了。
 
-`Object.seal`实质是把属性描述对象的`configurable`属性设为`false`，因此属性描述对象不再能改变了。
+`Object.seal`實質是把屬性描述物件的`configurable`屬性設為`false`，因此屬性描述物件不再能改變了。
 
 ```javascript
 var obj = {
@@ -626,7 +626,7 @@ Object.getOwnPropertyDescriptor(obj, 'p')
 
 Object.seal(obj);
 
-// seal方法之后
+// seal方法之後
 Object.getOwnPropertyDescriptor(obj, 'p')
 // Object {
 //   value: "a",
@@ -641,9 +641,9 @@ Object.defineProperty(o, 'p', {
 // TypeError: Cannot redefine property: p
 ```
 
-上面代码中，使用`Object.seal`方法之后，属性描述对象的`configurable`属性就变成了`false`，然后改变`enumerable`属性就会报错。
+上面程式碼中，使用`Object.seal`方法之後，屬性描述物件的`configurable`屬性就變成了`false`，然後改變`enumerable`屬性就會報錯。
 
-`Object.seal`只是禁止新增或删除属性，并不影响修改某个属性的值。
+`Object.seal`只是禁止新增或刪除屬性，並不影響修改某個屬性的值。
 
 ```javascript
 var obj = { p: 'a' };
@@ -652,11 +652,11 @@ obj.p = 'b';
 obj.p // 'b'
 ```
 
-上面代码中，`Object.seal`方法对`p`属性的`value`无效，是因为此时`p`属性的可写性由`writable`决定。
+上面程式碼中，`Object.seal`方法對`p`屬性的`value`無效，是因為此時`p`屬性的可寫性由`writable`決定。
 
 ### Object.isSealed()
 
-`Object.isSealed`方法用于检查一个对象是否使用了`Object.seal`方法。
+`Object.isSealed`方法用於檢查一個物件是否使用了`Object.seal`方法。
 
 ```javascript
 var obj = { p: 'a' };
@@ -665,7 +665,7 @@ Object.seal(obj);
 Object.isSealed(obj) // true
 ```
 
-这时，`Object.isExtensible`方法也返回`false`。
+這時，`Object.isExtensible`方法也返回`false`。
 
 ```javascript
 var obj = { p: 'a' };
@@ -676,7 +676,7 @@ Object.isExtensible(obj) // false
 
 ### Object.freeze()
 
-`Object.freeze`方法可以使得一个对象无法添加新属性、无法删除旧属性、也无法改变属性的值，使得这个对象实际上变成了常量。
+`Object.freeze`方法可以使得一個物件無法新增新屬性、無法刪除舊屬性、也無法改變屬性的值，使得這個物件實際上變成了常量。
 
 ```javascript
 var obj = {
@@ -695,11 +695,11 @@ delete obj.p // false
 obj.p // "hello"
 ```
 
-上面代码中，对`obj`对象进行`Object.freeze()`以后，修改属性、新增属性、删除属性都无效了。这些操作并不报错，只是默默地失败。如果在严格模式下，则会报错。
+上面程式碼中，對`obj`物件進行`Object.freeze()`以後，修改屬性、新增屬性、刪除屬性都無效了。這些操作並不報錯，只是默默地失敗。如果在嚴格模式下，則會報錯。
 
 ### Object.isFrozen()
 
-`Object.isFrozen`方法用于检查一个对象是否使用了`Object.freeze`方法。
+`Object.isFrozen`方法用於檢查一個物件是否使用了`Object.freeze`方法。
 
 ```javascript
 var obj = {
@@ -710,7 +710,7 @@ Object.freeze(obj);
 Object.isFrozen(obj) // true
 ```
 
-使用`Object.freeze`方法以后，`Object.isSealed`将会返回`true`，`Object.isExtensible`返回`false`。
+使用`Object.freeze`方法以後，`Object.isSealed`將會返回`true`，`Object.isExtensible`返回`false`。
 
 ```javascript
 var obj = {
@@ -723,7 +723,7 @@ Object.isSealed(obj) // true
 Object.isExtensible(obj) // false
 ```
 
-`Object.isFrozen`的一个用途是，确认某个对象没有被冻结后，再对它的属性赋值。
+`Object.isFrozen`的一個用途是，確認某個物件沒有被凍結後，再對它的屬性賦值。
 
 ```javascript
 var obj = {
@@ -737,11 +737,11 @@ if (!Object.isFrozen(obj)) {
 }
 ```
 
-上面代码中，确认`obj`没有被冻结后，再对它的属性赋值，就不会报错了。
+上面程式碼中，確認`obj`沒有被凍結後，再對它的屬性賦值，就不會報錯了。
 
-### 局限性
+### 侷限性
 
-上面的三个方法锁定对象的可写性有一个漏洞：可以通过改变原型对象，来为对象增加属性。
+上面的三個方法鎖定物件的可寫性有一個漏洞：可以透過改變原型物件，來為物件增加屬性。
 
 ```javascript
 var obj = new Object();
@@ -753,9 +753,9 @@ obj.t
 // hello
 ```
 
-上面代码中，对象`obj`本身不能新增属性，但是可以在它的原型对象上新增属性，就依然能够在`obj`上读到。
+上面程式碼中，物件`obj`本身不能新增屬性，但是可以在它的原型物件上新增屬性，就依然能夠在`obj`上讀到。
 
-一种解决方案是，把`obj`的原型也冻结住。
+一種解決方案是，把`obj`的原型也凍結住。
 
 ```javascript
 var obj = new Object();
@@ -768,7 +768,7 @@ proto.t = 'hello';
 obj.t // undefined
 ```
 
-另外一个局限是，如果属性值是对象，上面这些方法只能冻结属性指向的对象，而不能冻结对象本身的内容。
+另外一個侷限是，如果屬性值是物件，上面這些方法只能凍結屬性指向的物件，而不能凍結物件本身的內容。
 
 ```javascript
 var obj = {
@@ -781,4 +781,4 @@ obj.bar.push('c');
 obj.bar // ["a", "b", "c"]
 ```
 
-上面代码中，`obj.bar`属性指向一个数组，`obj`对象被冻结以后，这个指向无法改变，即无法指向其他值，但是所指向的数组是可以改变的。
+上面程式碼中，`obj.bar`屬性指向一個數組，`obj`物件被凍結以後，這個指向無法改變，即無法指向其他值，但是所指向的陣列是可以改變的。

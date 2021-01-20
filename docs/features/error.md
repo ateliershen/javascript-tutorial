@@ -1,23 +1,23 @@
-# 错误处理机制
+# 錯誤處理機制
 
-## Error 实例对象
+## Error 例項物件
 
-JavaScript 解析或运行时，一旦发生错误，引擎就会抛出一个错误对象。JavaScript 原生提供`Error`构造函数，所有抛出的错误都是这个构造函数的实例。
+JavaScript 解析或執行時，一旦發生錯誤，引擎就會丟擲一個錯誤物件。JavaScript 原生提供`Error`建構函式，所有丟擲的錯誤都是這個建構函式的例項。
 
 ```javascript
-var err = new Error('出错了');
-err.message // "出错了"
+var err = new Error('出錯了');
+err.message // "出錯了"
 ```
 
-上面代码中，我们调用`Error`构造函数，生成一个实例对象`err`。`Error`构造函数接受一个参数，表示错误提示，可以从实例的`message`属性读到这个参数。抛出`Error`实例对象以后，整个程序就中断在发生错误的地方，不再往下执行。
+上面程式碼中，我們呼叫`Error`建構函式，生成一個例項物件`err`。`Error`建構函式接受一個引數，表示錯誤提示，可以從例項的`message`屬性讀到這個引數。丟擲`Error`例項物件以後，整個程式就中斷在發生錯誤的地方，不再往下執行。
 
-JavaScript 语言标准只提到，`Error`实例对象必须有`message`属性，表示出错时的提示信息，没有提到其他属性。大多数 JavaScript 引擎，对`Error`实例还提供`name`和`stack`属性，分别表示错误的名称和错误的堆栈，但它们是非标准的，不是每种实现都有。
+JavaScript 語言標準只提到，`Error`例項物件必須有`message`屬性，表示出錯時的提示資訊，沒有提到其他屬性。大多數 JavaScript 引擎，對`Error`例項還提供`name`和`stack`屬性，分別表示錯誤的名稱和錯誤的堆疊，但它們是非標準的，不是每種實現都有。
 
-- **message**：错误提示信息
-- **name**：错误名称（非标准属性）
-- **stack**：错误的堆栈（非标准属性）
+- **message**：錯誤提示資訊
+- **name**：錯誤名稱（非標準屬性）
+- **stack**：錯誤的堆疊（非標準屬性）
 
-使用`name`和`message`这两个属性，可以对发生什么错误有一个大概的了解。
+使用`name`和`message`這兩個屬性，可以對發生什麼錯誤有一個大概的瞭解。
 
 ```javascript
 if (error.name) {
@@ -25,7 +25,7 @@ if (error.name) {
 }
 ```
 
-`stack`属性用来查看错误发生时的堆栈。
+`stack`屬性用來檢視錯誤發生時的堆疊。
 
 ```javascript
 function throwit() {
@@ -47,61 +47,61 @@ catchit()
 //    at repl:1:5
 ```
 
-上面代码中，错误堆栈的最内层是`throwit`函数，然后是`catchit`函数，最后是函数的运行环境。
+上面程式碼中，錯誤堆疊的最內層是`throwit`函式，然後是`catchit`函式，最後是函式的執行環境。
 
-## 原生错误类型
+## 原生錯誤型別
 
-`Error`实例对象是最一般的错误类型，在它的基础上，JavaScript 还定义了其他6种错误对象。也就是说，存在`Error`的6个派生对象。
+`Error`例項物件是最一般的錯誤型別，在它的基礎上，JavaScript 還定義了其他6種錯誤物件。也就是說，存在`Error`的6個派生物件。
 
-### SyntaxError 对象
+### SyntaxError 物件
 
-`SyntaxError`对象是解析代码时发生的语法错误。
+`SyntaxError`物件是解析程式碼時發生的語法錯誤。
 
 ```javascript
-// 变量名错误
+// 變數名錯誤
 var 1a;
 // Uncaught SyntaxError: Invalid or unexpected token
 
-// 缺少括号
+// 缺少括號
 console.log 'hello');
 // Uncaught SyntaxError: Unexpected string
 ```
 
-上面代码的错误，都是在语法解析阶段就可以发现，所以会抛出`SyntaxError`。第一个错误提示是“token 非法”，第二个错误提示是“字符串不符合要求”。
+上面程式碼的錯誤，都是在語法解析階段就可以發現，所以會丟擲`SyntaxError`。第一個錯誤提示是“token 非法”，第二個錯誤提示是“字串不符合要求”。
 
-### ReferenceError 对象
+### ReferenceError 物件
 
-`ReferenceError`对象是引用一个不存在的变量时发生的错误。
+`ReferenceError`物件是引用一個不存在的變數時發生的錯誤。
 
 ```javascript
-// 使用一个不存在的变量
+// 使用一個不存在的變數
 unknownVariable
 // Uncaught ReferenceError: unknownVariable is not defined
 ```
 
-另一种触发场景是，将一个值分配给无法分配的对象，比如对函数的运行结果赋值。
+另一種觸發場景是，將一個值分配給無法分配的物件，比如對函式的執行結果賦值。
 
 ```javascript
-// 等号左侧不是变量
+// 等號左側不是變數
 console.log() = 1
 // Uncaught ReferenceError: Invalid left-hand side in assignment
 ```
 
-上面代码对函数`console.log`的运行结果赋值，结果引发了`ReferenceError`错误。
+上面程式碼對函式`console.log`的執行結果賦值，結果引發了`ReferenceError`錯誤。
 
-### RangeError 对象
+### RangeError 物件
 
-`RangeError`对象是一个值超出有效范围时发生的错误。主要有几种情况，一是数组长度为负数，二是`Number`对象的方法参数超出范围，以及函数堆栈超过最大值。
+`RangeError`物件是一個值超出有效範圍時發生的錯誤。主要有幾種情況，一是陣列長度為負數，二是`Number`物件的方法引數超出範圍，以及函式堆疊超過最大值。
 
 ```javascript
-// 数组长度不得为负数
+// 陣列長度不得為負數
 new Array(-1)
 // Uncaught RangeError: Invalid array length
 ```
 
-### TypeError 对象
+### TypeError 物件
 
-`TypeError`对象是变量或参数不是预期类型时发生的错误。比如，对字符串、布尔值、数值等原始类型的值使用`new`命令，就会抛出这种错误，因为`new`命令的参数应该是一个构造函数。
+`TypeError`物件是變數或引數不是預期型別時發生的錯誤。比如，對字串、布林值、數值等原始型別的值使用`new`命令，就會丟擲這種錯誤，因為`new`命令的引數應該是一個建構函式。
 
 ```javascript
 new 123
@@ -112,42 +112,42 @@ obj.unknownMethod()
 // Uncaught TypeError: obj.unknownMethod is not a function
 ```
 
-上面代码的第二种情况，调用对象不存在的方法，也会抛出`TypeError`错误，因为`obj.unknownMethod`的值是`undefined`，而不是一个函数。
+上面程式碼的第二種情況，呼叫物件不存在的方法，也會丟擲`TypeError`錯誤，因為`obj.unknownMethod`的值是`undefined`，而不是一個函式。
 
-### URIError 对象
+### URIError 物件
 
-`URIError`对象是 URI 相关函数的参数不正确时抛出的错误，主要涉及`encodeURI()`、`decodeURI()`、`encodeURIComponent()`、`decodeURIComponent()`、`escape()`和`unescape()`这六个函数。
+`URIError`物件是 URI 相關函式的引數不正確時丟擲的錯誤，主要涉及`encodeURI()`、`decodeURI()`、`encodeURIComponent()`、`decodeURIComponent()`、`escape()`和`unescape()`這六個函式。
 
 ```javascript
 decodeURI('%2')
 // URIError: URI malformed
 ```
 
-### EvalError 对象
+### EvalError 物件
 
-`eval`函数没有被正确执行时，会抛出`EvalError`错误。该错误类型已经不再使用了，只是为了保证与以前代码兼容，才继续保留。
+`eval`函式沒有被正確執行時，會丟擲`EvalError`錯誤。該錯誤型別已經不再使用了，只是為了保證與以前程式碼相容，才繼續保留。
 
-### 总结
+### 總結
 
-以上这6种派生错误，连同原始的`Error`对象，都是构造函数。开发者可以使用它们，手动生成错误对象的实例。这些构造函数都接受一个参数，代表错误提示信息（message）。
+以上這6種派生錯誤，連同原始的`Error`物件，都是建構函式。開發者可以使用它們，手動生成錯誤物件的例項。這些建構函式都接受一個引數，代表錯誤提示資訊（message）。
 
 ```javascript
-var err1 = new Error('出错了！');
-var err2 = new RangeError('出错了，变量超出有效范围！');
-var err3 = new TypeError('出错了，变量类型无效！');
+var err1 = new Error('出錯了！');
+var err2 = new RangeError('出錯了，變數超出有效範圍！');
+var err3 = new TypeError('出錯了，變數型別無效！');
 
-err1.message // "出错了！"
-err2.message // "出错了，变量超出有效范围！"
-err3.message // "出错了，变量类型无效！"
+err1.message // "出錯了！"
+err2.message // "出錯了，變數超出有效範圍！"
+err3.message // "出錯了，變數型別無效！"
 ```
 
-## 自定义错误
+## 自定義錯誤
 
-除了 JavaScript 原生提供的七种错误对象，还可以定义自己的错误对象。
+除了 JavaScript 原生提供的七種錯誤物件，還可以定義自己的錯誤物件。
 
 ```javascript
 function UserError(message) {
-  this.message = message || '默认信息';
+  this.message = message || '預設資訊';
   this.name = 'UserError';
 }
 
@@ -155,55 +155,55 @@ UserError.prototype = new Error();
 UserError.prototype.constructor = UserError;
 ```
 
-上面代码自定义一个错误对象`UserError`，让它继承`Error`对象。然后，就可以生成这种自定义类型的错误了。
+上面程式碼自定義一個錯誤物件`UserError`，讓它繼承`Error`物件。然後，就可以生成這種自定義型別的錯誤了。
 
 ```javascript
-new UserError('这是自定义的错误！');
+new UserError('這是自定義的錯誤！');
 ```
 
-## throw 语句
+## throw 語句
 
-`throw`语句的作用是手动中断程序执行，抛出一个错误。
+`throw`語句的作用是手動中斷程式執行，丟擲一個錯誤。
 
 ```javascript
 if (x <= 0) {
-  throw new Error('x 必须为正数');
+  throw new Error('x 必須為正數');
 }
 // Uncaught ReferenceError: x is not defined
 ```
 
-上面代码中，如果变量`x`小于等于`0`，就手动抛出一个错误，告诉用户`x`的值不正确，整个程序就会在这里中断执行。可以看到，`throw`抛出的错误就是它的参数，这里是一个`Error`实例。
+上面程式碼中，如果變數`x`小於等於`0`，就手動丟擲一個錯誤，告訴使用者`x`的值不正確，整個程式就會在這裡中斷執行。可以看到，`throw`丟擲的錯誤就是它的引數，這裡是一個`Error`例項。
 
-`throw`也可以抛出自定义错误。
+`throw`也可以丟擲自定義錯誤。
 
 ```javascript
 function UserError(message) {
-  this.message = message || '默认信息';
+  this.message = message || '預設資訊';
   this.name = 'UserError';
 }
 
-throw new UserError('出错了！');
-// Uncaught UserError {message: "出错了！", name: "UserError"}
+throw new UserError('出錯了！');
+// Uncaught UserError {message: "出錯了！", name: "UserError"}
 ```
 
-上面代码中，`throw`抛出的是一个`UserError`实例。
+上面程式碼中，`throw`丟擲的是一個`UserError`例項。
 
-实际上，`throw`可以抛出任何类型的值。也就是说，它的参数可以是任何值。
+實際上，`throw`可以丟擲任何型別的值。也就是說，它的引數可以是任何值。
 
 ```javascript
-// 抛出一个字符串
+// 丟擲一個字串
 throw 'Error！';
 // Uncaught Error！
 
-// 抛出一个数值
+// 丟擲一個數值
 throw 42;
 // Uncaught 42
 
-// 抛出一个布尔值
+// 丟擲一個布林值
 throw true;
 // Uncaught true
 
-// 抛出一个对象
+// 丟擲一個物件
 throw {
   toString: function () {
     return 'Error!';
@@ -212,43 +212,43 @@ throw {
 // Uncaught {toString: ƒ}
 ```
 
-对于 JavaScript 引擎来说，遇到`throw`语句，程序就中止了。引擎会接收到`throw`抛出的信息，可能是一个错误实例，也可能是其他类型的值。
+對於 JavaScript 引擎來說，遇到`throw`語句，程式就中止了。引擎會接收到`throw`丟擲的資訊，可能是一個錯誤例項，也可能是其他型別的值。
 
-## try...catch 结构
+## try...catch 結構
 
-一旦发生错误，程序就中止执行了。JavaScript 提供了`try...catch`结构，允许对错误进行处理，选择是否往下执行。
+一旦發生錯誤，程式就中止執行了。JavaScript 提供了`try...catch`結構，允許對錯誤進行處理，選擇是否往下執行。
 
 ```javascript
 try {
-  throw new Error('出错了!');
+  throw new Error('出錯了!');
 } catch (e) {
   console.log(e.name + ": " + e.message);
   console.log(e.stack);
 }
-// Error: 出错了!
+// Error: 出錯了!
 //   at <anonymous>:3:9
 //   ...
 ```
 
-上面代码中，`try`代码块抛出错误（上例用的是`throw`语句），JavaScript 引擎就立即把代码的执行，转到`catch`代码块，或者说错误被`catch`代码块捕获了。`catch`接受一个参数，表示`try`代码块抛出的值。
+上面程式碼中，`try`程式碼塊丟擲錯誤（上例用的是`throw`語句），JavaScript 引擎就立即把程式碼的執行，轉到`catch`程式碼塊，或者說錯誤被`catch`程式碼塊捕獲了。`catch`接受一個引數，表示`try`程式碼塊丟擲的值。
 
-如果你不确定某些代码是否会报错，就可以把它们放在`try...catch`代码块之中，便于进一步对错误进行处理。
+如果你不確定某些程式碼是否會報錯，就可以把它們放在`try...catch`程式碼塊之中，便於進一步對錯誤進行處理。
 
 ```javascript
 try {
   f();
 } catch(e) {
-  // 处理错误
+  // 處理錯誤
 }
 ```
 
-上面代码中，如果函数`f`执行报错，就会进行`catch`代码块，接着对错误进行处理。
+上面程式碼中，如果函式`f`執行報錯，就會進行`catch`程式碼塊，接著對錯誤進行處理。
 
-`catch`代码块捕获错误之后，程序不会中断，会按照正常流程继续执行下去。
+`catch`程式碼塊捕獲錯誤之後，程式不會中斷，會按照正常流程繼續執行下去。
 
 ```javascript
 try {
-  throw "出错了";
+  throw "出錯了";
 } catch (e) {
   console.log(111);
 }
@@ -257,9 +257,9 @@ console.log(222);
 // 222
 ```
 
-上面代码中，`try`代码块抛出的错误，被`catch`代码块捕获后，程序会继续向下执行。
+上面程式碼中，`try`程式碼塊丟擲的錯誤，被`catch`程式碼塊捕獲後，程式會繼續向下執行。
 
-`catch`代码块之中，还可以再抛出错误，甚至使用嵌套的`try...catch`结构。
+`catch`程式碼塊之中，還可以再丟擲錯誤，甚至使用巢狀的`try...catch`結構。
 
 ```javascript
 var n = 100;
@@ -276,9 +276,9 @@ try {
 // Uncaught 100
 ```
 
-上面代码中，`catch`代码之中又抛出了一个错误。
+上面程式碼中，`catch`程式碼之中又丟擲了一個錯誤。
 
-为了捕捉不同类型的错误，`catch`代码块之中可以加入判断语句。
+為了捕捉不同型別的錯誤，`catch`程式碼塊之中可以加入判斷語句。
 
 ```javascript
 try {
@@ -293,17 +293,17 @@ try {
 }
 ```
 
-上面代码中，`catch`捕获错误之后，会判断错误类型（`EvalError`还是`RangeError`），进行不同的处理。
+上面程式碼中，`catch`捕獲錯誤之後，會判斷錯誤型別（`EvalError`還是`RangeError`），進行不同的處理。
 
-## finally 代码块
+## finally 程式碼塊
 
-`try...catch`结构允许在最后添加一个`finally`代码块，表示不管是否出现错误，都必需在最后运行的语句。
+`try...catch`結構允許在最後新增一個`finally`程式碼塊，表示不管是否出現錯誤，都必需在最後執行的語句。
 
 ```javascript
 function cleansUp() {
   try {
-    throw new Error('出错了……');
-    console.log('此行不会执行');
+    throw new Error('出錯了……');
+    console.log('此行不會執行');
   } finally {
     console.log('完成清理工作');
   }
@@ -311,12 +311,12 @@ function cleansUp() {
 
 cleansUp()
 // 完成清理工作
-// Uncaught Error: 出错了……
+// Uncaught Error: 出錯了……
 //    at cleansUp (<anonymous>:3:11)
 //    at <anonymous>:10:1
 ```
 
-上面代码中，由于没有`catch`语句块，一旦发生错误，代码就会中断执行。中断执行之前，会先执行`finally`代码块，然后再向用户提示报错信息。
+上面程式碼中，由於沒有`catch`語句塊，一旦發生錯誤，程式碼就會中斷執行。中斷執行之前，會先執行`finally`程式碼塊，然後再向使用者提示報錯資訊。
 
 ```javascript
 function idle(x) {
@@ -333,9 +333,9 @@ idle('hello')
 // FINALLY
 ```
 
-上面代码中，`try`代码块没有发生错误，而且里面还包括`return`语句，但是`finally`代码块依然会执行。而且，这个函数的返回值还是`result`。
+上面程式碼中，`try`程式碼塊沒有發生錯誤，而且裡面還包括`return`語句，但是`finally`程式碼塊依然會執行。而且，這個函式的返回值還是`result`。
 
-下面的例子说明，`return`语句的执行是排在`finally`代码之前，只是等`finally`代码执行完毕后才返回。
+下面的例子說明，`return`語句的執行是排在`finally`程式碼之前，只是等`finally`程式碼執行完畢後才返回。
 
 ```javascript
 var count = 0;
@@ -353,9 +353,9 @@ count
 // 1
 ```
 
-上面代码说明，`return`语句里面的`count`的值，是在`finally`代码块运行之前就获取了。
+上面程式碼說明，`return`語句裡面的`count`的值，是在`finally`程式碼塊執行之前就獲取了。
 
-下面是`finally`代码块用法的典型场景。
+下面是`finally`程式碼塊用法的典型場景。
 
 ```javascript
 openFile();
@@ -369,9 +369,9 @@ try {
 }
 ```
 
-上面代码首先打开一个文件，然后在`try`代码块中写入文件，如果没有发生错误，则运行`finally`代码块关闭文件；一旦发生错误，则先使用`catch`代码块处理错误，再使用`finally`代码块关闭文件。
+上面程式碼首先開啟一個檔案，然後在`try`程式碼塊中寫入檔案，如果沒有發生錯誤，則執行`finally`程式碼塊關閉檔案；一旦發生錯誤，則先使用`catch`程式碼塊處理錯誤，再使用`finally`程式碼塊關閉檔案。
 
-下面的例子充分反映了`try...catch...finally`这三者之间的执行顺序。
+下面的例子充分反映了`try...catch...finally`這三者之間的執行順序。
 
 ```javascript
 function f() {
@@ -380,15 +380,15 @@ function f() {
     throw 'bug';
   } catch(e) {
     console.log(1);
-    return true; // 这句原本会延迟到 finally 代码块结束再执行
-    console.log(2); // 不会运行
+    return true; // 這句原本會延遲到 finally 程式碼塊結束再執行
+    console.log(2); // 不會執行
   } finally {
     console.log(3);
-    return false; // 这句会覆盖掉前面那句 return
-    console.log(4); // 不会运行
+    return false; // 這句會覆蓋掉前面那句 return
+    console.log(4); // 不會執行
   }
 
-  console.log(5); // 不会运行
+  console.log(5); // 不會執行
 }
 
 var result = f();
@@ -400,17 +400,17 @@ result
 // false
 ```
 
-上面代码中，`catch`代码块结束执行之前，会先执行`finally`代码块。
+上面程式碼中，`catch`程式碼塊結束執行之前，會先執行`finally`程式碼塊。
 
-`catch`代码块之中，触发转入`finally`代码块的标志，不仅有`return`语句，还有`throw`语句。
+`catch`程式碼塊之中，觸發轉入`finally`程式碼塊的標誌，不僅有`return`語句，還有`throw`語句。
 
 ```javascript
 function f() {
   try {
-    throw '出错了！';
+    throw '出錯了！';
   } catch(e) {
-    console.log('捕捉到内部错误');
-    throw e; // 这句原本会等到finally结束再执行
+    console.log('捕捉到內部錯誤');
+    throw e; // 這句原本會等到finally結束再執行
   } finally {
     return false; // 直接返回
   }
@@ -419,21 +419,21 @@ function f() {
 try {
   f();
 } catch(e) {
-  // 此处不会执行
+  // 此處不會執行
   console.log('caught outer "bogus"');
 }
 
-//  捕捉到内部错误
+//  捕捉到內部錯誤
 ```
 
-上面代码中，进入`catch`代码块之后，一遇到`throw`语句，就会去执行`finally`代码块，其中有`return false`语句，因此就直接返回了，不再会回去执行`catch`代码块剩下的部分了。
+上面程式碼中，進入`catch`程式碼塊之後，一遇到`throw`語句，就會去執行`finally`程式碼塊，其中有`return false`語句，因此就直接返回了，不再會回去執行`catch`程式碼塊剩下的部分了。
 
-`try`代码块内部，还可以再使用`try`代码块。
+`try`程式碼塊內部，還可以再使用`try`程式碼塊。
 
 ```javascript
 try {
   try {
-    consle.log('Hello world!'); // 报错
+    consle.log('Hello world!'); // 報錯
   }
   finally {
     console.log('Finally');
@@ -446,8 +446,8 @@ try {
 // consle is not defined
 ```
 
-上面代码中，`try`里面还有一个`try`。内层的`try`报错（`console`拼错了），这时会执行内层的`finally`代码块，然后抛出错误，被外层的`catch`捕获。
+上面程式碼中，`try`裡面還有一個`try`。內層的`try`報錯（`console`拼錯了），這時會執行內層的`finally`程式碼塊，然後丟擲錯誤，被外層的`catch`捕獲。
 
-## 参考连接
+## 參考連線
 
 - Jani Hartikainen, [JavaScript Errors and How to Fix Them](http://davidwalsh.name/fix-javascript-errors)

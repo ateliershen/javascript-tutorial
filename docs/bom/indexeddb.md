@@ -2,114 +2,114 @@
 
 ## 概述
 
-随着浏览器的功能不断增强，越来越多的网站开始考虑，将大量数据储存在客户端，这样可以减少从服务器获取数据，直接从本地获取数据。
+隨著瀏覽器的功能不斷增強，越來越多的網站開始考慮，將大量資料儲存在客戶端，這樣可以減少從伺服器獲取資料，直接從本地獲取資料。
 
-现有的浏览器数据储存方案，都不适合储存大量数据：Cookie 的大小不超过 4KB，且每次请求都会发送回服务器；LocalStorage 在 2.5MB 到 10MB 之间（各家浏览器不同），而且不提供搜索功能，不能建立自定义的索引。所以，需要一种新的解决方案，这就是 IndexedDB 诞生的背景。
+現有的瀏覽器資料儲存方案，都不適合儲存大量資料：Cookie 的大小不超過 4KB，且每次請求都會發送回伺服器；LocalStorage 在 2.5MB 到 10MB 之間（各家瀏覽器不同），而且不提供搜尋功能，不能建立自定義的索引。所以，需要一種新的解決方案，這就是 IndexedDB 誕生的背景。
 
-通俗地说，IndexedDB 就是浏览器提供的本地数据库，它可以被网页脚本创建和操作。IndexedDB 允许储存大量数据，提供查找接口，还能建立索引。这些都是 LocalStorage 所不具备的。就数据库类型而言，IndexedDB 不属于关系型数据库（不支持 SQL 查询语句），更接近 NoSQL 数据库。
+通俗地說，IndexedDB 就是瀏覽器提供的本地資料庫，它可以被網頁尾本建立和操作。IndexedDB 允許儲存大量資料，提供查詢介面，還能建立索引。這些都是 LocalStorage 所不具備的。就資料庫型別而言，IndexedDB 不屬於關係型資料庫（不支援 SQL 查詢語句），更接近 NoSQL 資料庫。
 
-IndexedDB 具有以下特点。
+IndexedDB 具有以下特點。
 
-**（1）键值对储存。** IndexedDB 内部采用对象仓库（object store）存放数据。所有类型的数据都可以直接存入，包括 JavaScript 对象。对象仓库中，数据以“键值对”的形式保存，每一个数据记录都有对应的主键，主键是独一无二的，不能有重复，否则会抛出一个错误。
+**（1）鍵值對儲存。** IndexedDB 內部採用物件倉庫（object store）存放資料。所有型別的資料都可以直接存入，包括 JavaScript 物件。物件倉庫中，資料以“鍵值對”的形式儲存，每一個數據記錄都有對應的主鍵，主鍵是獨一無二的，不能有重複，否則會丟擲一個錯誤。
 
-**（2）异步。**  IndexedDB 操作时不会锁死浏览器，用户依然可以进行其他操作，这与 LocalStorage 形成对比，后者的操作是同步的。异步设计是为了防止大量数据的读写，拖慢网页的表现。
+**（2）非同步。**  IndexedDB 操作時不會鎖死瀏覽器，使用者依然可以進行其他操作，這與 LocalStorage 形成對比，後者的操作是同步的。非同步設計是為了防止大量資料的讀寫，拖慢網頁的表現。
 
-**（3）支持事务。** IndexedDB 支持事务（transaction），这意味着一系列操作步骤之中，只要有一步失败，整个事务就都取消，数据库回滚到事务发生之前的状态，不存在只改写一部分数据的情况。
+**（3）支援事務。** IndexedDB 支援事務（transaction），這意味著一系列操作步驟之中，只要有一步失敗，整個事務就都取消，資料庫回滾到事務發生之前的狀態，不存在只改寫一部分資料的情況。
 
-**（4）同源限制。** IndexedDB 受到同源限制，每一个数据库对应创建它的域名。网页只能访问自身域名下的数据库，而不能访问跨域的数据库。
+**（4）同源限制。** IndexedDB 受到同源限制，每一個數據庫對應建立它的域名。網頁只能訪問自身域名下的資料庫，而不能訪問跨域的資料庫。
 
-**（5）储存空间大。** IndexedDB 的储存空间比 LocalStorage 大得多，一般来说不少于 250MB，甚至没有上限。
+**（5）儲存空間大。** IndexedDB 的儲存空間比 LocalStorage 大得多，一般來說不少於 250MB，甚至沒有上限。
 
-**（6）支持二进制储存。** IndexedDB 不仅可以储存字符串，还可以储存二进制数据（ArrayBuffer 对象和 Blob 对象）。
+**（6）支援二進位制儲存。** IndexedDB 不僅可以儲存字串，還可以儲存二進位制資料（ArrayBuffer 物件和 Blob 物件）。
 
 ## 基本概念
 
-IndexedDB 是一个比较复杂的 API，涉及不少概念。它把不同的实体，抽象成一个个对象接口。学习这个 API，就是学习它的各种对象接口。
+IndexedDB 是一個比較複雜的 API，涉及不少概念。它把不同的實體，抽象成一個個物件介面。學習這個 API，就是學習它的各種物件介面。
 
-- 数据库：IDBDatabase 对象
-- 对象仓库：IDBObjectStore 对象
-- 索引： IDBIndex 对象
-- 事务： IDBTransaction 对象
-- 操作请求：IDBRequest 对象
-- 指针： IDBCursor 对象
-- 主键集合：IDBKeyRange 对象
+- 資料庫：IDBDatabase 物件
+- 物件倉庫：IDBObjectStore 物件
+- 索引： IDBIndex 物件
+- 事務： IDBTransaction 物件
+- 操作請求：IDBRequest 物件
+- 指標： IDBCursor 物件
+- 主鍵集合：IDBKeyRange 物件
 
 下面是一些主要的概念。
 
-**（1）数据库**
+**（1）資料庫**
 
-数据库是一系列相关数据的容器。每个域名（严格的说，是协议 + 域名 + 端口）都可以新建任意多个数据库。
+資料庫是一系列相關資料的容器。每個域名（嚴格的說，是協議 + 域名 + 埠）都可以新建任意多個數據庫。
 
-IndexedDB 数据库有版本的概念。同一个时刻，只能有一个版本的数据库存在。如果要修改数据库结构（新增或删除表、索引或者主键），只能通过升级数据库版本完成。
+IndexedDB 資料庫有版本的概念。同一個時刻，只能有一個版本的資料庫存在。如果要修改資料庫結構（新增或刪除表、索引或者主鍵），只能透過升級資料庫版本完成。
 
-**（2）对象仓库**
+**（2）物件倉庫**
 
-每个数据库包含若干个对象仓库（object store）。它类似于关系型数据库的表格。
+每個資料庫包含若干個物件倉庫（object store）。它類似於關係型資料庫的表格。
 
-**（3）数据记录**
+**（3）資料記錄**
 
-对象仓库保存的是数据记录。每条记录类似于关系型数据库的行，但是只有主键和数据体两部分。主键用来建立默认的索引，必须是不同的，否则会报错。主键可以是数据记录里面的一个属性，也可以指定为一个递增的整数编号。
+物件倉庫儲存的是資料記錄。每條記錄類似於關係型資料庫的行，但是隻有主鍵和資料體兩部分。主鍵用來建立預設的索引，必須是不同的，否則會報錯。主鍵可以是資料記錄裡面的一個屬性，也可以指定為一個遞增的整數編號。
 
 ```javascript
 { id: 1, text: 'foo' }
 ```
 
-上面的对象中，`id`属性可以当作主键。
+上面的物件中，`id`屬性可以當作主鍵。
 
-数据体可以是任意数据类型，不限于对象。
+資料體可以是任意資料型別，不限於物件。
 
 **（4）索引**
 
-为了加速数据的检索，可以在对象仓库里面，为不同的属性建立索引。
+為了加速資料的檢索，可以在物件倉庫裡面，為不同的屬性建立索引。
 
-**（5）事务**
+**（5）事務**
 
-数据记录的读写和删改，都要通过事务完成。事务对象提供`error`、`abort`和`complete`三个事件，用来监听操作结果。
+資料記錄的讀寫和刪改，都要透過事務完成。事務物件提供`error`、`abort`和`complete`三個事件，用來監聽操作結果。
 
 ## 操作流程
 
-IndexedDB 数据库的各种操作，一般是按照下面的流程进行的。这个部分只给出简单的代码示例，用于快速上手，详细的各个对象的 API 放在后文介绍。
+IndexedDB 資料庫的各種操作，一般是按照下面的流程進行的。這個部分只給出簡單的程式碼示例，用於快速上手，詳細的各個物件的 API 放在後文介紹。
 
-### 打开数据库
+### 開啟資料庫
 
-使用 IndexedDB 的第一步是打开数据库，使用`indexedDB.open()`方法。
+使用 IndexedDB 的第一步是開啟資料庫，使用`indexedDB.open()`方法。
 
 ```javascript
 var request = window.indexedDB.open(databaseName, version);
 ```
 
-这个方法接受两个参数，第一个参数是字符串，表示数据库的名字。如果指定的数据库不存在，就会新建数据库。第二个参数是整数，表示数据库的版本。如果省略，打开已有数据库时，默认为当前版本；新建数据库时，默认为`1`。
+這個方法接受兩個引數，第一個引數是字串，表示資料庫的名字。如果指定的資料庫不存在，就會新建資料庫。第二個引數是整數，表示資料庫的版本。如果省略，開啟已有資料庫時，預設為當前版本；新建資料庫時，預設為`1`。
 
-`indexedDB.open()`方法返回一个 IDBRequest 对象。这个对象通过三种事件`error`、`success`、`upgradeneeded`，处理打开数据库的操作结果。
+`indexedDB.open()`方法返回一個 IDBRequest 物件。這個物件透過三種事件`error`、`success`、`upgradeneeded`，處理開啟資料庫的操作結果。
 
 **（1）error 事件**
 
-`error`事件表示打开数据库失败。
+`error`事件表示開啟資料庫失敗。
 
 ```javascript
 request.onerror = function (event) {
-  console.log('数据库打开报错');
+  console.log('資料庫開啟報錯');
 };
 ```
 
 **（2）success 事件**
 
-`success`事件表示成功打开数据库。
+`success`事件表示成功開啟資料庫。
 
 ```javascript
 var db;
 
 request.onsuccess = function (event) {
   db = request.result;
-  console.log('数据库打开成功');
+  console.log('資料庫開啟成功');
 };
 ```
 
-这时，通过`request`对象的`result`属性拿到数据库对象。
+這時，透過`request`物件的`result`屬性拿到資料庫物件。
 
 **（3）upgradeneeded 事件**
 
-如果指定的版本号，大于数据库的实际版本号，就会发生数据库升级事件`upgradeneeded`。
+如果指定的版本號，大於資料庫的實際版本號，就會發生資料庫升級事件`upgradeneeded`。
 
 ```javascript
 var db;
@@ -119,13 +119,13 @@ request.onupgradeneeded = function (event) {
 }
 ```
 
-这时通过事件对象的`target.result`属性，拿到数据库实例。
+這時透過事件物件的`target.result`屬性，拿到資料庫例項。
 
-### 新建数据库
+### 新建資料庫
 
-新建数据库与打开数据库是同一个操作。如果指定的数据库不存在，就会新建。不同之处在于，后续的操作主要在`upgradeneeded`事件的监听函数里面完成，因为这时版本从无到有，所以会触发这个事件。
+新建資料庫與開啟資料庫是同一個操作。如果指定的資料庫不存在，就會新建。不同之處在於，後續的操作主要在`upgradeneeded`事件的監聽函式裡面完成，因為這時版本從無到有，所以會觸發這個事件。
 
-通常，新建数据库以后，第一件事是新建对象仓库（即新建表）。
+通常，新建資料庫以後，第一件事是新建物件倉庫（即新建表）。
 
 ```javascript
 request.onupgradeneeded = function(event) {
@@ -134,9 +134,9 @@ request.onupgradeneeded = function(event) {
 }
 ```
 
-上面代码中，数据库新建成功以后，新增一张叫做`person`的表格，主键是`id`。
+上面程式碼中，資料庫新建成功以後，新增一張叫做`person`的表格，主鍵是`id`。
 
-更好的写法是先判断一下，这张表格是否存在，如果不存在再新建。
+更好的寫法是先判斷一下，這張表格是否存在，如果不存在再新建。
 
 ```javascript
 request.onupgradeneeded = function (event) {
@@ -148,9 +148,9 @@ request.onupgradeneeded = function (event) {
 }
 ```
 
-主键（key）是默认建立索引的属性。比如，数据记录是`{ id: 1, name: '张三' }`，那么`id`属性可以作为主键。主键也可以指定为下一层对象的属性，比如`{ foo: { bar: 'baz' } }`的`foo.bar`也可以指定为主键。
+主鍵（key）是預設建立索引的屬性。比如，資料記錄是`{ id: 1, name: '張三' }`，那麼`id`屬性可以作為主鍵。主鍵也可以指定為下一層物件的屬性，比如`{ foo: { bar: 'baz' } }`的`foo.bar`也可以指定為主鍵。
 
-如果数据记录里面没有合适作为主键的属性，那么可以让 IndexedDB 自动生成主键。
+如果資料記錄裡面沒有合適作為主鍵的屬性，那麼可以讓 IndexedDB 自動生成主鍵。
 
 ```javascript
 var objectStore = db.createObjectStore(
@@ -159,9 +159,9 @@ var objectStore = db.createObjectStore(
 );
 ```
 
-上面代码中，指定主键为一个递增的整数。
+上面程式碼中，指定主鍵為一個遞增的整數。
 
-新建对象仓库以后，下一步可以新建索引。
+新建物件倉庫以後，下一步可以新建索引。
 
 ```javascript
 request.onupgradeneeded = function(event) {
@@ -172,37 +172,37 @@ request.onupgradeneeded = function(event) {
 }
 ```
 
-上面代码中，`IDBObject.createIndex()`的三个参数分别为索引名称、索引所在的属性、配置对象（说明该属性是否包含重复的值）。
+上面程式碼中，`IDBObject.createIndex()`的三個引數分別為索引名稱、索引所在的屬性、配置物件（說明該屬性是否包含重複的值）。
 
-### 新增数据
+### 新增資料
 
-新增数据指的是向对象仓库写入数据记录。这需要通过事务完成。
+新增資料指的是向物件倉庫寫入資料記錄。這需要透過事務完成。
 
 ```javascript
 function add() {
   var request = db.transaction(['person'], 'readwrite')
     .objectStore('person')
-    .add({ id: 1, name: '张三', age: 24, email: 'zhangsan@example.com' });
+    .add({ id: 1, name: '張三', age: 24, email: 'zhangsan@example.com' });
 
   request.onsuccess = function (event) {
-    console.log('数据写入成功');
+    console.log('資料寫入成功');
   };
 
   request.onerror = function (event) {
-    console.log('数据写入失败');
+    console.log('資料寫入失敗');
   }
 }
 
 add();
 ```
 
-上面代码中，写入数据需要新建一个事务。新建时必须指定表格名称和操作模式（“只读”或“读写”）。新建事务以后，通过`IDBTransaction.objectStore(name)`方法，拿到 IDBObjectStore 对象，再通过表格对象的`add()`方法，向表格写入一条记录。
+上面程式碼中，寫入資料需要新建一個事務。新建時必須指定表格名稱和操作模式（“只讀”或“讀寫”）。新建事務以後，透過`IDBTransaction.objectStore(name)`方法，拿到 IDBObjectStore 物件，再透過表格物件的`add()`方法，向表格寫入一條記錄。
 
-写入操作是一个异步操作，通过监听连接对象的`success`事件和`error`事件，了解是否写入成功。
+寫入操作是一個非同步操作，透過監聽連線物件的`success`事件和`error`事件，瞭解是否寫入成功。
 
-### 读取数据
+### 讀取資料
 
-读取数据也是通过事务完成。
+讀取資料也是透過事務完成。
 
 ```javascript
 function read() {
@@ -211,7 +211,7 @@ function read() {
    var request = objectStore.get(1);
 
    request.onerror = function(event) {
-     console.log('事务失败');
+     console.log('事務失敗');
    };
 
    request.onsuccess = function( event) {
@@ -220,7 +220,7 @@ function read() {
         console.log('Age: ' + request.result.age);
         console.log('Email: ' + request.result.email);
       } else {
-        console.log('未获得数据记录');
+        console.log('未獲得資料記錄');
       }
    };
 }
@@ -228,11 +228,11 @@ function read() {
 read();
 ```
 
-上面代码中，`objectStore.get()`方法用于读取数据，参数是主键的值。
+上面程式碼中，`objectStore.get()`方法用於讀取資料，引數是主鍵的值。
 
-### 遍历数据
+### 遍歷資料
 
-遍历数据表格的所有记录，要使用指针对象 IDBCursor。
+遍歷資料表格的所有記錄，要使用指標物件 IDBCursor。
 
 ```javascript
 function readAll() {
@@ -248,7 +248,7 @@ function readAll() {
        console.log('Email: ' + cursor.value.email);
        cursor.continue();
     } else {
-      console.log('没有更多数据了！');
+      console.log('沒有更多資料了！');
     }
   };
 }
@@ -256,11 +256,11 @@ function readAll() {
 readAll();
 ```
 
-上面代码中，新建指针对象的`openCursor()`方法是一个异步操作，所以要监听`success`事件。
+上面程式碼中，新建指標物件的`openCursor()`方法是一個非同步操作，所以要監聽`success`事件。
 
-### 更新数据
+### 更新資料
 
-更新数据要使用`IDBObject.put()`方法。
+更新資料要使用`IDBObject.put()`方法。
 
 ```javascript
 function update() {
@@ -269,22 +269,22 @@ function update() {
     .put({ id: 1, name: '李四', age: 35, email: 'lisi@example.com' });
 
   request.onsuccess = function (event) {
-    console.log('数据更新成功');
+    console.log('資料更新成功');
   };
 
   request.onerror = function (event) {
-    console.log('数据更新失败');
+    console.log('資料更新失敗');
   }
 }
 
 update();
 ```
 
-上面代码中，`put()`方法自动更新了主键为`1`的记录。
+上面程式碼中，`put()`方法自動更新了主鍵為`1`的記錄。
 
-### 删除数据
+### 刪除資料
 
-`IDBObjectStore.delete()`方法用于删除记录。
+`IDBObjectStore.delete()`方法用於刪除記錄。
 
 ```javascript
 function remove() {
@@ -293,7 +293,7 @@ function remove() {
     .delete(1);
 
   request.onsuccess = function (event) {
-    console.log('数据删除成功');
+    console.log('資料刪除成功');
   };
 }
 
@@ -302,15 +302,15 @@ remove();
 
 ### 使用索引
 
-索引的意义在于，可以让你搜索任意字段，也就是说从任意字段拿到数据记录。如果不建立索引，默认只能搜索主键（即从主键取值）。
+索引的意義在於，可以讓你搜索任意欄位，也就是說從任意欄位拿到資料記錄。如果不建立索引，預設只能搜尋主鍵（即從主鍵取值）。
 
-假定新建表格的时候，对`name`字段建立了索引。
+假定新建表格的時候，對`name`欄位建立了索引。
 
 ```javascript
 objectStore.createIndex('name', 'name', { unique: false });
 ```
 
-现在，就可以从`name`找到对应的数据记录了。
+現在，就可以從`name`找到對應的資料記錄了。
 
 ```javascript
 var transaction = db.transaction(['person'], 'readonly');
@@ -328,32 +328,32 @@ request.onsuccess = function (e) {
 }
 ```
 
-## indexedDB 对象
+## indexedDB 物件
 
-浏览器原生提供`indexedDB`对象，作为开发者的操作接口。
+瀏覽器原生提供`indexedDB`物件，作為開發者的操作介面。
 
 ### indexedDB.open()
 
-`indexedDB.open()`方法用于打开数据库。这是一个异步操作，但是会立刻返回一个 IDBOpenDBRequest 对象。
+`indexedDB.open()`方法用於開啟資料庫。這是一個非同步操作，但是會立刻返回一個 IDBOpenDBRequest 物件。
 
 ```javascript
 var openRequest = window.indexedDB.open('test', 1);
 ```
 
-上面代码表示，打开一个名为`test`、版本为`1`的数据库。如果该数据库不存在，则会新建该数据库。
+上面程式碼表示，開啟一個名為`test`、版本為`1`的資料庫。如果該資料庫不存在，則會新建該資料庫。
 
-`open()`方法的第一个参数是数据库名称，格式为字符串，不可省略；第二个参数是数据库版本，是一个大于`0`的正整数（`0`将报错），如果该参数大于当前版本，会触发数据库升级。第二个参数可省略，如果数据库已存在，将打开当前版本的数据库；如果数据库不存在，将创建该版本的数据库，默认版本为`1`。
+`open()`方法的第一個引數是資料庫名稱，格式為字串，不可省略；第二個引數是資料庫版本，是一個大於`0`的正整數（`0`將報錯），如果該引數大於當前版本，會觸發資料庫升級。第二個引數可省略，如果資料庫已存在，將開啟當前版本的資料庫；如果資料庫不存在，將建立該版本的資料庫，預設版本為`1`。
 
-打开数据库是异步操作，通过各种事件通知客户端。下面是有可能触发的4种事件。
+開啟資料庫是非同步操作，透過各種事件通知客戶端。下面是有可能觸發的4種事件。
 
-- **success**：打开成功。
-- **error**：打开失败。
-- **upgradeneeded**：第一次打开该数据库，或者数据库版本发生变化。
-- **blocked**：上一次的数据库连接还未关闭。
+- **success**：開啟成功。
+- **error**：開啟失敗。
+- **upgradeneeded**：第一次開啟該資料庫，或者資料庫版本發生變化。
+- **blocked**：上一次的資料庫連線還未關閉。
 
-第一次打开数据库时，会先触发`upgradeneeded`事件，然后触发`success`事件。
+第一次開啟資料庫時，會先觸發`upgradeneeded`事件，然後觸發`success`事件。
 
-根据不同的需要，对上面4种事件监听函数。
+根據不同的需要，對上面4種事件監聽函式。
 
 ```javascript
 var openRequest = indexedDB.open('test', 1);
@@ -374,14 +374,14 @@ openRequest.onerror = function (e) {
 }
 ```
 
-上面代码有两个地方需要注意。首先，`open()`方法返回的是一个对象（IDBOpenDBRequest），监听函数就定义在这个对象上面。其次，`success`事件发生后，从`openRequest.result`属性可以拿到已经打开的`IndexedDB`数据库对象。
+上面程式碼有兩個地方需要注意。首先，`open()`方法返回的是一個物件（IDBOpenDBRequest），監聽函式就定義在這個物件上面。其次，`success`事件發生後，從`openRequest.result`屬性可以拿到已經開啟的`IndexedDB`資料庫物件。
 
 ### indexedDB.deleteDatabase()
 
-`indexedDB.deleteDatabase()`方法用于删除一个数据库，参数为数据库的名字。它会立刻返回一个`IDBOpenDBRequest`对象，然后对数据库执行异步删除。删除操作的结果会通过事件通知，`IDBOpenDBRequest`对象可以监听以下事件。
+`indexedDB.deleteDatabase()`方法用於刪除一個數據庫，引數為資料庫的名字。它會立刻返回一個`IDBOpenDBRequest`物件，然後對資料庫執行非同步刪除。刪除操作的結果會透過事件通知，`IDBOpenDBRequest`物件可以監聽以下事件。
 
-- `success`：删除成功
-- `error`：删除报错
+- `success`：刪除成功
+- `error`：刪除報錯
 
 ```javascript
 var DBDeleteRequest = window.indexedDB.deleteDatabase('demo');
@@ -395,51 +395,51 @@ DBDeleteRequest.onsuccess = function (event) {
 };
 ```
 
-调用`deleteDatabase()`方法以后，当前数据库的其他已经打开的连接都会接收到`versionchange`事件。
+呼叫`deleteDatabase()`方法以後，當前資料庫的其他已經開啟的連線都會接收到`versionchange`事件。
 
-注意，删除不存在的数据库并不会报错。
+注意，刪除不存在的資料庫並不會報錯。
 
 ### indexedDB.cmp()
 
-`indexedDB.cmp()`方法比较两个值是否为 indexedDB 的相同的主键。它返回一个整数，表示比较的结果：`0`表示相同，`1`表示第一个主键大于第二个主键，`-1`表示第一个主键小于第二个主键。
+`indexedDB.cmp()`方法比較兩個值是否為 indexedDB 的相同的主鍵。它返回一個整數，表示比較的結果：`0`表示相同，`1`表示第一個主鍵大於第二個主鍵，`-1`表示第一個主鍵小於第二個主鍵。
 
 ```javascript
 window.indexedDB.cmp(1, 2) // -1
 ```
 
-注意，这个方法不能用来比较任意的 JavaScript 值。如果参数是布尔值或对象，它会报错。
+注意，這個方法不能用來比較任意的 JavaScript 值。如果引數是布林值或物件，它會報錯。
 
 ```javascript
-window.indexedDB.cmp(1, true) // 报错
-window.indexedDB.cmp({}, {}) // 报错
+window.indexedDB.cmp(1, true) // 報錯
+window.indexedDB.cmp({}, {}) // 報錯
 ```
 
-## IDBRequest 对象
+## IDBRequest 物件
 
-IDBRequest 对象表示打开的数据库连接，`indexedDB.open()`方法和`indexedDB.deleteDatabase()`方法会返回这个对象。数据库的操作都是通过这个对象完成的。
+IDBRequest 物件表示開啟的資料庫連線，`indexedDB.open()`方法和`indexedDB.deleteDatabase()`方法會返回這個物件。資料庫的操作都是透過這個物件完成的。
 
-这个对象的所有操作都是异步操作，要通过`readyState`属性判断是否完成，如果为`pending`就表示操作正在进行，如果为`done`就表示操作完成，可能成功也可能失败。
+這個物件的所有操作都是非同步操作，要透過`readyState`屬性判斷是否完成，如果為`pending`就表示操作正在進行，如果為`done`就表示操作完成，可能成功也可能失敗。
 
-操作完成以后，触发`success`事件或`error`事件，这时可以通过`result`属性和`error`属性拿到操作结果。如果在`pending`阶段，就去读取这两个属性，是会报错的。
+操作完成以後，觸發`success`事件或`error`事件，這時可以透過`result`屬性和`error`屬性拿到操作結果。如果在`pending`階段，就去讀取這兩個屬性，是會報錯的。
 
-IDBRequest 对象有以下属性。
+IDBRequest 物件有以下屬性。
 
-- `IDBRequest.readyState`：等于`pending`表示操作正在进行，等于`done`表示操作正在完成。
-- `IDBRequest.result`：返回请求的结果。如果请求失败、结果不可用，读取该属性会报错。
-- `IDBRequest.error`：请求失败时，返回错误对象。
-- `IDBRequest.source`：返回请求的来源（比如索引对象或 ObjectStore）。
-- `IDBRequest.transaction`：返回当前请求正在进行的事务，如果不包含事务，返回`null`。
-- `IDBRequest.onsuccess`：指定`success`事件的监听函数。
-- `IDBRequest.onerror`：指定`error`事件的监听函数。
+- `IDBRequest.readyState`：等於`pending`表示操作正在進行，等於`done`表示操作正在完成。
+- `IDBRequest.result`：返回請求的結果。如果請求失敗、結果不可用，讀取該屬性會報錯。
+- `IDBRequest.error`：請求失敗時，返回錯誤物件。
+- `IDBRequest.source`：返回請求的來源（比如索引物件或 ObjectStore）。
+- `IDBRequest.transaction`：返回當前請求正在進行的事務，如果不包含事務，返回`null`。
+- `IDBRequest.onsuccess`：指定`success`事件的監聽函式。
+- `IDBRequest.onerror`：指定`error`事件的監聽函式。
 
-IDBOpenDBRequest 对象继承了 IDBRequest 对象，提供了两个额外的事件监听属性。
+IDBOpenDBRequest 物件繼承了 IDBRequest 物件，提供了兩個額外的事件監聽屬性。
 
-- `IDBOpenDBRequest.onblocked`：指定`blocked`事件（`upgradeneeded`事件触发时，数据库仍然在使用）的监听函数。
-- `IDBOpenDBRequest.onupgradeneeded`：`upgradeneeded`事件的监听函数。
+- `IDBOpenDBRequest.onblocked`：指定`blocked`事件（`upgradeneeded`事件觸發時，資料庫仍然在使用）的監聽函式。
+- `IDBOpenDBRequest.onupgradeneeded`：`upgradeneeded`事件的監聽函式。
 
-## IDBDatabase 对象
+## IDBDatabase 物件
 
-打开数据成功以后，可以从`IDBOpenDBRequest`对象的`result`属性上面，拿到一个`IDBDatabase`对象，它表示连接的数据库。后面对数据库的操作，都通过这个对象完成。
+開啟資料成功以後，可以從`IDBOpenDBRequest`物件的`result`屬性上面，拿到一個`IDBDatabase`物件，它表示連線的資料庫。後面對資料庫的操作，都透過這個物件完成。
 
 ```javascript
 var db;
@@ -455,19 +455,19 @@ DBOpenRequest.onsuccess = function(event) {
 };
 ```
 
-### 属性
+### 屬性
 
-IDBDatabase 对象有以下属性。
+IDBDatabase 物件有以下屬性。
 
-- `IDBDatabase.name`：字符串，数据库名称。
-- `IDBDatabase.version`：整数，数据库版本。数据库第一次创建时，该属性为空字符串。
-- `IDBDatabase.objectStoreNames`：DOMStringList 对象（字符串的集合），包含当前数据的所有 object store 的名字。
-- `IDBDatabase.onabort`：指定 abort 事件（事务中止）的监听函数。
-- `IDBDatabase.onclose`：指定 close 事件（数据库意外关闭）的监听函数。
-- `IDBDatabase.onerror`：指定 error 事件（访问数据库失败）的监听函数。
-- `IDBDatabase.onversionchange`：数据库版本变化时触发（发生`upgradeneeded`事件，或调用`indexedDB.deleteDatabase()`）。
+- `IDBDatabase.name`：字串，資料庫名稱。
+- `IDBDatabase.version`：整數，資料庫版本。資料庫第一次建立時，該屬性為空字串。
+- `IDBDatabase.objectStoreNames`：DOMStringList 物件（字串的集合），包含當前資料的所有 object store 的名字。
+- `IDBDatabase.onabort`：指定 abort 事件（事務中止）的監聽函式。
+- `IDBDatabase.onclose`：指定 close 事件（資料庫意外關閉）的監聽函式。
+- `IDBDatabase.onerror`：指定 error 事件（訪問資料庫失敗）的監聽函式。
+- `IDBDatabase.onversionchange`：資料庫版本變化時觸發（發生`upgradeneeded`事件，或呼叫`indexedDB.deleteDatabase()`）。
 
-下面是`objectStoreNames`属性的例子。该属性返回一个 DOMStringList 对象，包含了当前数据库所有对象仓库的名称（即表名），可以使用 DOMStringList 对象的`contains`方法，检查数据库是否包含某个对象仓库。
+下面是`objectStoreNames`屬性的例子。該屬性返回一個 DOMStringList 物件，包含了當前資料庫所有物件倉庫的名稱（即表名），可以使用 DOMStringList 物件的`contains`方法，檢查資料庫是否包含某個物件倉庫。
 
 ```javascript
 if (!db.objectStoreNames.contains('firstOS')) {
@@ -475,16 +475,16 @@ if (!db.objectStoreNames.contains('firstOS')) {
 }
 ```
 
-上面代码先判断某个对象仓库是否存在，如果不存在就创建该对象仓库。
+上面程式碼先判斷某個物件倉庫是否存在，如果不存在就建立該物件倉庫。
 
 ### 方法
 
-IDBDatabase 对象有以下方法。
+IDBDatabase 物件有以下方法。
 
-- `IDBDatabase.close()`：关闭数据库连接，实际会等所有事务完成后再关闭。
-- `IDBDatabase.createObjectStore()`：创建存放数据的对象仓库，类似于传统关系型数据库的表格，返回一个 IDBObjectStore 对象。该方法只能在`versionchange`事件监听函数中调用。
-- `IDBDatabase.deleteObjectStore()`：删除指定的对象仓库。该方法只能在`versionchange`事件监听函数中调用。
-- `IDBDatabase.transaction()`：返回一个 IDBTransaction 事务对象。
+- `IDBDatabase.close()`：關閉資料庫連線，實際會等所有事務完成後再關閉。
+- `IDBDatabase.createObjectStore()`：建立存放資料的物件倉庫，類似於傳統關係型資料庫的表格，返回一個 IDBObjectStore 物件。該方法只能在`versionchange`事件監聽函式中呼叫。
+- `IDBDatabase.deleteObjectStore()`：刪除指定的物件倉庫。該方法只能在`versionchange`事件監聽函式中呼叫。
+- `IDBDatabase.transaction()`：返回一個 IDBTransaction 事務物件。
 
 下面是`createObjectStore()`方法的例子。
 
@@ -504,16 +504,16 @@ request.onupgradeneeded = function (event) {
 };
 ```
 
-上面代码创建了一个名为`items`的对象仓库，如果该对象仓库已经存在，就会抛出一个错误。为了避免出错，需要用到下文的`objectStoreNames`属性，检查已有哪些对象仓库。
+上面程式碼建立了一個名為`items`的物件倉庫，如果該物件倉庫已經存在，就會丟擲一個錯誤。為了避免出錯，需要用到下文的`objectStoreNames`屬性，檢查已有哪些物件倉庫。
 
-`createObjectStore()`方法还可以接受第二个对象参数，用来设置对象仓库的属性。
+`createObjectStore()`方法還可以接受第二個物件引數，用來設定物件倉庫的屬性。
 
 ```javascript
 db.createObjectStore('test', { keyPath: 'email' });
 db.createObjectStore('test2', { autoIncrement: true });
 ```
 
-上面代码中，`keyPath`属性表示主键（由于主键的值不能重复，所以上例存入之前，必须保证数据的`email`属性值都是不一样的），默认值为`null`；`autoIncrement`属性表示，是否使用自动递增的整数作为主键（第一个数据记录为1，第二个数据记录为2，以此类推），默认为`false`。一般来说，`keyPath`和`autoIncrement`属性只要使用一个就够了，如果两个同时使用，表示主键为递增的整数，且对象不得缺少`keyPath`指定的属性。
+上面程式碼中，`keyPath`屬性表示主鍵（由於主鍵的值不能重複，所以上例存入之前，必須保證資料的`email`屬性值都是不一樣的），預設值為`null`；`autoIncrement`屬性表示，是否使用自動遞增的整數作為主鍵（第一個資料記錄為1，第二個資料記錄為2，以此類推），預設為`false`。一般來說，`keyPath`和`autoIncrement`屬性只要使用一個就夠了，如果兩個同時使用，表示主鍵為遞增的整數，且物件不得缺少`keyPath`指定的屬性。
 
 下面是`deleteObjectStore()`方法的例子。
 
@@ -537,19 +537,19 @@ request.onupgradeneeded = function(e) {
 };
 ```
 
-下面是`transaction()`方法的例子，该方法用于创建一个数据库事务，返回一个 IDBTransaction 对象。向数据库添加数据之前，必须先创建数据库事务。
+下面是`transaction()`方法的例子，該方法用於建立一個數據庫事務，返回一個 IDBTransaction 物件。向資料庫新增資料之前，必須先建立資料庫事務。
 
 ```javascript
 var t = db.transaction(['items'], 'readwrite');
 ```
 
-`transaction()`方法接受两个参数：第一个参数是一个数组，里面是所涉及的对象仓库，通常是只有一个；第二个参数是一个表示操作类型的字符串。目前，操作类型只有两种：`readonly`（只读）和`readwrite`（读写）。添加数据使用`readwrite`，读取数据使用`readonly`。第二个参数是可选的，省略时默认为`readonly`模式。
+`transaction()`方法接受兩個引數：第一個引數是一個數組，裡面是所涉及的物件倉庫，通常是隻有一個；第二個引數是一個表示操作型別的字串。目前，操作型別只有兩種：`readonly`（只讀）和`readwrite`（讀寫）。新增資料使用`readwrite`，讀取資料使用`readonly`。第二個引數是可選的，省略時預設為`readonly`模式。
 
-## IDBObjectStore 对象
+## IDBObjectStore 物件
 
-IDBObjectStore 对象对应一个对象仓库（object store）。`IDBDatabase.createObjectStore()`方法返回的就是一个 IDBObjectStore 对象。
+IDBObjectStore 物件對應一個物件倉庫（object store）。`IDBDatabase.createObjectStore()`方法返回的就是一個 IDBObjectStore 物件。
 
-IDBDatabase 对象的`transaction()`返回一个事务对象，该对象的`objectStore()`方法返回 IDBObjectStore 对象，因此可以采用下面的链式写法。
+IDBDatabase 物件的`transaction()`返回一個事務物件，該物件的`objectStore()`方法返回 IDBObjectStore 物件，因此可以採用下面的鏈式寫法。
 
 ```javascript
 db.transaction(['test'], 'readonly')
@@ -558,31 +558,31 @@ db.transaction(['test'], 'readonly')
   .onsuccess = function (e) {}
 ```
 
-### 属性
+### 屬性
 
-IDBObjectStore 对象有以下属性。
+IDBObjectStore 物件有以下屬性。
 
-- `IDBObjectStore.indexNames`：返回一个类似数组的对象（DOMStringList），包含了当前对象仓库的所有索引。
-- `IDBObjectStore.keyPath`：返回当前对象仓库的主键。
-- `IDBObjectStore.name`：返回当前对象仓库的名称。
-- `IDBObjectStore.transaction`：返回当前对象仓库所属的事务对象。
-- `IDBObjectStore.autoIncrement`：布尔值，表示主键是否会自动递增。
+- `IDBObjectStore.indexNames`：返回一個類似陣列的物件（DOMStringList），包含了當前物件倉庫的所有索引。
+- `IDBObjectStore.keyPath`：返回當前物件倉庫的主鍵。
+- `IDBObjectStore.name`：返回當前物件倉庫的名稱。
+- `IDBObjectStore.transaction`：返回當前物件倉庫所屬的事務物件。
+- `IDBObjectStore.autoIncrement`：布林值，表示主鍵是否會自動遞增。
 
 ### 方法
 
-IDBObjectStore 对象有以下方法。
+IDBObjectStore 物件有以下方法。
 
 **（1）IDBObjectStore.add()**
 
-`IDBObjectStore.add()`用于向对象仓库添加数据，返回一个 IDBRequest 对象。该方法只用于添加数据，如果主键相同会报错，因此更新数据必须使用`put()`方法。
+`IDBObjectStore.add()`用於向物件倉庫新增資料，返回一個 IDBRequest 物件。該方法只用於新增資料，如果主鍵相同會報錯，因此更新資料必須使用`put()`方法。
 
 ```javascript
 objectStore.add(value, key)
 ```
 
-该方法接受两个参数，第一个参数是键值，第二个参数是主键，该参数可选，如果省略默认为`null`。
+該方法接受兩個引數，第一個引數是鍵值，第二個引數是主鍵，該引數可選，如果省略預設為`null`。
 
-创建事务以后，就可以获取对象仓库，然后使用`add()`方法往里面添加数据了。
+建立事務以後，就可以獲取物件倉庫，然後使用`add()`方法往裡面新增資料了。
 
 ```javascript
 var db;
@@ -612,57 +612,57 @@ DBOpenRequest.onsuccess = function (event) {
 
 **（2）IDBObjectStore.put()**
 
-`IDBObjectStore.put()`方法用于更新某个主键对应的数据记录，如果对应的键值不存在，则插入一条新的记录。该方法返回一个 IDBRequest 对象。
+`IDBObjectStore.put()`方法用於更新某個主鍵對應的資料記錄，如果對應的鍵值不存在，則插入一條新的記錄。該方法返回一個 IDBRequest 物件。
 
 ```javascript
 objectStore.put(item, key)
 ```
 
-该方法接受两个参数，第一个参数为新数据，第二个参数为主键，该参数可选，且只在自动递增时才有必要提供，因为那时主键不包含在数据值里面。
+該方法接受兩個引數，第一個引數為新資料，第二個引數為主鍵，該引數可選，且只在自動遞增時才有必要提供，因為那時主鍵不包含在資料值裡面。
 
 **（3）IDBObjectStore.clear()**
 
-`IDBObjectStore.clear()`删除当前对象仓库的所有记录。该方法返回一个 IDBRequest 对象。
+`IDBObjectStore.clear()`刪除當前物件倉庫的所有記錄。該方法返回一個 IDBRequest 物件。
 
 ```javascript
 objectStore.clear()
 ```
 
-该方法不需要参数。
+該方法不需要引數。
 
 **（4）IDBObjectStore.delete()**
 
-`IDBObjectStore.delete()`方法用于删除指定主键的记录。该方法返回一个 IDBRequest 对象。
+`IDBObjectStore.delete()`方法用於刪除指定主鍵的記錄。該方法返回一個 IDBRequest 物件。
 
 ```javascript
 objectStore.delete(Key)
 ```
 
-该方法的参数为主键的值。
+該方法的引數為主鍵的值。
 
 **（5）IDBObjectStore.count()**
 
-`IDBObjectStore.count()`方法用于计算记录的数量。该方法返回一个 IDBRequest 对象。
+`IDBObjectStore.count()`方法用於計算記錄的數量。該方法返回一個 IDBRequest 物件。
 
 ```javascript
 IDBObjectStore.count(key)
 ```
 
-不带参数时，该方法返回当前对象仓库的所有记录数量。如果主键或 IDBKeyRange 对象作为参数，则返回对应的记录数量。
+不帶引數時，該方法返回當前物件倉庫的所有記錄數量。如果主鍵或 IDBKeyRange 物件作為引數，則返回對應的記錄數量。
 
 **（6）IDBObjectStore.getKey()**
 
-`IDBObjectStore.getKey()`用于获取主键。该方法返回一个 IDBRequest 对象。
+`IDBObjectStore.getKey()`用於獲取主鍵。該方法返回一個 IDBRequest 物件。
 
 ```javascript
 objectStore.getKey(key)
 ```
 
-该方法的参数可以是主键值或 IDBKeyRange 对象。
+該方法的引數可以是主鍵值或 IDBKeyRange 物件。
 
 **（7）IDBObjectStore.get()**
 
-`IDBObjectStore.get()`用于获取主键对应的数据记录。该方法返回一个 IDBRequest 对象。
+`IDBObjectStore.get()`用於獲取主鍵對應的資料記錄。該方法返回一個 IDBRequest 物件。
 
 ```javascript
 objectStore.get(key)
@@ -670,43 +670,43 @@ objectStore.get(key)
 
 **（8）IDBObjectStore.getAll()**
 
-`DBObjectStore.getAll()`用于获取对象仓库的记录。该方法返回一个 IDBRequest 对象。
+`DBObjectStore.getAll()`用於獲取物件倉庫的記錄。該方法返回一個 IDBRequest 物件。
 
 ```javascript
-// 获取所有记录
+// 獲取所有記錄
 objectStore.getAll()
 
-// 获取所有符合指定主键或 IDBKeyRange 的记录
+// 獲取所有符合指定主鍵或 IDBKeyRange 的記錄
 objectStore.getAll(query)
 
-// 指定获取记录的数量
+// 指定獲取記錄的數量
 objectStore.getAll(query, count)
 ```
 
 **（9）IDBObjectStore.getAllKeys()**
 
-`IDBObjectStore.getAllKeys()`用于获取所有符合条件的主键。该方法返回一个 IDBRequest 对象。
+`IDBObjectStore.getAllKeys()`用於獲取所有符合條件的主鍵。該方法返回一個 IDBRequest 物件。
 
 ```javascript
-// 获取所有记录的主键
+// 獲取所有記錄的主鍵
 objectStore.getAllKeys()
 
-// 获取所有符合条件的主键
+// 獲取所有符合條件的主鍵
 objectStore.getAllKeys(query)
 
-// 指定获取主键的数量
+// 指定獲取主鍵的數量
 objectStore.getAllKeys(query, count)
 ```
 
 **（10）IDBObjectStore.index()**
 
-`IDBObjectStore.index()`方法返回指定名称的索引对象 IDBIndex。
+`IDBObjectStore.index()`方法返回指定名稱的索引物件 IDBIndex。
 
 ```javascript
 objectStore.index(name)
 ```
 
-有了索引以后，就可以针对索引所在的属性读取数据。
+有了索引以後，就可以針對索引所在的屬性讀取資料。
 
 ```javascript
 var t = db.transaction(['people'], 'readonly');
@@ -716,28 +716,28 @@ var index = store.index('name');
 var request = index.get('foo');
 ```
 
-上面代码打开对象仓库以后，先用`index()`方法指定获取`name`属性的索引，然后用`get()`方法读取某个`name`属性(`foo`)对应的数据。如果`name`属性不是对应唯一值，这时`get()`方法有可能取回多个数据对象。另外，`get()`是异步方法，读取成功以后，只能在`success`事件的监听函数中处理数据。
+上面程式碼開啟物件倉庫以後，先用`index()`方法指定獲取`name`屬性的索引，然後用`get()`方法讀取某個`name`屬性(`foo`)對應的資料。如果`name`屬性不是對應唯一值，這時`get()`方法有可能取回多個數據物件。另外，`get()`是非同步方法，讀取成功以後，只能在`success`事件的監聽函式中處理資料。
 
 **（11）IDBObjectStore.createIndex()**
 
-`IDBObjectStore.createIndex()`方法用于新建当前数据库的一个索引。该方法只能在`VersionChange`监听函数里面调用。
+`IDBObjectStore.createIndex()`方法用於新建當前資料庫的一個索引。該方法只能在`VersionChange`監聽函式裡面呼叫。
 
 ```javascript
 objectStore.createIndex(indexName, keyPath, objectParameters)
 ```
 
-该方法可以接受三个参数。
+該方法可以接受三個引數。
 
 - indexName：索引名
-- keyPath：主键
-- objectParameters：配置对象（可选）
+- keyPath：主鍵
+- objectParameters：配置物件（可選）
 
-第三个参数可以配置以下属性。
+第三個引數可以配置以下屬性。
 
-- unique：如果设为`true`，将不允许重复的值
-- multiEntry：如果设为`true`，对于有多个值的主键数组，每个值将在索引里面新建一个条目，否则主键数组对应一个条目。
+- unique：如果設為`true`，將不允許重複的值
+- multiEntry：如果設為`true`，對於有多個值的主鍵陣列，每個值將在索引裡面新建一個條目，否則主鍵陣列對應一個條目。
 
-假定对象仓库中的数据记录都是如下的`person`类型。
+假定物件倉庫中的資料記錄都是如下的`person`型別。
 
 ```javascript
 var person = {
@@ -747,7 +747,7 @@ var person = {
 };
 ```
 
-可以指定这个对象的某个属性来建立索引。
+可以指定這個物件的某個屬性來建立索引。
 
 ```javascript
 var store = db.createObjectStore('people', { autoIncrement: true });
@@ -756,11 +756,11 @@ store.createIndex('name', 'name', { unique: false });
 store.createIndex('email', 'email', { unique: true });
 ```
 
-上面代码告诉索引对象，`name`属性不是唯一值，`email`属性是唯一值。
+上面程式碼告訴索引物件，`name`屬性不是唯一值，`email`屬性是唯一值。
 
 **（12）IDBObjectStore.deleteIndex()**
 
-`IDBObjectStore.deleteIndex()`方法用于删除指定的索引。该方法只能在`VersionChange`监听函数里面调用。
+`IDBObjectStore.deleteIndex()`方法用於刪除指定的索引。該方法只能在`VersionChange`監聽函式裡面呼叫。
 
 ```javascript
 objectStore.deleteIndex(indexName)
@@ -768,13 +768,13 @@ objectStore.deleteIndex(indexName)
 
 **（13）IDBObjectStore.openCursor()**
 
-`IDBObjectStore.openCursor()`用于获取一个指针对象。
+`IDBObjectStore.openCursor()`用於獲取一個指標物件。
 
 ```javascript
 IDBObjectStore.openCursor()
 ```
 
-指针对象可以用来遍历数据。该对象也是异步的，有自己的`success`和`error`事件，可以对它们指定监听函数。
+指標物件可以用來遍歷資料。該物件也是非同步的，有自己的`success`和`error`事件，可以對它們指定監聽函式。
 
 ```javascript
 var t = db.transaction(['test'], 'readonly');
@@ -792,23 +792,23 @@ cursor.onsuccess = function (event) {
 }
 ```
 
-监听函数接受一个事件对象作为参数，该对象的`target.result`属性指向当前数据记录。该记录的`key`和`value`分别返回主键和键值（即实际存入的数据）。`continue()`方法将光标移到下一个数据对象，如果当前数据对象已经是最后一个数据了，则光标指向`null`。
+監聽函式接受一個事件物件作為引數，該物件的`target.result`屬性指向當前資料記錄。該記錄的`key`和`value`分別返回主鍵和鍵值（即實際存入的資料）。`continue()`方法將游標移到下一個資料物件，如果當前資料物件已經是最後一個數據了，則游標指向`null`。
 
-`openCursor()`方法的第一个参数是主键值，或者一个 IDBKeyRange 对象。如果指定该参数，将只处理包含指定主键的记录；如果省略，将处理所有的记录。该方法还可以接受第二个参数，表示遍历方向，默认值为`next`，其他可能的值为`prev`、`nextunique`和`prevunique`。后两个值表示如果遇到重复值，会自动跳过。
+`openCursor()`方法的第一個引數是主鍵值，或者一個 IDBKeyRange 物件。如果指定該引數，將只處理包含指定主鍵的記錄；如果省略，將處理所有的記錄。該方法還可以接受第二個引數，表示遍歷方向，預設值為`next`，其他可能的值為`prev`、`nextunique`和`prevunique`。後兩個值表示如果遇到重複值，會自動跳過。
 
 **（14）IDBObjectStore.openKeyCursor()**
 
-`IDBObjectStore.openKeyCursor()`用于获取一个主键指针对象。
+`IDBObjectStore.openKeyCursor()`用於獲取一個主鍵指標物件。
 
 ```javascript
 IDBObjectStore.openKeyCursor()
 ```
 
-## IDBTransaction 对象
+## IDBTransaction 物件
 
-IDBTransaction 对象用来异步操作数据库事务，所有的读写操作都要通过这个对象进行。
+IDBTransaction 物件用來非同步操作資料庫事務，所有的讀寫操作都要透過這個物件進行。
 
-`IDBDatabase.transaction()`方法返回的就是一个 IDBTransaction 对象。
+`IDBDatabase.transaction()`方法返回的就是一個 IDBTransaction 物件。
 
 ```javascript
 var db;
@@ -836,7 +836,7 @@ DBOpenRequest.onsuccess = function(event) {
 };
 ```
 
-事务的执行顺序是按照创建的顺序，而不是发出请求的顺序。
+事務的執行順序是按照建立的順序，而不是發出請求的順序。
 
 ```javascript
 var trans1 = db.transaction('foo', 'readwrite');
@@ -847,32 +847,32 @@ objectStore2.put('2', 'key');
 objectStore1.put('1', 'key');
 ```
 
-上面代码中，`key`对应的键值最终是`2`，而不是`1`。因为事务`trans1`先于`trans2`创建，所以首先执行。
+上面程式碼中，`key`對應的鍵值最終是`2`，而不是`1`。因為事務`trans1`先於`trans2`建立，所以首先執行。
 
-注意，事务有可能失败，只有监听到事务的`complete`事件，才能保证事务操作成功。
+注意，事務有可能失敗，只有監聽到事務的`complete`事件，才能保證事務操作成功。
 
-IDBTransaction 对象有以下属性。
+IDBTransaction 物件有以下屬性。
 
-- `IDBTransaction.db`：返回当前事务所在的数据库对象 IDBDatabase。
-- `IDBTransaction.error`：返回当前事务的错误。如果事务没有结束，或者事务成功结束，或者被手动终止，该方法返回`null`。
-- `IDBTransaction.mode`：返回当前事务的模式，默认是`readonly`（只读），另一个值是`readwrite`。
-- `IDBTransaction.objectStoreNames`：返回一个类似数组的对象 DOMStringList，成员是当前事务涉及的对象仓库的名字。
-- `IDBTransaction.onabort`：指定`abort`事件（事务中断）的监听函数。
-- `IDBTransaction.oncomplete`：指定`complete`事件（事务成功）的监听函数。
-- `IDBTransaction.onerror`：指定`error`事件（事务失败）的监听函数。
+- `IDBTransaction.db`：返回當前事務所在的資料庫物件 IDBDatabase。
+- `IDBTransaction.error`：返回當前事務的錯誤。如果事務沒有結束，或者事務成功結束，或者被手動終止，該方法返回`null`。
+- `IDBTransaction.mode`：返回當前事務的模式，預設是`readonly`（只讀），另一個值是`readwrite`。
+- `IDBTransaction.objectStoreNames`：返回一個類似陣列的物件 DOMStringList，成員是當前事務涉及的物件倉庫的名字。
+- `IDBTransaction.onabort`：指定`abort`事件（事務中斷）的監聽函式。
+- `IDBTransaction.oncomplete`：指定`complete`事件（事務成功）的監聽函式。
+- `IDBTransaction.onerror`：指定`error`事件（事務失敗）的監聽函式。
 
-IDBTransaction 对象有以下方法。
+IDBTransaction 物件有以下方法。
 
-- `IDBTransaction.abort()`：终止当前事务，回滚所有已经进行的变更。
-- `IDBTransaction.objectStore(name)`：返回指定名称的对象仓库 IDBObjectStore。
+- `IDBTransaction.abort()`：終止當前事務，回滾所有已經進行的變更。
+- `IDBTransaction.objectStore(name)`：返回指定名稱的物件倉庫 IDBObjectStore。
 
-## IDBIndex 对象
+## IDBIndex 物件
 
-IDBIndex 对象代表数据库的索引，通过这个对象可以获取数据库里面的记录。数据记录的主键默认就是带有索引，IDBIndex 对象主要用于通过除主键以外的其他键，建立索引获取对象。
+IDBIndex 物件代表資料庫的索引，透過這個物件可以獲取資料庫裡面的記錄。資料記錄的主鍵預設就是帶有索引，IDBIndex 物件主要用於透過除主鍵以外的其他鍵，建立索引獲取物件。
 
-IDBIndex 是持久性的键值对存储。只要插入、更新或删除数据记录，引用的对象库中的记录，索引就会自动更新。
+IDBIndex 是永續性的鍵值對儲存。只要插入、更新或刪除資料記錄，引用的物件庫中的記錄，索引就會自動更新。
 
-`IDBObjectStore.index()`方法可以获取 IDBIndex 对象。
+`IDBObjectStore.index()`方法可以獲取 IDBIndex 物件。
 
 ```javascript
 var transaction = db.transaction(['contactsList'], 'readonly');
@@ -900,29 +900,29 @@ myIndex.openCursor().onsuccess = function (event) {
 };
 ```
 
-IDBIndex 对象有以下属性。
+IDBIndex 物件有以下屬性。
 
-- `IDBIndex.name`：字符串，索引的名称。
-- `IDBIndex.objectStore`：索引所在的对象仓库。
-- `IDBIndex.keyPath`：索引的主键。
-- `IDBIndex.multiEntry`：布尔值，针对`keyPath`为数组的情况，如果设为`true`，创建数组时，每个数组成员都会有一个条目，否则每个数组都只有一个条目。
-- `IDBIndex.unique`：布尔值，表示创建索引时是否允许相同的主键。
+- `IDBIndex.name`：字串，索引的名稱。
+- `IDBIndex.objectStore`：索引所在的物件倉庫。
+- `IDBIndex.keyPath`：索引的主鍵。
+- `IDBIndex.multiEntry`：布林值，針對`keyPath`為陣列的情況，如果設為`true`，建立陣列時，每個陣列成員都會有一個條目，否則每個陣列都只有一個條目。
+- `IDBIndex.unique`：布林值，表示建立索引時是否允許相同的主鍵。
 
-IDBIndex 对象有以下方法，它们都是异步的，立即返回的都是一个 IDBRequest 对象。
+IDBIndex 物件有以下方法，它們都是非同步的，立即返回的都是一個 IDBRequest 物件。
 
-- `IDBIndex.count()`：用来获取记录的数量。它可以接受主键或 IDBKeyRange 对象作为参数，这时只返回符合主键的记录数量，否则返回所有记录的数量。
-- `IDBIndex.get(key)`：用来获取符合指定主键的数据记录。
-- `IDBIndex.getKey(key)`：用来获取指定的主键。
-- `IDBIndex.getAll()`：用来获取所有的数据记录。它可以接受两个参数，都是可选的，第一个参数用来指定主键，第二个参数用来指定返回记录的数量。如果省略这两个参数，则返回所有记录。由于获取成功时，浏览器必须生成所有对象，所以对性能有影响。如果数据集比较大，建议使用 IDBCursor 对象。
-- `IDBIndex.getAllKeys()`：该方法与`IDBIndex.getAll()`方法相似，区别是获取所有主键。
-- `IDBIndex.openCursor()`：用来获取一个 IDBCursor 对象，用来遍历索引里面的所有条目。
-- `IDBIndex.openKeyCursor()`：该方法与`IDBIndex.openCursor()`方法相似，区别是遍历所有条目的主键。
+- `IDBIndex.count()`：用來獲取記錄的數量。它可以接受主鍵或 IDBKeyRange 物件作為引數，這時只返回符合主鍵的記錄數量，否則返回所有記錄的數量。
+- `IDBIndex.get(key)`：用來獲取符合指定主鍵的資料記錄。
+- `IDBIndex.getKey(key)`：用來獲取指定的主鍵。
+- `IDBIndex.getAll()`：用來獲取所有的資料記錄。它可以接受兩個引數，都是可選的，第一個引數用來指定主鍵，第二個引數用來指定返回記錄的數量。如果省略這兩個引數，則返回所有記錄。由於獲取成功時，瀏覽器必鬚生成所有物件，所以對效能有影響。如果資料集比較大，建議使用 IDBCursor 物件。
+- `IDBIndex.getAllKeys()`：該方法與`IDBIndex.getAll()`方法相似，區別是獲取所有主鍵。
+- `IDBIndex.openCursor()`：用來獲取一個 IDBCursor 物件，用來遍歷索引裡面的所有條目。
+- `IDBIndex.openKeyCursor()`：該方法與`IDBIndex.openCursor()`方法相似，區別是遍歷所有條目的主鍵。
 
-## IDBCursor 对象
+## IDBCursor 物件
 
-IDBCursor 对象代表指针对象，用来遍历数据仓库（IDBObjectStore）或索引（IDBIndex）的记录。
+IDBCursor 物件代表指標物件，用來遍歷資料倉庫（IDBObjectStore）或索引（IDBIndex）的記錄。
 
-IDBCursor 对象一般通过`IDBObjectStore.openCursor()`方法获得。
+IDBCursor 物件一般透過`IDBObjectStore.openCursor()`方法獲得。
 
 ```javascript
 var transaction = db.transaction(['rushAlbumList'], 'readonly');
@@ -944,34 +944,34 @@ objectStore.openCursor(null, 'next').onsuccess = function(event) {
 };
 ```
 
-IDBCursor 对象的属性。
+IDBCursor 物件的屬性。
 
-- `IDBCursor.source`：返回正在遍历的对象仓库或索引。
-- `IDBCursor.direction`：字符串，表示指针遍历的方向。共有四个可能的值：next（从头开始向后遍历）、nextunique（从头开始向后遍历，重复的值只遍历一次）、prev（从尾部开始向前遍历）、prevunique（从尾部开始向前遍历，重复的值只遍历一次）。该属性通过`IDBObjectStore.openCursor()`方法的第二个参数指定，一旦指定就不能改变了。
-- `IDBCursor.key`：返回当前记录的主键。
-- `IDBCursor.value`：返回当前记录的数据值。
-- `IDBCursor.primaryKey`：返回当前记录的主键。对于数据仓库（objectStore）来说，这个属性等同于 IDBCursor.key；对于索引，IDBCursor.key 返回索引的位置值，该属性返回数据记录的主键。
+- `IDBCursor.source`：返回正在遍歷的物件倉庫或索引。
+- `IDBCursor.direction`：字串，表示指標遍歷的方向。共有四個可能的值：next（從頭開始向後遍歷）、nextunique（從頭開始向後遍歷，重複的值只遍歷一次）、prev（從尾部開始向前遍歷）、prevunique（從尾部開始向前遍歷，重複的值只遍歷一次）。該屬性透過`IDBObjectStore.openCursor()`方法的第二個引數指定，一旦指定就不能改變了。
+- `IDBCursor.key`：返回當前記錄的主鍵。
+- `IDBCursor.value`：返回當前記錄的資料值。
+- `IDBCursor.primaryKey`：返回當前記錄的主鍵。對於資料倉庫（objectStore）來說，這個屬性等同於 IDBCursor.key；對於索引，IDBCursor.key 返回索引的位置值，該屬性返回資料記錄的主鍵。
 
-IDBCursor 对象有如下方法。
+IDBCursor 物件有如下方法。
 
-- `IDBCursor.advance(n)`：指针向前移动 n 个位置。
-- `IDBCursor.continue()`：指针向前移动一个位置。它可以接受一个主键作为参数，这时会跳转到这个主键。
-- `IDBCursor.continuePrimaryKey()`：该方法需要两个参数，第一个是`key`，第二个是`primaryKey`，将指针移到符合这两个参数的位置。
-- `IDBCursor.delete()`：用来删除当前位置的记录，返回一个 IDBRequest 对象。该方法不会改变指针的位置。
-- `IDBCursor.update()`：用来更新当前位置的记录，返回一个 IDBRequest 对象。它的参数是要写入数据库的新的值。
+- `IDBCursor.advance(n)`：指標向前移動 n 個位置。
+- `IDBCursor.continue()`：指標向前移動一個位置。它可以接受一個主鍵作為引數，這時會跳轉到這個主鍵。
+- `IDBCursor.continuePrimaryKey()`：該方法需要兩個引數，第一個是`key`，第二個是`primaryKey`，將指標移到符合這兩個引數的位置。
+- `IDBCursor.delete()`：用來刪除當前位置的記錄，返回一個 IDBRequest 物件。該方法不會改變指標的位置。
+- `IDBCursor.update()`：用來更新當前位置的記錄，返回一個 IDBRequest 物件。它的引數是要寫入資料庫的新的值。
 
-## IDBKeyRange 对象
+## IDBKeyRange 物件
 
-IDBKeyRange 对象代表数据仓库（object store）里面的一组主键。根据这组主键，可以获取数据仓库或索引里面的一组记录。
+IDBKeyRange 物件代表資料倉庫（object store）裡面的一組主鍵。根據這組主鍵，可以獲取資料倉庫或索引裡面的一組記錄。
 
-IDBKeyRange 可以只包含一个值，也可以指定上限和下限。它有四个静态方法，用来指定主键的范围。
+IDBKeyRange 可以只包含一個值，也可以指定上限和下限。它有四個靜態方法，用來指定主鍵的範圍。
 
 - `IDBKeyRange.lowerBound()`：指定下限。
 - `IDBKeyRange.upperBound()`：指定上限。
-- `IDBKeyRange.bound()`：同时指定上下限。
-- `IDBKeyRange.only()`：指定只包含一个值。
+- `IDBKeyRange.bound()`：同時指定上下限。
+- `IDBKeyRange.only()`：指定只包含一個值。
 
-下面是一些代码实例。
+下面是一些程式碼例項。
 
 ```javascript
 // All keys ≤ x
@@ -1002,16 +1002,16 @@ var r8 = IDBKeyRange.bound(x, y, false, true);
 var r9 = IDBKeyRange.only(z);
 ```
 
-`IDBKeyRange.lowerBound()`、`IDBKeyRange.upperBound()`、`IDBKeyRange.bound()`这三个方法默认包括端点值，可以传入一个布尔值，修改这个属性。
+`IDBKeyRange.lowerBound()`、`IDBKeyRange.upperBound()`、`IDBKeyRange.bound()`這三個方法預設包括端點值，可以傳入一個布林值，修改這個屬性。
 
-与之对应，IDBKeyRange 对象有四个只读属性。
+與之對應，IDBKeyRange 物件有四個只讀屬性。
 
 - `IDBKeyRange.lower`：返回下限
-- `IDBKeyRange.lowerOpen`：布尔值，表示下限是否为开区间（即下限是否排除在范围之外）
+- `IDBKeyRange.lowerOpen`：布林值，表示下限是否為開區間（即下限是否排除在範圍之外）
 - `IDBKeyRange.upper`：返回上限
-- `IDBKeyRange.upperOpen`：布尔值，表示上限是否为开区间（即上限是否排除在范围之外）
+- `IDBKeyRange.upperOpen`：布林值，表示上限是否為開區間（即上限是否排除在範圍之外）
 
-IDBKeyRange 实例对象生成以后，将它作为参数输入 IDBObjectStore 或 IDBIndex 对象的`openCursor()`方法，就可以在所设定的范围内读取数据。
+IDBKeyRange 例項物件生成以後，將它作為引數輸入 IDBObjectStore 或 IDBIndex 物件的`openCursor()`方法，就可以在所設定的範圍內讀取資料。
 
 ```javascript
 var t = db.transaction(['people'], 'readonly');
@@ -1033,7 +1033,7 @@ index.openCursor(range).onsuccess = function (e) {
 }
 ```
 
-IDBKeyRange 有一个实例方法`includes(key)`，返回一个布尔值，表示某个主键是否包含在当前这个主键组之内。
+IDBKeyRange 有一個例項方法`includes(key)`，返回一個布林值，表示某個主鍵是否包含在當前這個主鍵組之內。
 
 ```javascript
 var keyRangeValue = IDBKeyRange.bound('A', 'K', false, false);
@@ -1042,7 +1042,7 @@ keyRangeValue.includes('F') // true
 keyRangeValue.includes('W') // false
 ```
 
-## 参考链接
+## 參考連結
 
 - Raymond Camden, [Working With IndexedDB – Part 1](http://net.tutsplus.com/tutorials/javascript-ajax/working-with-indexeddb/)
 - Raymond Camden, [Working With IndexedDB – Part 2](http://net.tutsplus.com/tutorials/javascript-ajax/working-with-indexeddb-part-2/)

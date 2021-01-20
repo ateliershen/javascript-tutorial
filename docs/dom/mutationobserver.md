@@ -2,27 +2,27 @@
 
 ## 概述
 
-Mutation Observer API 用来监视 DOM 变动。DOM 的任何变动，比如节点的增减、属性的变动、文本内容的变动，这个 API 都可以得到通知。
+Mutation Observer API 用來監視 DOM 變動。DOM 的任何變動，比如節點的增減、屬性的變動、文字內容的變動，這個 API 都可以得到通知。
 
-概念上，它很接近事件，可以理解为 DOM 发生变动就会触发 Mutation Observer 事件。但是，它与事件有一个本质不同：事件是同步触发，也就是说，DOM 的变动立刻会触发相应的事件；Mutation Observer 则是异步触发，DOM 的变动并不会马上触发，而是要等到当前所有 DOM 操作都结束才触发。
+概念上，它很接近事件，可以理解為 DOM 發生變動就會觸發 Mutation Observer 事件。但是，它與事件有一個本質不同：事件是同步觸發，也就是說，DOM 的變動立刻會觸發相應的事件；Mutation Observer 則是非同步觸發，DOM 的變動並不會馬上觸發，而是要等到當前所有 DOM 操作都結束才觸發。
 
-这样设计是为了应付 DOM 变动频繁的特点。举例来说，如果文档中连续插入1000个`<p>`元素，就会连续触发1000个插入事件，执行每个事件的回调函数，这很可能造成浏览器的卡顿；而 Mutation Observer 完全不同，只在1000个段落都插入结束后才会触发，而且只触发一次。
+這樣設計是為了應付 DOM 變動頻繁的特點。舉例來說，如果文件中連續插入1000個`<p>`元素，就會連續觸發1000個插入事件，執行每個事件的回撥函式，這很可能造成瀏覽器的卡頓；而 Mutation Observer 完全不同，只在1000個段落都插入結束後才會觸發，而且只觸發一次。
 
-Mutation Observer 有以下特点。
+Mutation Observer 有以下特點。
 
-- 它等待所有脚本任务完成后，才会运行（即异步触发方式）。
-- 它把 DOM 变动记录封装成一个数组进行处理，而不是一条条个别处理 DOM 变动。
-- 它既可以观察 DOM 的所有类型变动，也可以指定只观察某一类变动。
+- 它等待所有指令碼任務完成後，才會執行（即非同步觸發方式）。
+- 它把 DOM 變動記錄封裝成一個數組進行處理，而不是一條條個別處理 DOM 變動。
+- 它既可以觀察 DOM 的所有型別變動，也可以指定只觀察某一類變動。
 
-## MutationObserver 构造函数
+## MutationObserver 建構函式
 
-使用时，首先使用`MutationObserver`构造函数，新建一个观察器实例，同时指定这个实例的回调函数。
+使用時，首先使用`MutationObserver`建構函式，新建一個觀察器例項，同時指定這個例項的回撥函式。
 
 ```javascript
 var observer = new MutationObserver(callback);
 ```
 
-上面代码中的回调函数，会在每次 DOM 变动后调用。该回调函数接受两个参数，第一个是变动数组，第二个是观察器实例，下面是一个例子。
+上面程式碼中的回撥函式，會在每次 DOM 變動後呼叫。該回調函式接受兩個引數，第一個是變動陣列，第二個是觀察器例項，下面是一個例子。
 
 ```javascript
 var observer = new MutationObserver(function (mutations, observer) {
@@ -32,14 +32,14 @@ var observer = new MutationObserver(function (mutations, observer) {
 });
 ```
 
-## MutationObserver 的实例方法
+## MutationObserver 的例項方法
 
 ### observe()
 
-`observe()`方法用来启动监听，它接受两个参数。
+`observe()`方法用來啟動監聽，它接受兩個引數。
 
-- 第一个参数：所要观察的 DOM 节点
-- 第二个参数：一个配置对象，指定所要观察的特定变动
+- 第一個引數：所要觀察的 DOM 節點
+- 第二個引數：一個配置物件，指定所要觀察的特定變動
 
 ```javascript
 var article = document.querySelector('article');
@@ -52,25 +52,25 @@ var  options = {
 observer.observe(article, options);
 ```
 
-上面代码中，`observe()`方法接受两个参数，第一个是所要观察的DOM元素是`article`，第二个是所要观察的变动类型（子节点变动和属性变动）。
+上面程式碼中，`observe()`方法接受兩個引數，第一個是所要觀察的DOM元素是`article`，第二個是所要觀察的變動型別（子節點變動和屬性變動）。
 
-观察器所能观察的 DOM 变动类型（即上面代码的`options`对象），有以下几种。
+觀察器所能觀察的 DOM 變動型別（即上面程式碼的`options`物件），有以下幾種。
 
-- **childList**：子节点的变动（指新增，删除或者更改）。
-- **attributes**：属性的变动。
-- **characterData**：节点内容或节点文本的变动。
+- **childList**：子節點的變動（指新增，刪除或者更改）。
+- **attributes**：屬性的變動。
+- **characterData**：節點內容或節點文字的變動。
 
-想要观察哪一种变动类型，就在`option`对象中指定它的值为`true`。需要注意的是，至少必须同时指定这三种观察的一种，若均未指定将报错。
+想要觀察哪一種變動型別，就在`option`物件中指定它的值為`true`。需要注意的是，至少必須同時指定這三種觀察的一種，若均未指定將報錯。
 
-除了变动类型，`options`对象还可以设定以下属性：
+除了變動型別，`options`物件還可以設定以下屬性：
 
-- `subtree`：布尔值，表示是否将该观察器应用于该节点的所有后代节点。
-- `attributeOldValue`：布尔值，表示观察`attributes`变动时，是否需要记录变动前的属性值。
-- `characterDataOldValue`：布尔值，表示观察`characterData`变动时，是否需要记录变动前的值。
-- `attributeFilter`：数组，表示需要观察的特定属性（比如`['class','src']`）。
+- `subtree`：布林值，表示是否將該觀察器應用於該節點的所有後代節點。
+- `attributeOldValue`：布林值，表示觀察`attributes`變動時，是否需要記錄變動前的屬性值。
+- `characterDataOldValue`：布林值，表示觀察`characterData`變動時，是否需要記錄變動前的值。
+- `attributeFilter`：陣列，表示需要觀察的特定屬性（比如`['class','src']`）。
 
 ```javascript
-// 开始监听文档根节点（即<html>标签）的变动
+// 開始監聽文件根節點（即<html>標籤）的變動
 mutationObserver.observe(document.documentElement, {
   attributes: true,
   characterData: true,
@@ -81,9 +81,9 @@ mutationObserver.observe(document.documentElement, {
 });
 ```
 
-对一个节点添加观察器，就像使用`addEventListener()`方法一样，多次添加同一个观察器是无效的，回调函数依然只会触发一次。如果指定不同的`options`对象，以后面添加的那个为准，类似覆盖。
+對一個節點新增觀察器，就像使用`addEventListener()`方法一樣，多次新增同一個觀察器是無效的，回撥函式依然只會觸發一次。如果指定不同的`options`物件，以後面新增的那個為準，類似覆蓋。
 
-下面的例子是观察新增的子节点。
+下面的例子是觀察新增的子節點。
 
 ```javascript
 var insertedNodes = [];
@@ -100,48 +100,48 @@ observer.observe(document, { childList: true, subtree: true });
 
 ### disconnect()，takeRecords（）
 
-`disconnect()`方法用来停止观察。调用该方法后，DOM 再发生变动，也不会触发观察器。
+`disconnect()`方法用來停止觀察。呼叫該方法後，DOM 再發生變動，也不會觸發觀察器。
 
 ```javascript
 observer.disconnect();
 ```
 
-`takeRecords()`方法用来清除变动记录，即不再处理未处理的变动。该方法返回变动记录的数组。
+`takeRecords()`方法用來清除變動記錄，即不再處理未處理的變動。該方法返回變動記錄的陣列。
 
 ```javascript
 observer.takeRecords();
 ```
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
-// 保存所有没有被观察器处理的变动
+// 儲存所有沒有被觀察器處理的變動
 var changes = mutationObserver.takeRecords();
 
-// 停止观察
+// 停止觀察
 mutationObserver.disconnect();
 ```
 
-## MutationRecord 对象
+## MutationRecord 物件
 
-DOM 每次发生变化，就会生成一条变动记录（MutationRecord 实例）。该实例包含了与变动相关的所有信息。Mutation Observer 处理的就是一个个`MutationRecord`实例所组成的数组。
+DOM 每次發生變化，就會生成一條變動記錄（MutationRecord 例項）。該例項包含了與變動相關的所有資訊。Mutation Observer 處理的就是一個個`MutationRecord`例項所組成的陣列。
 
-`MutationRecord`对象包含了DOM的相关信息，有如下属性：
+`MutationRecord`物件包含了DOM的相關資訊，有如下屬性：
 
-- `type`：观察的变动类型（`attributes`、`characterData`或者`childList`）。
-- `target`：发生变动的DOM节点。
-- `addedNodes`：新增的DOM节点。
-- `removedNodes`：删除的DOM节点。
-- `previousSibling`：前一个同级节点，如果没有则返回`null`。
-- `nextSibling`：下一个同级节点，如果没有则返回`null`。
-- `attributeName`：发生变动的属性。如果设置了`attributeFilter`，则只返回预先指定的属性。
-- `oldValue`：变动前的值。这个属性只对`attribute`和`characterData`变动有效，如果发生`childList`变动，则返回`null`。
+- `type`：觀察的變動型別（`attributes`、`characterData`或者`childList`）。
+- `target`：發生變動的DOM節點。
+- `addedNodes`：新增的DOM節點。
+- `removedNodes`：刪除的DOM節點。
+- `previousSibling`：前一個同級節點，如果沒有則返回`null`。
+- `nextSibling`：下一個同級節點，如果沒有則返回`null`。
+- `attributeName`：發生變動的屬性。如果設定了`attributeFilter`，則只返回預先指定的屬性。
+- `oldValue`：變動前的值。這個屬性只對`attribute`和`characterData`變動有效，如果發生`childList`變動，則返回`null`。
 
-## 应用示例
+## 應用示例
 
-### 子元素的变动
+### 子元素的變動
 
-下面的例子说明如何读取变动记录。
+下面的例子說明如何讀取變動記錄。
 
 ```javascript
 var callback = function (records){
@@ -161,11 +161,11 @@ var option = {
 mo.observe(document.body, option);
 ```
 
-上面代码的观察器，观察`<body>`的所有下级节点（`childList`表示观察子节点，`subtree`表示观察后代节点）的变动。回调函数会在控制台显示所有变动的类型和目标节点。
+上面程式碼的觀察器，觀察`<body>`的所有下級節點（`childList`表示觀察子節點，`subtree`表示觀察後代節點）的變動。回撥函式會在控制檯顯示所有變動的型別和目標節點。
 
-### 属性的变动
+### 屬性的變動
 
-下面的例子说明如何追踪属性的变动。
+下面的例子說明如何追蹤屬性的變動。
 
 ```javascript
 var callback = function (records) {
@@ -186,11 +186,11 @@ var options = {
 mo.observe(element, options);
 ```
 
-上面代码先设定追踪属性变动（`'attributes': true`），然后设定记录变动前的值。实际发生变动时，会将变动前的值显示在控制台。
+上面程式碼先設定追蹤屬性變動（`'attributes': true`），然後設定記錄變動前的值。實際發生變動時，會將變動前的值顯示在控制檯。
 
 ### 取代 DOMContentLoaded 事件
 
-网页加载的时候，DOM 节点的生成会产生变动记录，因此只要观察 DOM 的变动，就能在第一时间触发相关事件，也就没有必要使用`DOMContentLoaded`事件。
+網頁載入的時候，DOM 節點的生成會產生變動記錄，因此只要觀察 DOM 的變動，就能在第一時間觸發相關事件，也就沒有必要使用`DOMContentLoaded`事件。
 
 ```javascript
 var observer = new MutationObserver(callback);
@@ -200,9 +200,9 @@ observer.observe(document.documentElement, {
 });
 ```
 
-上面代码中，监听`document.documentElement`（即网页的`<html>`HTML 节点）的子节点的变动，`subtree`属性指定监听还包括后代节点。因此，任意一个网页元素一旦生成，就能立刻被监听到。
+上面程式碼中，監聽`document.documentElement`（即網頁的`<html>`HTML 節點）的子節點的變動，`subtree`屬性指定監聽還包括後代節點。因此，任意一個網頁元素一旦生成，就能立刻被監聽到。
 
-下面的代码，使用`MutationObserver`对象封装一个监听 DOM 生成的函数。
+下面的程式碼，使用`MutationObserver`物件封裝一個監聽 DOM 生成的函式。
 
 ```javascript
 (function(win){
@@ -214,42 +214,42 @@ observer.observe(document.documentElement, {
   var observer;
 
   function ready(selector, fn){
-    // 储存选择器和回调函数
+    // 儲存選擇器和回撥函式
     listeners.push({
       selector: selector,
       fn: fn
     });
     if(!observer){
-      // 监听document变化
+      // 監聽document變化
       observer = new MutationObserver(check);
       observer.observe(doc.documentElement, {
         childList: true,
         subtree: true
       });
     }
-    // 检查该节点是否已经在DOM中
+    // 檢查該節點是否已經在DOM中
     check();
   }
 
   function check(){
-  // 检查是否匹配已储存的节点
+  // 檢查是否匹配已儲存的節點
     for(var i = 0; i < listeners.length; i++){
       var listener = listeners[i];
-      // 检查指定节点是否有匹配
+      // 檢查指定節點是否有匹配
       var elements = doc.querySelectorAll(listener.selector);
       for(var j = 0; j < elements.length; j++){
         var element = elements[j];
-        // 确保回调函数只会对该元素调用一次
+        // 確保回撥函式只會對該元素呼叫一次
         if(!element.ready){
           element.ready = true;
-          // 对该节点调用回调函数
+          // 對該節點呼叫回撥函式
           listener.fn.call(element, element);
         }
       }
     }
   }
 
-  // 对外暴露ready
+  // 對外暴露ready
   win.ready = ready;
 
 })(this);
@@ -260,7 +260,7 @@ ready('.foo', function(element){
 });
 ```
 
-## 参考链接
+## 參考連結
 
 - Paul Kinlan, [Detect DOM changes with Mutation Observers](https://developers.google.com/web/updates/2012/02/Detect-DOM-changes-with-Mutation-Observers)
 - Tiffany Brown, [Getting to know mutation observers](http://dev.opera.com/articles/view/mutation-observers-tutorial/)

@@ -1,8 +1,8 @@
-# Boolean 对象
+# Boolean 物件
 
 ## 概述
 
-`Boolean`对象是 JavaScript 的三个包装对象之一。作为构造函数，它主要用于生成布尔值的包装对象实例。
+`Boolean`物件是 JavaScript 的三個包裝物件之一。作為建構函式，它主要用於生成布林值的包裝物件例項。
 
 ```javascript
 var b = new Boolean(true);
@@ -11,9 +11,9 @@ typeof b // "object"
 b.valueOf() // true
 ```
 
-上面代码的变量`b`是一个`Boolean`对象的实例，它的类型是对象，值为布尔值`true`。
+上面程式碼的變數`b`是一個`Boolean`物件的例項，它的型別是物件，值為布林值`true`。
 
-注意，`false`对应的包装对象实例，布尔运算结果也是`true`。
+注意，`false`對應的包裝物件例項，布林運算結果也是`true`。
 
 ```javascript
 if (new Boolean(false)) {
@@ -22,14 +22,14 @@ if (new Boolean(false)) {
 
 if (new Boolean(false).valueOf()) {
   console.log('true');
-} // 无输出
+} // 無輸出
 ```
 
-上面代码的第一个例子之所以得到`true`，是因为`false`对应的包装对象实例是一个对象，进行逻辑运算时，被自动转化成布尔值`true`（因为所有对象对应的布尔值都是`true`）。而实例的`valueOf`方法，则返回实例对应的原始值，本例为`false`。
+上面程式碼的第一個例子之所以得到`true`，是因為`false`對應的包裝物件例項是一個物件，進行邏輯運算時，被自動轉化成布林值`true`（因為所有物件對應的布林值都是`true`）。而例項的`valueOf`方法，則返回例項對應的原始值，本例為`false`。
 
-## Boolean 函数的类型转换作用
+## Boolean 函式的型別轉換作用
 
-`Boolean`对象除了可以作为构造函数，还可以单独使用，将任意值转为布尔值。这时`Boolean`就是一个单纯的工具方法。
+`Boolean`物件除了可以作為建構函式，還可以單獨使用，將任意值轉為布林值。這時`Boolean`就是一個單純的工具方法。
 
 ```javascript
 Boolean(undefined) // false
@@ -46,9 +46,9 @@ Boolean(function () {}) // true
 Boolean(/foo/) // true
 ```
 
-上面代码中几种得到`true`的情况，都值得认真记住。
+上面程式碼中幾種得到`true`的情況，都值得認真記住。
 
-顺便提一下，使用双重的否运算符（`!`）也可以将任意值转为对应的布尔值。
+順便提一下，使用雙重的否運算子（`!`）也可以將任意值轉為對應的布林值。
 
 ```javascript
 !!undefined // false
@@ -65,12 +65,12 @@ Boolean(/foo/) // true
 !!/foo/ // true
 ```
 
-最后，对于一些特殊值，`Boolean`对象前面加不加`new`，会得到完全相反的结果，必须小心。
+最後，對於一些特殊值，`Boolean`物件前面加不加`new`，會得到完全相反的結果，必須小心。
 
 ```javascript
 if (Boolean(false)) {
   console.log('true');
-} // 无输出
+} // 無輸出
 
 if (new Boolean(false)) {
   console.log('true');
@@ -78,7 +78,7 @@ if (new Boolean(false)) {
 
 if (Boolean(null)) {
   console.log('true');
-} // 无输出
+} // 無輸出
 
 if (new Boolean(null)) {
   console.log('true');

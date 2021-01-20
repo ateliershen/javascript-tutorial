@@ -1,77 +1,77 @@
-# 其他常见事件
+# 其他常見事件
 
-## 资源事件
+## 資源事件
 
 ### beforeunload 事件
 
-`beforeunload`事件在窗口、文档、各种资源将要卸载前触发。它可以用来防止用户不小心卸载资源。
+`beforeunload`事件在視窗、文件、各種資源將要解除安裝前觸發。它可以用來防止使用者不小心解除安裝資源。
 
-如果该事件对象的`returnValue`属性是一个非空字符串，那么浏览器就会弹出一个对话框，询问用户是否要卸载该资源。但是，用户指定的字符串可能无法显示，浏览器会展示预定义的字符串。如果用户点击“取消”按钮，资源就不会卸载。
+如果該事件物件的`returnValue`屬性是一個非空字串，那麼瀏覽器就會彈出一個對話方塊，詢問使用者是否要解除安裝該資源。但是，使用者指定的字串可能無法顯示，瀏覽器會展示預定義的字串。如果使用者點選“取消”按鈕，資源就不會解除安裝。
 
 ```javascript
 window.addEventListener('beforeunload', function (event) {
-  event.returnValue = '你确定离开吗？';
+  event.returnValue = '你確定離開嗎？';
 });
 ```
 
-上面代码中，用户如果关闭窗口，浏览器会弹出一个窗口，要求用户确认。
+上面程式碼中，使用者如果關閉視窗，瀏覽器會彈出一個視窗，要求使用者確認。
 
-浏览器对这个事件的行为很不一致，有的浏览器调用`event.preventDefault()`，也会弹出对话框。IE 浏览器需要显式返回一个非空的字符串，才会弹出对话框。而且，大多数浏览器在对话框中不显示指定文本，只显示默认文本。因此，可以采用下面的写法，取得最大的兼容性。
+瀏覽器對這個事件的行為很不一致，有的瀏覽器呼叫`event.preventDefault()`，也會彈出對話方塊。IE 瀏覽器需要顯式返回一個非空的字串，才會彈出對話方塊。而且，大多數瀏覽器在對話方塊中不顯示指定文字，只顯示預設文字。因此，可以採用下面的寫法，取得最大的相容性。
 
 ```javascript
 window.addEventListener('beforeunload', function (e) {
-  var confirmationMessage = '确认关闭窗口？';
+  var confirmationMessage = '確認關閉視窗？';
 
   e.returnValue = confirmationMessage;
   return confirmationMessage;
 });
 ```
 
-注意，许多手机浏览器（比如 Safari）默认忽略这个事件，桌面浏览器也有办法忽略这个事件。所以，它可能根本不会生效，不能依赖它来阻止用户关闭浏览器窗口，最好不要使用这个事件。
+注意，許多手機瀏覽器（比如 Safari）預設忽略這個事件，桌面瀏覽器也有辦法忽略這個事件。所以，它可能根本不會生效，不能依賴它來阻止使用者關閉瀏覽器視窗，最好不要使用這個事件。
 
-另外，一旦使用了`beforeunload`事件，浏览器就不会缓存当前网页，使用“回退”按钮将重新向服务器请求网页。这是因为监听这个事件的目的，一般是为了网页状态，这时缓存页面的初始状态就没意义了。
+另外，一旦使用了`beforeunload`事件，瀏覽器就不會快取當前網頁，使用“回退”按鈕將重新向伺服器請求網頁。這是因為監聽這個事件的目的，一般是為了網頁狀態，這時快取頁面的初始狀態就沒意義了。
 
 ### unload 事件
 
-`unload`事件在窗口关闭或者`document`对象将要卸载时触发。它的触发顺序排在`beforeunload`、`pagehide`事件后面。
+`unload`事件在視窗關閉或者`document`物件將要解除安裝時觸發。它的觸發順序排在`beforeunload`、`pagehide`事件後面。
 
-`unload`事件发生时，文档处于一个特殊状态。所有资源依然存在，但是对用户来说都不可见，UI 互动全部无效。这个事件是无法取消的，即使在监听函数里面抛出错误，也不能停止文档的卸载。
+`unload`事件發生時，文件處於一個特殊狀態。所有資源依然存在，但是對使用者來說都不可見，UI 互動全部無效。這個事件是無法取消的，即使在監聽函式裡面丟擲錯誤，也不能停止文件的解除安裝。
 
 ```javascript
 window.addEventListener('unload', function(event) {
-  console.log('文档将要卸载');
+  console.log('文件將要解除安裝');
 });
 ```
 
-手机上，浏览器或系统可能会直接丢弃网页，这时该事件根本不会发生。而且跟`beforeunload`事件一样，一旦使用了`unload`事件，浏览器就不会缓存当前网页，理由同上。因此，任何情况下都不应该依赖这个事件，指定网页卸载时要执行的代码，可以考虑完全不使用这个事件。
+手機上，瀏覽器或系統可能會直接丟棄網頁，這時該事件根本不會發生。而且跟`beforeunload`事件一樣，一旦使用了`unload`事件，瀏覽器就不會快取當前網頁，理由同上。因此，任何情況下都不應該依賴這個事件，指定網頁解除安裝時要執行的程式碼，可以考慮完全不使用這個事件。
 
-该事件可以用`pagehide`代替。
+該事件可以用`pagehide`代替。
 
 ### load 事件，error 事件
 
-`load`事件在页面或某个资源加载成功时触发。注意，页面或资源从浏览器缓存加载，并不会触发`load`事件。
+`load`事件在頁面或某個資源載入成功時觸發。注意，頁面或資源從瀏覽器快取載入，並不會觸發`load`事件。
 
 ```javascript
 window.addEventListener('load', function(event) {
-  console.log('所有资源都加载完成');
+  console.log('所有資源都載入完成');
 });
 ```
 
-`error`事件是在页面或资源加载失败时触发。`abort`事件在用户取消加载时触发。
+`error`事件是在頁面或資源載入失敗時觸發。`abort`事件在使用者取消載入時觸發。
 
-这三个事件实际上属于进度事件，不仅发生在`document`对象，还发生在各种外部资源上面。浏览网页就是一个加载各种资源的过程，图像（image）、样式表（style sheet）、脚本（script）、视频（video）、音频（audio）、Ajax请求（XMLHttpRequest）等等。这些资源和`document`对象、`window`对象、XMLHttpRequestUpload 对象，都会触发`load`事件和`error`事件。
+這三個事件實際上屬於進度事件，不僅發生在`document`物件，還發生在各種外部資源上面。瀏覽網頁就是一個載入各種資源的過程，影象（image）、樣式表（style sheet）、指令碼（script）、影片（video）、音訊（audio）、Ajax請求（XMLHttpRequest）等等。這些資源和`document`物件、`window`物件、XMLHttpRequestUpload 物件，都會觸發`load`事件和`error`事件。
 
-最后，页面的`load`事件也可以用`pageshow`事件代替。
+最後，頁面的`load`事件也可以用`pageshow`事件代替。
 
-## session 历史事件
+## session 歷史事件
 
 ### pageshow 事件，pagehide 事件
 
-默认情况下，浏览器会在当前会话（session）缓存页面，当用户点击“前进/后退”按钮时，浏览器就会从缓存中加载页面。
+預設情況下，瀏覽器會在當前會話（session）快取頁面，當用戶點選“前進/後退”按鈕時，瀏覽器就會從快取中載入頁面。
 
-`pageshow`事件在页面加载时触发，包括第一次加载和从缓存加载两种情况。如果要指定页面每次加载（不管是不是从浏览器缓存）时都运行的代码，可以放在这个事件的监听函数。
+`pageshow`事件在頁面載入時觸發，包括第一次載入和從快取載入兩種情況。如果要指定頁面每次載入（不管是不是從瀏覽器快取）時都執行的程式碼，可以放在這個事件的監聽函式。
 
-第一次加载时，它的触发顺序排在`load`事件后面。从缓存加载时，`load`事件不会触发，因为网页在缓存中的样子通常是`load`事件的监听函数运行后的样子，所以不必重复执行。同理，如果是从缓存中加载页面，网页内初始化的 JavaScript 脚本（比如 DOMContentLoaded 事件的监听函数）也不会执行。
+第一次載入時，它的觸發順序排在`load`事件後面。從快取載入時，`load`事件不會觸發，因為網頁在快取中的樣子通常是`load`事件的監聽函式執行後的樣子，所以不必重複執行。同理，如果是從快取中載入頁面，網頁內初始化的 JavaScript 指令碼（比如 DOMContentLoaded 事件的監聽函式）也不會執行。
 
 ```javascript
 window.addEventListener('pageshow', function(event) {
@@ -79,7 +79,7 @@ window.addEventListener('pageshow', function(event) {
 });
 ```
 
-`pageshow`事件有一个`persisted`属性，返回一个布尔值。页面第一次加载时，这个属性是`false`；当页面从缓存加载时，这个属性是`true`。
+`pageshow`事件有一個`persisted`屬性，返回一個布林值。頁面第一次載入時，這個屬性是`false`；當頁面從快取載入時，這個屬性是`true`。
 
 ```javascript
 window.addEventListener('pageshow', function(event){
@@ -89,19 +89,19 @@ window.addEventListener('pageshow', function(event){
 });
 ```
 
-`pagehide`事件与`pageshow`事件类似，当用户通过“前进/后退”按钮，离开当前页面时触发。它与 unload 事件的区别在于，如果在 window 对象上定义`unload`事件的监听函数之后，页面不会保存在缓存中，而使用`pagehide`事件，页面会保存在缓存中。
+`pagehide`事件與`pageshow`事件類似，當用戶透過“前進/後退”按鈕，離開當前頁面時觸發。它與 unload 事件的區別在於，如果在 window 物件上定義`unload`事件的監聽函式之後，頁面不會儲存在快取中，而使用`pagehide`事件，頁面會儲存在快取中。
 
-`pagehide`事件实例也有一个`persisted`属性，将这个属性设为`true`，就表示页面要保存在缓存中；设为`false`，表示网页不保存在缓存中，这时如果设置了unload 事件的监听函数，该函数将在 pagehide 事件后立即运行。
+`pagehide`事件例項也有一個`persisted`屬性，將這個屬性設為`true`，就表示頁面要儲存在快取中；設為`false`，表示網頁不儲存在快取中，這時如果設定了unload 事件的監聽函式，該函式將在 pagehide 事件後立即執行。
 
-如果页面包含`<frame>`或`<iframe>`元素，则`<frame>`页面的`pageshow`事件和`pagehide`事件，都会在主页面之前触发。
+如果頁面包含`<frame>`或`<iframe>`元素，則`<frame>`頁面的`pageshow`事件和`pagehide`事件，都會在主頁面之前觸發。
 
-注意，这两个事件只在浏览器的`history`对象发生变化时触发，跟网页是否可见没有关系。
+注意，這兩個事件只在瀏覽器的`history`物件發生變化時觸發，跟網頁是否可見沒有關係。
 
 ### popstate 事件
 
-`popstate`事件在浏览器的`history`对象的当前记录发生显式切换时触发。注意，调用`history.pushState()`或`history.replaceState()`，并不会触发`popstate`事件。该事件只在用户在`history`记录之间显式切换时触发，比如鼠标点击“后退/前进”按钮，或者在脚本中调用`history.back()`、`history.forward()`、`history.go()`时触发。
+`popstate`事件在瀏覽器的`history`物件的當前記錄發生顯式切換時觸發。注意，呼叫`history.pushState()`或`history.replaceState()`，並不會觸發`popstate`事件。該事件只在使用者在`history`記錄之間顯式切換時觸發，比如滑鼠點選“後退/前進”按鈕，或者在指令碼中呼叫`history.back()`、`history.forward()`、`history.go()`時觸發。
 
-该事件对象有一个`state`属性，保存`history.pushState`方法和`history.replaceState`方法为当前记录添加的`state`对象。
+該事件物件有一個`state`屬性，儲存`history.pushState`方法和`history.replaceState`方法為當前記錄新增的`state`物件。
 
 ```javascript
 window.onpopstate = function (event) {
@@ -115,15 +115,15 @@ history.back(); // state: null
 history.go(2);  // state: {"page":3}
 ```
 
-上面代码中，`pushState`方法向`history`添加了两条记录，然后`replaceState`方法替换掉当前记录。因此，连续两次`back`方法，会让当前条目退回到原始网址，它没有附带`state`对象，所以事件的`state`属性为`null`，然后前进两条记录，又回到`replaceState`方法添加的记录。
+上面程式碼中，`pushState`方法向`history`添加了兩條記錄，然後`replaceState`方法替換掉當前記錄。因此，連續兩次`back`方法，會讓當前條目退回到原始網址，它沒有附帶`state`物件，所以事件的`state`屬性為`null`，然後前進兩條記錄，又回到`replaceState`方法新增的記錄。
 
-浏览器对于页面首次加载，是否触发`popstate`事件，处理不一样，Firefox 不触发该事件。
+瀏覽器對於頁面首次載入，是否觸發`popstate`事件，處理不一樣，Firefox 不觸發該事件。
 
 ### hashchange 事件
 
-`hashchange`事件在 URL 的 hash 部分（即`#`号后面的部分，包括`#`号）发生变化时触发。该事件一般在`window`对象上监听。
+`hashchange`事件在 URL 的 hash 部分（即`#`號後面的部分，包括`#`號）發生變化時觸發。該事件一般在`window`物件上監聽。
 
-`hashchange`的事件实例具有两个特有属性：`oldURL`属性和`newURL`属性，分别表示变化前后的完整 URL。
+`hashchange`的事件例項具有兩個特有屬性：`oldURL`屬性和`newURL`屬性，分別表示變化前後的完整 URL。
 
 ```javascript
 // URL 是 http://www.example.com/
@@ -139,11 +139,11 @@ location.hash = 'part2';
 // http://www.example.com/#part2
 ```
 
-## 网页状态事件
+## 網頁狀態事件
 
 ### DOMContentLoaded 事件
 
-网页下载并解析完成以后，浏览器就会在`document`对象上触发 DOMContentLoaded 事件。这时，仅仅完成了网页的解析（整张页面的 DOM 生成了），所有外部资源（样式表、脚本、iframe 等等）可能还没有下载结束。也就是说，这个事件比`load`事件，发生时间早得多。
+網頁下載並解析完成以後，瀏覽器就會在`document`物件上觸發 DOMContentLoaded 事件。這時，僅僅完成了網頁的解析（整張頁面的 DOM 生成了），所有外部資源（樣式表、指令碼、iframe 等等）可能還沒有下載結束。也就是說，這個事件比`load`事件，發生時間早得多。
 
 ```javascript
 document.addEventListener('DOMContentLoaded', function (event) {
@@ -151,14 +151,14 @@ document.addEventListener('DOMContentLoaded', function (event) {
 });
 ```
 
-注意，网页的 JavaScript 脚本是同步执行的，脚本一旦发生堵塞，将推迟触发`DOMContentLoaded`事件。
+注意，網頁的 JavaScript 指令碼是同步執行的，指令碼一旦發生堵塞，將推遲觸發`DOMContentLoaded`事件。
 
 ```javascript
 document.addEventListener('DOMContentLoaded', function (event) {
   console.log('DOM 生成');
 });
 
-// 这段代码会推迟触发 DOMContentLoaded 事件
+// 這段程式碼會推遲觸發 DOMContentLoaded 事件
 for(var i = 0; i < 1000000000; i++) {
   // ...
 }
@@ -166,7 +166,7 @@ for(var i = 0; i < 1000000000; i++) {
 
 ### readystatechange 事件
 
-`readystatechange`事件当 Document 对象和 XMLHttpRequest 对象的`readyState`属性发生变化时触发。`document.readyState`有三个可能的值：`loading`（网页正在加载）、`interactive`（网页已经解析完成，但是外部资源仍然处在加载状态）和`complete`（网页和所有外部资源已经结束加载，`load`事件即将触发）。
+`readystatechange`事件當 Document 物件和 XMLHttpRequest 物件的`readyState`屬性發生變化時觸發。`document.readyState`有三個可能的值：`loading`（網頁正在載入）、`interactive`（網頁已經解析完成，但是外部資源仍然處在載入狀態）和`complete`（網頁和所有外部資源已經結束載入，`load`事件即將觸發）。
 
 ```javascript
 document.onreadystatechange = function () {
@@ -176,19 +176,19 @@ document.onreadystatechange = function () {
 }
 ```
 
-这个事件可以看作`DOMContentLoaded`事件的另一种实现方法。
+這個事件可以看作`DOMContentLoaded`事件的另一種實現方法。
 
-## 窗口事件
+## 視窗事件
 
 ### scroll 事件
 
-`scroll`事件在文档或文档元素滚动时触发，主要出现在用户拖动滚动条。
+`scroll`事件在文件或文件元素滾動時觸發，主要出現在使用者拖動捲軸。
 
 ```javascript
 window.addEventListener('scroll', callback);
 ```
 
-该事件会连续地大量触发，所以它的监听函数之中不应该有非常耗费计算的操作。推荐的做法是使用`requestAnimationFrame`或`setTimeout`控制该事件的触发频率，然后可以结合`customEvent`抛出一个新事件。
+該事件會連續地大量觸發，所以它的監聽函式之中不應該有非常耗費計算的操作。推薦的做法是使用`requestAnimationFrame`或`setTimeout`控制該事件的觸發頻率，然後可以結合`customEvent`丟擲一個新事件。
 
 ```javascript
 (function () {
@@ -206,7 +206,7 @@ window.addEventListener('scroll', callback);
     obj.addEventListener(type, func);
   };
 
-  // 将 scroll 事件转为 optimizedScroll 事件
+  // 將 scroll 事件轉為 optimizedScroll 事件
   throttle('scroll', 'optimizedScroll');
 })();
 
@@ -215,9 +215,9 @@ window.addEventListener('optimizedScroll', function() {
 });
 ```
 
-上面代码中，`throttle()`函数用于控制事件触发频率，它有一个内部函数`func()`，每次`scroll`事件实际上触发的是这个函数。`func()`函数内部使用`requestAnimationFrame()`方法，保证只有每次页面重绘时（每秒60次），才可能会触发`optimizedScroll`事件，从而实际上将`scroll`事件转换为`optimizedScroll`事件，触发频率被控制在每秒最多60次。
+上面程式碼中，`throttle()`函式用於控制事件觸發頻率，它有一個內部函式`func()`，每次`scroll`事件實際上觸發的是這個函式。`func()`函式內部使用`requestAnimationFrame()`方法，保證只有每次頁面重繪時（每秒60次），才可能會觸發`optimizedScroll`事件，從而實際上將`scroll`事件轉換為`optimizedScroll`事件，觸發頻率被控制在每秒最多60次。
 
-改用`setTimeout()`方法，可以放置更大的时间间隔。
+改用`setTimeout()`方法，可以放置更大的時間間隔。
 
 ```javascript
 (function() {
@@ -239,9 +239,9 @@ window.addEventListener('optimizedScroll', function() {
 }());
 ```
 
-上面代码中，每次`scroll`事件都会执行`scrollThrottler`函数。该函数里面有一个定时器`setTimeout`，每66毫秒触发一次（每秒15次）真正执行的任务`actualScrollHandler`。
+上面程式碼中，每次`scroll`事件都會執行`scrollThrottler`函式。該函式裡面有一個定時器`setTimeout`，每66毫秒觸發一次（每秒15次）真正執行的任務`actualScrollHandler`。
 
-下面是一个更一般的`throttle`函数的写法。
+下面是一個更一般的`throttle`函式的寫法。
 
 ```javascript
 function throttle(fn, wait) {
@@ -257,35 +257,35 @@ function throttle(fn, wait) {
 window.addEventListener('scroll', throttle(callback, 1000));
 ```
 
-上面的代码将`scroll`事件的触发频率，限制在一秒一次。
+上面的程式碼將`scroll`事件的觸發頻率，限制在一秒一次。
 
-`lodash`函数库提供了现成的`throttle`函数，可以直接使用。
+`lodash`函式庫提供了現成的`throttle`函式，可以直接使用。
 
 ```javascript
 window.addEventListener('scroll', _.throttle(callback, 1000));
 ```
 
-本书前面介绍过`debounce`的概念，`throttle`与它区别在于，`throttle`是“节流”，确保一段时间内只执行一次，而`debounce`是“防抖”，要连续操作结束后再执行。以网页滚动为例，`debounce`要等到用户停止滚动后才执行，`throttle`则是如果用户一直在滚动网页，那么在滚动过程中还是会执行。
+本書前面介紹過`debounce`的概念，`throttle`與它區別在於，`throttle`是“節流”，確保一段時間內只執行一次，而`debounce`是“防抖”，要連續操作結束後再執行。以網頁滾動為例，`debounce`要等到使用者停止滾動後才執行，`throttle`則是如果使用者一直在滾動網頁，那麼在滾動過程中還是會執行。
 
 ### resize 事件
 
-`resize`事件在改变浏览器窗口大小时触发，主要发生在`window`对象上面。
+`resize`事件在改變瀏覽器視窗大小時觸發，主要發生在`window`物件上面。
 
 ```javascript
 var resizeMethod = function () {
   if (document.body.clientWidth < 768) {
-    console.log('移动设备的视口');
+    console.log('移動裝置的視口');
   }
 };
 
 window.addEventListener('resize', resizeMethod, true);
 ```
 
-该事件也会连续地大量触发，所以最好像上面的`scroll`事件一样，通过`throttle`函数控制事件触发频率。
+該事件也會連續地大量觸發，所以最好像上面的`scroll`事件一樣，透過`throttle`函式控制事件觸發頻率。
 
 ### fullscreenchange 事件，fullscreenerror 事件
 
-`fullscreenchange`事件在进入或退出全屏状态时触发，该事件发生在`document`对象上面。
+`fullscreenchange`事件在進入或退出全屏狀態時觸發，該事件發生在`document`物件上面。
 
 ```javascript
 document.addEventListener('fullscreenchange', function (event) {
@@ -293,25 +293,25 @@ document.addEventListener('fullscreenchange', function (event) {
 });
 ```
 
-`fullscreenerror`事件在浏览器无法切换到全屏状态时触发。
+`fullscreenerror`事件在瀏覽器無法切換到全屏狀態時觸發。
 
-## 剪贴板事件
+## 剪貼簿事件
 
-以下三个事件属于剪贴板操作的相关事件。
+以下三個事件屬於剪貼簿操作的相關事件。
 
-- `cut`：将选中的内容从文档中移除，加入剪贴板时触发。
-- `copy`：进行复制动作时触发。
-- `paste`：剪贴板内容粘贴到文档后触发。
+- `cut`：將選中的內容從文件中移除，加入剪貼簿時觸發。
+- `copy`：進行復制動作時觸發。
+- `paste`：剪貼簿內容貼上到文件後觸發。
 
-举例来说，如果希望禁止输入框的粘贴事件，可以使用下面的代码。
+舉例來說，如果希望禁止輸入框的貼上事件，可以使用下面的程式碼。
 
 ```javascript
 inputElement.addEventListener('paste', e => e.preventDefault());
 ```
 
-上面的代码使得用户无法在`<input>`输入框里面粘贴内容。
+上面的程式碼使得使用者無法在`<input>`輸入框裡面貼上內容。
 
-`cut`、`copy`、`paste`这三个事件的事件对象都是`ClipboardEvent`接口的实例。`ClipboardEvent`有一个实例属性`clipboardData`，是一个 DataTransfer 对象，存放剪贴的数据。具体的 API 接口和操作方法，请参见《拖拉事件》的 DataTransfer 对象部分。
+`cut`、`copy`、`paste`這三個事件的事件物件都是`ClipboardEvent`介面的例項。`ClipboardEvent`有一個例項屬性`clipboardData`，是一個 DataTransfer 物件，存放剪貼的資料。具體的 API 介面和操作方法，請參見《拖拉事件》的 DataTransfer 物件部分。
 
 ```javascript
 document.addEventListener('copy', function (e) {
@@ -321,23 +321,23 @@ document.addEventListener('copy', function (e) {
 });
 ```
 
-上面的代码使得复制进入剪贴板的，都是开发者指定的数据，而不是用户想要拷贝的数据。
+上面的程式碼使得複製進入剪貼簿的，都是開發者指定的資料，而不是使用者想要複製的資料。
 
-## 焦点事件
+## 焦點事件
 
-焦点事件发生在元素节点和`document`对象上面，与获得或失去焦点相关。它主要包括以下四个事件。
+焦點事件發生在元素節點和`document`物件上面，與獲得或失去焦點相關。它主要包括以下四個事件。
 
-- `focus`：元素节点获得焦点后触发，该事件不会冒泡。
-- `blur`：元素节点失去焦点后触发，该事件不会冒泡。
-- `focusin`：元素节点将要获得焦点时触发，发生在`focus`事件之前。该事件会冒泡。
-- `focusout`：元素节点将要失去焦点时触发，发生在`blur`事件之前。该事件会冒泡。
+- `focus`：元素節點獲得焦點後觸發，該事件不會冒泡。
+- `blur`：元素節點失去焦點後觸發，該事件不會冒泡。
+- `focusin`：元素節點將要獲得焦點時觸發，發生在`focus`事件之前。該事件會冒泡。
+- `focusout`：元素節點將要失去焦點時觸發，發生在`blur`事件之前。該事件會冒泡。
 
-这四个事件的事件对象都继承了`FocusEvent`接口。`FocusEvent`实例具有以下属性。
+這四個事件的事件物件都繼承了`FocusEvent`介面。`FocusEvent`例項具有以下屬性。
 
-- `FocusEvent.target`：事件的目标节点。
-- `FocusEvent.relatedTarget`：对于`focusin`事件，返回失去焦点的节点；对于`focusout`事件，返回将要接受焦点的节点；对于`focus`和`blur`事件，返回`null`。
+- `FocusEvent.target`：事件的目標節點。
+- `FocusEvent.relatedTarget`：對於`focusin`事件，返回失去焦點的節點；對於`focusout`事件，返回將要接受焦點的節點；對於`focus`和`blur`事件，返回`null`。
 
-由于`focus`和`blur`事件不会冒泡，只能在捕获阶段触发，所以`addEventListener`方法的第三个参数需要设为`true`。
+由於`focus`和`blur`事件不會冒泡，只能在捕獲階段觸發，所以`addEventListener`方法的第三個引數需要設為`true`。
 
 ```javascript
 form.addEventListener('focus', function (event) {
@@ -349,23 +349,23 @@ form.addEventListener('blur', function (event) {
 }, true);
 ```
 
-上面代码针对表单的文本输入框，接受焦点时设置背景色，失去焦点时去除背景色。
+上面程式碼針對表單的文字輸入框，接受焦點時設定背景色，失去焦點時去除背景色。
 
-## CustomEvent 接口
+## CustomEvent 介面
 
-CustomEvent 接口用于生成自定义的事件实例。那些浏览器预定义的事件，虽然可以手动生成，但是往往不能在事件上绑定数据。如果需要在触发事件的同时，传入指定的数据，就可以使用 CustomEvent 接口生成的自定义事件对象。
+CustomEvent 介面用於生成自定義的事件例項。那些瀏覽器預定義的事件，雖然可以手動生成，但是往往不能在事件上繫結資料。如果需要在觸發事件的同時，傳入指定的資料，就可以使用 CustomEvent 介面生成的自定義事件物件。
 
-浏览器原生提供`CustomEvent()`构造函数，用来生成 CustomEvent 事件实例。
+瀏覽器原生提供`CustomEvent()`建構函式，用來生成 CustomEvent 事件例項。
 
 ```javascript
 new CustomEvent(type, options)
 ```
 
-`CustomEvent()`构造函数接受两个参数。第一个参数是字符串，表示事件的名字，这是必须的。第二个参数是事件的配置对象，这个参数是可选的。`CustomEvent`的配置对象除了接受 Event 事件的配置属性，只有一个自己的属性。
+`CustomEvent()`建構函式接受兩個引數。第一個引數是字串，表示事件的名字，這是必須的。第二個引數是事件的配置物件，這個引數是可選的。`CustomEvent`的配置物件除了接受 Event 事件的配置屬性，只有一個自己的屬性。
 
-- `detail`：表示事件的附带数据，默认为`null`。
+- `detail`：表示事件的附帶資料，預設為`null`。
 
-下面是一个例子。
+下面是一個例子。
 
 ```javascript
 var event = new CustomEvent('build', { 'detail': 'hello' });
@@ -381,9 +381,9 @@ document.body.addEventListener('build', function (e) {
 document.body.dispatchEvent(event);
 ```
 
-上面代码中，我们手动定义了`build`事件。该事件触发后，会被监听到，从而输出该事件实例的`detail`属性（即字符串`hello`）。
+上面程式碼中，我們手動定義了`build`事件。該事件觸發後，會被監聽到，從而輸出該事件例項的`detail`屬性（即字串`hello`）。
 
-下面是另一个例子。
+下面是另一個例子。
 
 ```javascript
 var myEvent = new CustomEvent('myevent', {
@@ -401,4 +401,4 @@ el.addEventListener('myevent', function (event) {
 el.dispatchEvent(myEvent);
 ```
 
-上面代码也说明，CustomEvent 的事件实例，除了具有 Event 接口的实例属性，还具有`detail`属性。
+上面程式碼也說明，CustomEvent 的事件例項，除了具有 Event 介面的例項屬性，還具有`detail`屬性。

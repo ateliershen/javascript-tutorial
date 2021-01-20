@@ -1,27 +1,27 @@
-# Document 节点
+# Document 節點
 
 ## 概述
 
-`document`节点对象代表整个文档，每张网页都有自己的`document`对象。`window.document`属性就指向这个对象。只要浏览器开始载入 HTML 文档，该对象就存在了，可以直接使用。
+`document`節點物件代表整個文件，每張網頁都有自己的`document`物件。`window.document`屬性就指向這個物件。只要瀏覽器開始載入 HTML 文件，該物件就存在了，可以直接使用。
 
-`document`对象有不同的办法可以获取。
+`document`物件有不同的辦法可以獲取。
 
-- 正常的网页，直接使用`document`或`window.document`。
-- `iframe`框架里面的网页，使用`iframe`节点的`contentDocument`属性。
-- Ajax 操作返回的文档，使用`XMLHttpRequest`对象的`responseXML`属性。
-- 内部节点的`ownerDocument`属性。
+- 正常的網頁，直接使用`document`或`window.document`。
+- `iframe`框架裡面的網頁，使用`iframe`節點的`contentDocument`屬性。
+- Ajax 操作返回的文件，使用`XMLHttpRequest`物件的`responseXML`屬性。
+- 內部節點的`ownerDocument`屬性。
 
-`document`对象继承了`EventTarget`接口和`Node`接口，并且混入（mixin）了`ParentNode`接口。这意味着，这些接口的方法都可以在`document`对象上调用。除此之外，`document`对象还有很多自己的属性和方法。
+`document`物件繼承了`EventTarget`介面和`Node`介面，並且混入（mixin）了`ParentNode`介面。這意味著，這些介面的方法都可以在`document`物件上呼叫。除此之外，`document`物件還有很多自己的屬性和方法。
 
-## 属性
+## 屬性
 
-### 快捷方式属性
+### 快捷方式屬性
 
-以下属性是指向文档内部的某个节点的快捷方式。
+以下屬性是指向文件內部的某個節點的快捷方式。
 
 **（1）document.defaultView**
 
-`document.defaultView`属性返回`document`对象所属的`window`对象。如果当前文档不属于`window`对象，该属性返回`null`。
+`document.defaultView`屬性返回`document`物件所屬的`window`物件。如果當前文件不屬於`window`物件，該屬性返回`null`。
 
 ```javascript
 document.defaultView === window // true
@@ -29,7 +29,7 @@ document.defaultView === window // true
 
 **（2）document.doctype**
 
-对于 HTML 文档来说，`document`对象一般有两个子节点。第一个子节点是`document.doctype`，指向`<DOCTYPE>`节点，即文档类型（Document Type Declaration，简写DTD）节点。HTML 的文档类型节点，一般写成`<!DOCTYPE html>`。如果网页没有声明 DTD，该属性返回`null`。
+對於 HTML 文件來說，`document`物件一般有兩個子節點。第一個子節點是`document.doctype`，指向`<DOCTYPE>`節點，即文件型別（Document Type Declaration，簡寫DTD）節點。HTML 的文件型別節點，一般寫成`<!DOCTYPE html>`。如果網頁沒有宣告 DTD，該屬性返回`null`。
 
 ```javascript
 var doctype = document.doctype;
@@ -37,55 +37,55 @@ doctype // "<!DOCTYPE html>"
 doctype.name // "html"
 ```
 
-`document.firstChild`通常就返回这个节点。
+`document.firstChild`通常就返回這個節點。
 
 **（3）document.documentElement**
 
-`document.documentElement`属性返回当前文档的根元素节点（root）。它通常是`document`节点的第二个子节点，紧跟在`document.doctype`节点后面。HTML网页的该属性，一般是`<html>`节点。
+`document.documentElement`屬性返回當前文件的根元素節點（root）。它通常是`document`節點的第二個子節點，緊跟在`document.doctype`節點後面。HTML網頁的該屬性，一般是`<html>`節點。
 
 **（4）document.body，document.head**
 
-`document.body`属性指向`<body>`节点，`document.head`属性指向`<head>`节点。
+`document.body`屬性指向`<body>`節點，`document.head`屬性指向`<head>`節點。
 
-这两个属性总是存在的，如果网页源码里面省略了`<head>`或`<body>`，浏览器会自动创建。另外，这两个属性是可写的，如果改写它们的值，相当于移除所有子节点。
+這兩個屬性總是存在的，如果網頁原始碼裡面省略了`<head>`或`<body>`，瀏覽器會自動建立。另外，這兩個屬性是可寫的，如果改寫它們的值，相當於移除所有子節點。
 
 **（5）document.scrollingElement**
 
-`document.scrollingElement`属性返回文档的滚动元素。也就是说，当文档整体滚动时，到底是哪个元素在滚动。
+`document.scrollingElement`屬性返回文件的滾動元素。也就是說，當文件整體滾動時，到底是哪個元素在滾動。
 
-标准模式下，这个属性返回的文档的根元素`document.documentElement`（即`<html>`）。兼容（quirk）模式下，返回的是`<body>`元素，如果该元素不存在，返回`null`。
+標準模式下，這個屬性返回的文件的根元素`document.documentElement`（即`<html>`）。相容（quirk）模式下，返回的是`<body>`元素，如果該元素不存在，返回`null`。
 
 ```javascript
-// 页面滚动到浏览器顶部
+// 頁面滾動到瀏覽器頂部
 document.scrollingElement.scrollTop = 0;
 ```
 
 **（6）document.activeElement**
 
-`document.activeElement`属性返回获得当前焦点（focus）的 DOM 元素。通常，这个属性返回的是`<input>`、`<textarea>`、`<select>`等表单元素，如果当前没有焦点元素，返回`<body>`元素或`null`。
+`document.activeElement`屬性返回獲得當前焦點（focus）的 DOM 元素。通常，這個屬性返回的是`<input>`、`<textarea>`、`<select>`等表單元素，如果當前沒有焦點元素，返回`<body>`元素或`null`。
 
 **（7）document.fullscreenElement**
 
-`document.fullscreenElement`属性返回当前以全屏状态展示的 DOM 元素。如果不是全屏状态，该属性返回`null`。
+`document.fullscreenElement`屬性返回當前以全屏狀態展示的 DOM 元素。如果不是全屏狀態，該屬性返回`null`。
 
 ```javascript
 if (document.fullscreenElement.nodeName == 'VIDEO') {
-  console.log('全屏播放视频');
+  console.log('全屏播放影片');
 }
 ```
 
-上面代码中，通过`document.fullscreenElement`可以知道`<video>`元素有没有处在全屏状态，从而判断用户行为。
+上面程式碼中，透過`document.fullscreenElement`可以知道`<video>`元素有沒有處在全屏狀態，從而判斷使用者行為。
 
-### 节点集合属性
+### 節點集合屬性
 
-以下属性返回一个`HTMLCollection`实例，表示文档内部特定元素的集合。这些集合都是动态的，原节点有任何变化，立刻会反映在集合中。
+以下屬性返回一個`HTMLCollection`例項，表示文件內部特定元素的集合。這些集合都是動態的，原節點有任何變化，立刻會反映在集合中。
 
 **（1）document.links**
 
-`document.links`属性返回当前文档所有设定了`href`属性的`<a>`及`<area>`节点。
+`document.links`屬性返回當前文件所有設定了`href`屬性的`<a>`及`<area>`節點。
 
 ```javascript
-// 打印文档所有的链接
+// 列印文件所有的連結
 var links = document.links;
 for(var i = 0; i < links.length; i++) {
   console.log(links[i]);
@@ -94,18 +94,18 @@ for(var i = 0; i < links.length; i++) {
 
 **（2）document.forms**
 
-`document.forms`属性返回所有`<form>`表单节点。
+`document.forms`屬性返回所有`<form>`表單節點。
 
 ```javascript
 var selectForm = document.forms[0];
 ```
 
-上面代码获取文档第一个表单。
+上面程式碼獲取文件第一個表單。
 
-除了使用位置序号，`id`属性和`name`属性也可以用来引用表单。
+除了使用位置序號，`id`屬性和`name`屬性也可以用來引用表單。
 
 ```javascript
-/* HTML 代码如下
+/* HTML 程式碼如下
   <form name="foo" id="bar"></form>
 */
 document.forms[0] === document.forms.foo // true
@@ -114,7 +114,7 @@ document.forms.bar === document.forms.foo // true
 
 **（3）document.images**
 
-`document.images`属性返回页面所有`<img>`图片节点。
+`document.images`屬性返回頁面所有`<img>`圖片節點。
 
 ```javascript
 var imglist = document.images;
@@ -126,30 +126,30 @@ for(var i = 0; i < imglist.length; i++) {
 }
 ```
 
-上面代码在所有`img`标签中，寻找某张图片。
+上面程式碼在所有`img`標籤中，尋找某張圖片。
 
 **（4）document.embeds，document.plugins**
 
-`document.embeds`属性和`document.plugins`属性，都返回所有`<embed>`节点。
+`document.embeds`屬性和`document.plugins`屬性，都返回所有`<embed>`節點。
 
 **（5）document.scripts**
 
-`document.scripts`属性返回所有`<script>`节点。
+`document.scripts`屬性返回所有`<script>`節點。
 
 ```javascript
 var scripts = document.scripts;
 if (scripts.length !== 0 ) {
-  console.log('当前网页有脚本');
+  console.log('當前網頁有指令碼');
 }
 ```
 
 **（6）document.styleSheets**
 
-`document.styleSheets`属性返回文档内嵌或引入的样式表集合，详细介绍请看《CSS 对象模型》一章。
+`document.styleSheets`屬性返回文件內嵌或引入的樣式表集合，詳細介紹請看《CSS 物件模型》一章。
 
-**（7）小结**
+**（7）小結**
 
-除了`document.styleSheets`，以上的集合属性返回的都是`HTMLCollection`实例。
+除了`document.styleSheets`，以上的集合屬性返回的都是`HTMLCollection`例項。
 
 ```javascript
 document.links instanceof HTMLCollection // true
@@ -159,21 +159,21 @@ document.embeds instanceof HTMLCollection // true
 document.scripts instanceof HTMLCollection // true
 ```
 
-`HTMLCollection`实例是类似数组的对象，所以这些属性都有`length`属性，都可以使用方括号运算符引用成员。如果成员有`id`或`name`属性，还可以用这两个属性的值，在`HTMLCollection`实例上引用到这个成员。
+`HTMLCollection`例項是類似陣列的物件，所以這些屬性都有`length`屬性，都可以使用方括號運算子引用成員。如果成員有`id`或`name`屬性，還可以用這兩個屬性的值，在`HTMLCollection`例項上引用到這個成員。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <form name="myForm">
 document.myForm === document.forms.myForm // true
 ```
 
-### 文档静态信息属性
+### 文件靜態資訊屬性
 
-以下属性返回文档信息。
+以下屬性返回文件資訊。
 
 **（1）document.documentURI，document.URL**
 
-`document.documentURI`属性和`document.URL`属性都返回一个字符串，表示当前文档的网址。不同之处是它们继承自不同的接口，`documentURI`继承自`Document`接口，可用于所有文档；`URL`继承自`HTMLDocument`接口，只能用于 HTML 文档。
+`document.documentURI`屬性和`document.URL`屬性都返回一個字串，表示當前文件的網址。不同之處是它們繼承自不同的介面，`documentURI`繼承自`Document`介面，可用於所有文件；`URL`繼承自`HTMLDocument`介面，只能用於 HTML 文件。
 
 ```javascript
 document.URL
@@ -183,123 +183,123 @@ document.documentURI === document.URL
 // true
 ```
 
-如果文档的锚点（`#anchor`）变化，这两个属性都会跟着变化。
+如果文件的錨點（`#anchor`）變化，這兩個屬性都會跟著變化。
 
 **（2）document.domain**
 
-`document.domain`属性返回当前文档的域名，不包含协议和端口。比如，网页的网址是`http://www.example.com:80/hello.html`，那么`document.domain`属性就等于`www.example.com`。如果无法获取域名，该属性返回`null`。
+`document.domain`屬性返回當前文件的域名，不包含協議和埠。比如，網頁的網址是`http://www.example.com:80/hello.html`，那麼`document.domain`屬性就等於`www.example.com`。如果無法獲取域名，該屬性返回`null`。
 
-`document.domain`基本上是一个只读属性，只有一种情况除外。次级域名的网页，可以把`document.domain`设为对应的上级域名。比如，当前域名是`a.sub.example.com`，则`document.domain`属性可以设置为`sub.example.com`，也可以设为`example.com`。修改后，`document.domain`相同的两个网页，可以读取对方的资源，比如设置的 Cookie。
+`document.domain`基本上是一個只讀屬性，只有一種情況除外。次級域名的網頁，可以把`document.domain`設為對應的上級域名。比如，當前域名是`a.sub.example.com`，則`document.domain`屬性可以設定為`sub.example.com`，也可以設為`example.com`。修改後，`document.domain`相同的兩個網頁，可以讀取對方的資源，比如設定的 Cookie。
 
-另外，设置`document.domain`会导致端口被改成`null`。因此，如果通过设置`document.domain`来进行通信，双方网页都必须设置这个值，才能保证端口相同。
+另外，設定`document.domain`會導致埠被改成`null`。因此，如果透過設定`document.domain`來進行通訊，雙方網頁都必須設定這個值，才能保證埠相同。
 
 **（3）document.location**
 
-`Location`对象是浏览器提供的原生对象，提供 URL 相关的信息和操作方法。通过`window.location`和`document.location`属性，可以拿到这个对象。
+`Location`物件是瀏覽器提供的原生物件，提供 URL 相關的資訊和操作方法。透過`window.location`和`document.location`屬性，可以拿到這個物件。
 
-关于这个对象的详细介绍，请看《浏览器模型》部分的《Location 对象》章节。
+關於這個物件的詳細介紹，請看《瀏覽器模型》部分的《Location 物件》章節。
 
 **（4）document.lastModified**
 
-`document.lastModified`属性返回一个字符串，表示当前文档最后修改的时间。不同浏览器的返回值，日期格式是不一样的。
+`document.lastModified`屬性返回一個字串，表示當前文件最後修改的時間。不同瀏覽器的返回值，日期格式是不一樣的。
 
 ```javascript
 document.lastModified
 // "03/07/2018 11:18:27"
 ```
 
-注意，`document.lastModified`属性的值是字符串，所以不能直接用来比较。`Date.parse`方法将其转为`Date`实例，才能比较两个网页。
+注意，`document.lastModified`屬性的值是字串，所以不能直接用來比較。`Date.parse`方法將其轉為`Date`例項，才能比較兩個網頁。
 
 ```javascript
 var lastVisitedDate = Date.parse('01/01/2018');
 if (Date.parse(document.lastModified) > lastVisitedDate) {
-  console.log('网页已经变更');
+  console.log('網頁已經變更');
 }
 ```
 
-如果页面上有 JavaScript 生成的内容，`document.lastModified`属性返回的总是当前时间。
+如果頁面上有 JavaScript 生成的內容，`document.lastModified`屬性返回的總是當前時間。
 
 **（5）document.title**
 
-`document.title`属性返回当前文档的标题。默认情况下，返回`<title>`节点的值。但是该属性是可写的，一旦被修改，就返回修改后的值。
+`document.title`屬性返回當前文件的標題。預設情況下，返回`<title>`節點的值。但是該屬性是可寫的，一旦被修改，就返回修改後的值。
 
 ```javascript
-document.title = '新标题';
-document.title // "新标题"
+document.title = '新標題';
+document.title // "新標題"
 ```
 
 **（6）document.characterSet**
 
-`document.characterSet`属性返回当前文档的编码，比如`UTF-8`、`ISO-8859-1`等等。
+`document.characterSet`屬性返回當前文件的編碼，比如`UTF-8`、`ISO-8859-1`等等。
 
 **（7）document.referrer**
 
-`document.referrer`属性返回一个字符串，表示当前文档的访问者来自哪里。
+`document.referrer`屬性返回一個字串，表示當前文件的訪問者來自哪裡。
 
 ```javascript
 document.referrer
 // "https://example.com/path"
 ```
 
-如果无法获取来源，或者用户直接键入网址而不是从其他网页点击进入，`document.referrer`返回一个空字符串。
+如果無法獲取來源，或者使用者直接鍵入網址而不是從其他網頁點選進入，`document.referrer`返回一個空字串。
 
-`document.referrer`的值，总是与 HTTP 头信息的`Referer`字段保持一致。但是，`document.referrer`的拼写有两个`r`，而头信息的`Referer`字段只有一个`r`。
+`document.referrer`的值，總是與 HTTP 頭資訊的`Referer`欄位保持一致。但是，`document.referrer`的拼寫有兩個`r`，而頭資訊的`Referer`欄位只有一個`r`。
 
 **（8）document.dir**
 
-`document.dir`返回一个字符串，表示文字方向。它只有两个可能的值：`rtl`表示文字从右到左，阿拉伯文是这种方式；`ltr`表示文字从左到右，包括英语和汉语在内的大多数文字采用这种方式。
+`document.dir`返回一個字串，表示文字方向。它只有兩個可能的值：`rtl`表示文字從右到左，阿拉伯文是這種方式；`ltr`表示文字從左到右，包括英語和漢語在內的大多數文字採用這種方式。
 
 **（9）document.compatMode**
 
-`compatMode`属性返回浏览器处理文档的模式，可能的值为`BackCompat`（向后兼容模式）和`CSS1Compat`（严格模式）。
+`compatMode`屬性返回瀏覽器處理文件的模式，可能的值為`BackCompat`（向後相容模式）和`CSS1Compat`（嚴格模式）。
 
-一般来说，如果网页代码的第一行设置了明确的`DOCTYPE`（比如`<!doctype html>`），`document.compatMode`的值都为`CSS1Compat`。
+一般來說，如果網頁程式碼的第一行設定了明確的`DOCTYPE`（比如`<!doctype html>`），`document.compatMode`的值都為`CSS1Compat`。
 
-### 文档状态属性
+### 文件狀態屬性
 
 **（1）document.hidden**
 
-`document.hidden`属性返回一个布尔值，表示当前页面是否可见。如果窗口最小化、浏览器切换了 Tab，都会导致导致页面不可见，使得`document.hidden`返回`true`。
+`document.hidden`屬性返回一個布林值，表示當前頁面是否可見。如果視窗最小化、瀏覽器切換了 Tab，都會導致導致頁面不可見，使得`document.hidden`返回`true`。
 
-这个属性是 Page Visibility API 引入的，一般都是配合这个 API 使用。
+這個屬性是 Page Visibility API 引入的，一般都是配合這個 API 使用。
 
 **（2）document.visibilityState**
 
-`document.visibilityState`返回文档的可见状态。
+`document.visibilityState`返回文件的可見狀態。
 
-它的值有四种可能。
+它的值有四種可能。
 
-> - `visible`：页面可见。注意，页面可能是部分可见，即不是焦点窗口，前面被其他窗口部分挡住了。
-> - `hidden`：页面不可见，有可能窗口最小化，或者浏览器切换到了另一个 Tab。
-> - `prerender`：页面处于正在渲染状态，对于用户来说，该页面不可见。
-> - `unloaded`：页面从内存里面卸载了。
+> - `visible`：頁面可見。注意，頁面可能是部分可見，即不是焦點視窗，前面被其他視窗部分擋住了。
+> - `hidden`：頁面不可見，有可能視窗最小化，或者瀏覽器切換到了另一個 Tab。
+> - `prerender`：頁面處於正在渲染狀態，對於使用者來說，該頁面不可見。
+> - `unloaded`：頁面從記憶體裡面解除安裝了。
 
-这个属性可以用在页面加载时，防止加载某些资源；或者页面不可见时，停掉一些页面功能。
+這個屬性可以用在頁面載入時，防止載入某些資源；或者頁面不可見時，停掉一些頁面功能。
 
 **（3）document.readyState**
 
-`document.readyState`属性返回当前文档的状态，共有三种可能的值。
+`document.readyState`屬性返回當前文件的狀態，共有三種可能的值。
 
-- `loading`：加载 HTML 代码阶段（尚未完成解析）
-- `interactive`：加载外部资源阶段
-- `complete`：加载完成
+- `loading`：載入 HTML 程式碼階段（尚未完成解析）
+- `interactive`：載入外部資源階段
+- `complete`：載入完成
 
-这个属性变化的过程如下。
+這個屬性變化的過程如下。
 
-1. 浏览器开始解析 HTML 文档，`document.readyState`属性等于`loading`。
-1. 浏览器遇到 HTML 文档中的`<script>`元素，并且没有`async`或`defer`属性，就暂停解析，开始执行脚本，这时`document.readyState`属性还是等于`loading`。
-1. HTML 文档解析完成，`document.readyState`属性变成`interactive`。
-1. 浏览器等待图片、样式表、字体文件等外部资源加载完成，一旦全部加载完成，`document.readyState`属性变成`complete`。
+1. 瀏覽器開始解析 HTML 文件，`document.readyState`屬性等於`loading`。
+1. 瀏覽器遇到 HTML 文件中的`<script>`元素，並且沒有`async`或`defer`屬性，就暫停解析，開始執行指令碼，這時`document.readyState`屬性還是等於`loading`。
+1. HTML 文件解析完成，`document.readyState`屬性變成`interactive`。
+1. 瀏覽器等待圖片、樣式表、字型檔案等外部資源載入完成，一旦全部載入完成，`document.readyState`屬性變成`complete`。
 
-下面的代码用来检查网页是否加载成功。
+下面的程式碼用來檢查網頁是否載入成功。
 
 ```javascript
-// 基本检查
+// 基本檢查
 if (document.readyState === 'complete') {
   // ...
 }
 
-// 轮询检查
+// 輪詢檢查
 var interval = setInterval(function() {
   if (document.readyState === 'complete') {
     clearInterval(interval);
@@ -308,20 +308,20 @@ var interval = setInterval(function() {
 }, 100);
 ```
 
-另外，每次状态变化都会触发一个`readystatechange`事件。
+另外，每次狀態變化都會觸發一個`readystatechange`事件。
 
 ### document.cookie
 
-`document.cookie`属性用来操作浏览器 Cookie，详见《浏览器模型》部分的《Cookie》章节。
+`document.cookie`屬性用來操作瀏覽器 Cookie，詳見《瀏覽器模型》部分的《Cookie》章節。
 
 ### document.designMode
 
-`document.designMode`属性控制当前文档是否可编辑。该属性只有两个值`on`和`off`，默认值为`off`。一旦设为`on`，用户就可以编辑整个文档的内容。
+`document.designMode`屬性控制當前文件是否可編輯。該屬性只有兩個值`on`和`off`，預設值為`off`。一旦設為`on`，使用者就可以編輯整個文件的內容。
 
-下面代码打开`iframe`元素内部文档的`designMode`属性，就能将其变为一个所见即所得的编辑器。
+下面程式碼開啟`iframe`元素內部文件的`designMode`屬性，就能將其變為一個所見即所得的編輯器。
 
 ```javascript
-// HTML 代码如下
+// HTML 程式碼如下
 // <iframe id="editor" src="about:blank"></iframe>
 var editor = document.getElementById('editor');
 editor.contentDocument.designMode = 'on';
@@ -329,7 +329,7 @@ editor.contentDocument.designMode = 'on';
 
 ### document.currentScript
 
-`document.currentScript`属性只用在`<script>`元素的内嵌脚本或加载的外部脚本之中，返回当前脚本所在的那个 DOM 节点，即`<script>`元素的 DOM 节点。
+`document.currentScript`屬性只用在`<script>`元素的內嵌指令碼或載入的外部指令碼之中，返回當前指令碼所在的那個 DOM 節點，即`<script>`元素的 DOM 節點。
 
 ```html
 <script id="foo">
@@ -339,17 +339,17 @@ editor.contentDocument.designMode = 'on';
 </script>
 ```
 
-上面代码中，`document.currentScript`就是`<script>`元素节点。
+上面程式碼中，`document.currentScript`就是`<script>`元素節點。
 
 ### document.implementation
 
-`document.implementation`属性返回一个`DOMImplementation`对象。该对象有三个方法，主要用于创建独立于当前文档的新的 Document 对象。
+`document.implementation`屬性返回一個`DOMImplementation`物件。該物件有三個方法，主要用於建立獨立於當前文件的新的 Document 物件。
 
-- `DOMImplementation.createDocument()`：创建一个 XML 文档。
-- `DOMImplementation.createHTMLDocument()`：创建一个 HTML 文档。
-- `DOMImplementation.createDocumentType()`：创建一个 DocumentType 对象。
+- `DOMImplementation.createDocument()`：建立一個 XML 文件。
+- `DOMImplementation.createHTMLDocument()`：建立一個 HTML 文件。
+- `DOMImplementation.createDocumentType()`：建立一個 DocumentType 物件。
 
-下面是创建 HTML 文档的例子。
+下面是建立 HTML 文件的例子。
 
 ```javascript
 var doc = document.implementation.createHTMLDocument('Title');
@@ -363,15 +363,15 @@ document.replaceChild(
 );
 ```
 
-上面代码中，第一步生成一个新的 HTML 文档`doc`，然后用它的根元素`document.documentElement`替换掉`document.documentElement`。这会使得当前文档的内容全部消失，变成`hello world`。
+上面程式碼中，第一步生成一個新的 HTML 文件`doc`，然後用它的根元素`document.documentElement`替換掉`document.documentElement`。這會使得當前文件的內容全部消失，變成`hello world`。
 
 ## 方法
 
 ### document.open()，document.close()
 
-`document.open`方法清除当前文档所有内容，使得文档处于可写状态，供`document.write`方法写入内容。
+`document.open`方法清除當前文件所有內容，使得文件處於可寫狀態，供`document.write`方法寫入內容。
 
-`document.close`方法用来关闭`document.open()`打开的文档。
+`document.close`方法用來關閉`document.open()`開啟的文件。
 
 ```javascript
 document.open();
@@ -381,34 +381,34 @@ document.close();
 
 ### document.write()，document.writeln()
 
-`document.write`方法用于向当前文档写入内容。
+`document.write`方法用於向當前文件寫入內容。
 
-在网页的首次渲染阶段，只要页面没有关闭写入（即没有执行`document.close()`），`document.write`写入的内容就会追加在已有内容的后面。
+在網頁的首次渲染階段，只要頁面沒有關閉寫入（即沒有執行`document.close()`），`document.write`寫入的內容就會追加在已有內容的後面。
 
 ```javascript
-// 页面显示“helloworld”
+// 頁面顯示“helloworld”
 document.open();
 document.write('hello');
 document.write('world');
 document.close();
 ```
 
-注意，`document.write`会当作 HTML 代码解析，不会转义。
+注意，`document.write`會當作 HTML 程式碼解析，不會轉義。
 
 ```javascript
 document.write('<p>hello world</p>');
 ```
 
-上面代码中，`document.write`会将`<p>`当作 HTML 标签解释。
+上面程式碼中，`document.write`會將`<p>`當作 HTML 標籤解釋。
 
-如果页面已经解析完成（`DOMContentLoaded`事件发生之后），再调用`write`方法，它会先调用`open`方法，擦除当前文档所有内容，然后再写入。
+如果頁面已經解析完成（`DOMContentLoaded`事件發生之後），再呼叫`write`方法，它會先呼叫`open`方法，擦除當前文件所有內容，然後再寫入。
 
 ```javascript
 document.addEventListener('DOMContentLoaded', function (event) {
   document.write('<p>Hello World!</p>');
 });
 
-// 等同于
+// 等同於
 document.addEventListener('DOMContentLoaded', function (event) {
   document.open();
   document.write('<p>Hello World!</p>');
@@ -416,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 });
 ```
 
-如果在页面渲染过程中调用`write`方法，并不会自动调用`open`方法。（可以理解成，`open`方法已调用，但`close`方法还未调用。）
+如果在頁面渲染過程中呼叫`write`方法，並不會自動呼叫`open`方法。（可以理解成，`open`方法已呼叫，但`close`方法還未呼叫。）
 
 ```html
 <html>
@@ -429,11 +429,11 @@ hello
 </html>
 ```
 
-在浏览器打开上面网页，将会显示`hello world`。
+在瀏覽器開啟上面網頁，將會顯示`hello world`。
 
-`document.write`是 JavaScript 语言标准化之前就存在的方法，现在完全有更符合标准的方法向文档写入内容（比如对`innerHTML`属性赋值）。所以，除了某些特殊情况，应该尽量避免使用`document.write`这个方法。
+`document.write`是 JavaScript 語言標準化之前就存在的方法，現在完全有更符合標準的方法向文件寫入內容（比如對`innerHTML`屬性賦值）。所以，除了某些特殊情況，應該儘量避免使用`document.write`這個方法。
 
-`document.writeln`方法与`write`方法完全一致，除了会在输出内容的尾部添加换行符。
+`document.writeln`方法與`write`方法完全一致，除了會在輸出內容的尾部新增換行符。
 
 ```javascript
 document.write(1);
@@ -447,152 +447,152 @@ document.writeln(2);
 //
 ```
 
-注意，`writeln`方法添加的是 ASCII 码的换行符，渲染成 HTML 网页时不起作用，即在网页上显示不出换行。网页上的换行，必须显式写入`<br>`。
+注意，`writeln`方法新增的是 ASCII 碼的換行符，渲染成 HTML 網頁時不起作用，即在網頁上顯示不出換行。網頁上的換行，必須顯式寫入`<br>`。
 
 ### document.querySelector()，document.querySelectorAll()
 
-`document.querySelector`方法接受一个 CSS 选择器作为参数，返回匹配该选择器的元素节点。如果有多个节点满足匹配条件，则返回第一个匹配的节点。如果没有发现匹配的节点，则返回`null`。
+`document.querySelector`方法接受一個 CSS 選擇器作為引數，返回匹配該選擇器的元素節點。如果有多個節點滿足匹配條件，則返回第一個匹配的節點。如果沒有發現匹配的節點，則返回`null`。
 
 ```javascript
 var el1 = document.querySelector('.myclass');
 var el2 = document.querySelector('#myParent > [ng-click]');
 ```
 
-`document.querySelectorAll`方法与`querySelector`用法类似，区别是返回一个`NodeList`对象，包含所有匹配给定选择器的节点。
+`document.querySelectorAll`方法與`querySelector`用法類似，區別是返回一個`NodeList`物件，包含所有匹配給定選擇器的節點。
 
 ```javascript
 elementList = document.querySelectorAll('.myclass');
 ```
 
-这两个方法的参数，可以是逗号分隔的多个 CSS 选择器，返回匹配其中一个选择器的元素节点，这与 CSS 选择器的规则是一致的。
+這兩個方法的引數，可以是逗號分隔的多個 CSS 選擇器，返回匹配其中一個選擇器的元素節點，這與 CSS 選擇器的規則是一致的。
 
 ```javascript
 var matches = document.querySelectorAll('div.note, div.alert');
 ```
 
-上面代码返回`class`属性是`note`或`alert`的`div`元素。
+上面程式碼返回`class`屬性是`note`或`alert`的`div`元素。
 
-这两个方法都支持复杂的 CSS 选择器。
+這兩個方法都支援複雜的 CSS 選擇器。
 
 ```javascript
-// 选中 data-foo-bar 属性等于 someval 的元素
+// 選中 data-foo-bar 屬性等於 someval 的元素
 document.querySelectorAll('[data-foo-bar="someval"]');
 
-// 选中 myForm 表单中所有不通过验证的元素
+// 選中 myForm 表單中所有不透過驗證的元素
 document.querySelectorAll('#myForm :invalid');
 
-// 选中div元素，那些 class 含 ignore 的除外
+// 選中div元素，那些 class 含 ignore 的除外
 document.querySelectorAll('DIV:not(.ignore)');
 
-// 同时选中 div，a，script 三类元素
+// 同時選中 div，a，script 三類元素
 document.querySelectorAll('DIV, A, SCRIPT');
 ```
 
-但是，它们不支持 CSS 伪元素的选择器（比如`:first-line`和`:first-letter`）和伪类的选择器（比如`:link`和`:visited`），即无法选中伪元素和伪类。
+但是，它們不支援 CSS 偽元素的選擇器（比如`:first-line`和`:first-letter`）和偽類的選擇器（比如`:link`和`:visited`），即無法選中偽元素和偽類。
 
-如果`querySelectorAll`方法的参数是字符串`*`，则会返回文档中的所有元素节点。另外，`querySelectorAll`的返回结果不是动态集合，不会实时反映元素节点的变化。
+如果`querySelectorAll`方法的引數是字串`*`，則會返回文件中的所有元素節點。另外，`querySelectorAll`的返回結果不是動態集合，不會實時反映元素節點的變化。
 
-最后，这两个方法除了定义在`document`对象上，还定义在元素节点上，即在元素节点上也可以调用。
+最後，這兩個方法除了定義在`document`物件上，還定義在元素節點上，即在元素節點上也可以呼叫。
 
 ### document.getElementsByTagName()
 
-`document.getElementsByTagName()`方法搜索 HTML 标签名，返回符合条件的元素。它的返回值是一个类似数组对象（`HTMLCollection`实例），可以实时反映 HTML 文档的变化。如果没有任何匹配的元素，就返回一个空集。
+`document.getElementsByTagName()`方法搜尋 HTML 標籤名，返回符合條件的元素。它的返回值是一個類似陣列物件（`HTMLCollection`例項），可以實時反映 HTML 文件的變化。如果沒有任何匹配的元素，就返回一個空集。
 
 ```javascript
 var paras = document.getElementsByTagName('p');
 paras instanceof HTMLCollection // true
 ```
 
-上面代码返回当前文档的所有`p`元素节点。
+上面程式碼返回當前文件的所有`p`元素節點。
 
-HTML 标签名是大小写不敏感的，因此`getElementsByTagName()`方法的参数也是大小写不敏感的。另外，返回结果中，各个成员的顺序就是它们在文档中出现的顺序。
+HTML 標籤名是大小寫不敏感的，因此`getElementsByTagName()`方法的引數也是大小寫不敏感的。另外，返回結果中，各個成員的順序就是它們在文件中出現的順序。
 
-如果传入`*`，就可以返回文档中所有 HTML 元素。
+如果傳入`*`，就可以返回文件中所有 HTML 元素。
 
 ```javascript
 var allElements = document.getElementsByTagName('*');
 ```
 
-注意，元素节点本身也定义了`getElementsByTagName`方法，返回该元素的后代元素中符合条件的元素。也就是说，这个方法不仅可以在`document`对象上调用，也可以在任何元素节点上调用。
+注意，元素節點本身也定義了`getElementsByTagName`方法，返回該元素的後代元素中符合條件的元素。也就是說，這個方法不僅可以在`document`物件上呼叫，也可以在任何元素節點上呼叫。
 
 ```javascript
 var firstPara = document.getElementsByTagName('p')[0];
 var spans = firstPara.getElementsByTagName('span');
 ```
 
-上面代码选中第一个`p`元素内部的所有`span`元素。
+上面程式碼選中第一個`p`元素內部的所有`span`元素。
 
 ### document.getElementsByClassName()
 
-`document.getElementsByClassName()`方法返回一个类似数组的对象（`HTMLCollection`实例），包括了所有`class`名字符合指定条件的元素，元素的变化实时反映在返回结果中。
+`document.getElementsByClassName()`方法返回一個類似陣列的物件（`HTMLCollection`例項），包括了所有`class`名字符合指定條件的元素，元素的變化實時反映在返回結果中。
 
 ```javascript
 var elements = document.getElementsByClassName(names);
 ```
 
-由于`class`是保留字，所以 JavaScript 一律使用`className`表示 CSS 的`class`。
+由於`class`是保留字，所以 JavaScript 一律使用`className`表示 CSS 的`class`。
 
-参数可以是多个`class`，它们之间使用空格分隔。
+引數可以是多個`class`，它們之間使用空格分隔。
 
 ```javascript
 var elements = document.getElementsByClassName('foo bar');
 ```
 
-上面代码返回同时具有`foo`和`bar`两个`class`的元素，`foo`和`bar`的顺序不重要。
+上面程式碼返回同時具有`foo`和`bar`兩個`class`的元素，`foo`和`bar`的順序不重要。
 
-注意，正常模式下，CSS 的`class`是大小写敏感的。（`quirks mode`下，大小写不敏感。）
+注意，正常模式下，CSS 的`class`是大小寫敏感的。（`quirks mode`下，大小寫不敏感。）
 
-与`getElementsByTagName()`方法一样，`getElementsByClassName()`方法不仅可以在`document`对象上调用，也可以在任何元素节点上调用。
+與`getElementsByTagName()`方法一樣，`getElementsByClassName()`方法不僅可以在`document`物件上呼叫，也可以在任何元素節點上呼叫。
 
 ```javascript
-// 非document对象上调用
+// 非document物件上呼叫
 var elements = rootElement.getElementsByClassName(names);
 ```
 
 ### document.getElementsByName()
 
-`document.getElementsByName()`方法用于选择拥有`name`属性的 HTML 元素（比如`<form>`、`<radio>`、`<img>`、`<frame>`、`<embed>`和`<object>`等），返回一个类似数组的的对象（`NodeList`实例），因为`name`属性相同的元素可能不止一个。
+`document.getElementsByName()`方法用於選擇擁有`name`屬性的 HTML 元素（比如`<form>`、`<radio>`、`<img>`、`<frame>`、`<embed>`和`<object>`等），返回一個類似陣列的的物件（`NodeList`例項），因為`name`屬性相同的元素可能不止一個。
 
 ```javascript
-// 表单为 <form name="x"></form>
+// 表單為 <form name="x"></form>
 var forms = document.getElementsByName('x');
 forms[0].tagName // "FORM"
 ```
 
 ### document.getElementById()
 
-`document.getElementById()`方法返回匹配指定`id`属性的元素节点。如果没有发现匹配的节点，则返回`null`。
+`document.getElementById()`方法返回匹配指定`id`屬性的元素節點。如果沒有發現匹配的節點，則返回`null`。
 
 ```javascript
 var elem = document.getElementById('para1');
 ```
 
-注意，该方法的参数是大小写敏感的。比如，如果某个节点的`id`属性是`main`，那么`document.getElementById('Main')`将返回`null`。
+注意，該方法的引數是大小寫敏感的。比如，如果某個節點的`id`屬性是`main`，那麼`document.getElementById('Main')`將返回`null`。
 
-`document.getElementById()`方法与`document.querySelector()`方法都能获取元素节点，不同之处是`document.querySelector()`方法的参数使用 CSS 选择器语法，`document.getElementById()`方法的参数是元素的`id`属性。
+`document.getElementById()`方法與`document.querySelector()`方法都能獲取元素節點，不同之處是`document.querySelector()`方法的引數使用 CSS 選擇器語法，`document.getElementById()`方法的引數是元素的`id`屬性。
 
 ```javascript
 document.getElementById('myElement')
 document.querySelector('#myElement')
 ```
 
-上面代码中，两个方法都能选中`id`为`myElement`的元素，但是`document.getElementById()`比`document.querySelector()`效率高得多。
+上面程式碼中，兩個方法都能選中`id`為`myElement`的元素，但是`document.getElementById()`比`document.querySelector()`效率高得多。
 
-另外，这个方法只能在`document`对象上使用，不能在其他元素节点上使用。
+另外，這個方法只能在`document`物件上使用，不能在其他元素節點上使用。
 
 ### document.elementFromPoint()，document.elementsFromPoint()
 
-`document.elementFromPoint()`方法返回位于页面指定位置最上层的元素节点。
+`document.elementFromPoint()`方法返回位於頁面指定位置最上層的元素節點。
 
 ```javascript
 var element = document.elementFromPoint(50, 50);
 ```
 
-上面代码选中在`(50, 50)`这个坐标位置的最上层的那个 HTML 元素。
+上面程式碼選中在`(50, 50)`這個座標位置的最上層的那個 HTML 元素。
 
-`elementFromPoint`方法的两个参数，依次是相对于当前视口左上角的横坐标和纵坐标，单位是像素。如果位于该位置的 HTML 元素不可返回（比如文本框的滚动条），则返回它的父元素（比如文本框）。如果坐标值无意义（比如负值或超过视口大小），则返回`null`。
+`elementFromPoint`方法的兩個引數，依次是相對於當前視口左上角的橫座標和縱座標，單位是畫素。如果位於該位置的 HTML 元素不可返回（比如文字框的捲軸），則返回它的父元素（比如文字框）。如果座標值無意義（比如負值或超過視口大小），則返回`null`。
 
-`document.elementsFromPoint()`返回一个数组，成员是位于指定坐标（相对于视口）的所有元素。
+`document.elementsFromPoint()`返回一個數組，成員是位於指定座標（相對於視口）的所有元素。
 
 ```javascript
 var elements = document.elementsFromPoint(x, y);
@@ -600,20 +600,20 @@ var elements = document.elementsFromPoint(x, y);
 
 ### document.createElement()
 
-`document.createElement`方法用来生成元素节点，并返回该节点。
+`document.createElement`方法用來生成元素節點，並返回該節點。
 
 ```javascript
 var newDiv = document.createElement('div');
 ```
 
-`createElement`方法的参数为元素的标签名，即元素节点的`tagName`属性，对于 HTML 网页大小写不敏感，即参数为`div`或`DIV`返回的是同一种节点。如果参数里面包含尖括号（即`<`和`>`）会报错。
+`createElement`方法的引數為元素的標籤名，即元素節點的`tagName`屬性，對於 HTML 網頁大小寫不敏感，即引數為`div`或`DIV`返回的是同一種節點。如果引數裡面包含尖括號（即`<`和`>`）會報錯。
 
 ```javascript
 document.createElement('<div>');
 // DOMException: The tag name provided ('<div>') is not a valid name
 ```
 
-注意，`document.createElement`的参数可以是自定义的标签名。
+注意，`document.createElement`的引數可以是自定義的標籤名。
 
 ```javascript
 document.createElement('foo');
@@ -621,7 +621,7 @@ document.createElement('foo');
 
 ### document.createTextNode()
 
-`document.createTextNode`方法用来生成文本节点（`Text`实例），并返回该节点。它的参数是文本节点的内容。
+`document.createTextNode`方法用來生成文字節點（`Text`例項），並返回該節點。它的引數是文字節點的內容。
 
 ```javascript
 var newDiv = document.createElement('div');
@@ -629,9 +629,9 @@ var newContent = document.createTextNode('Hello');
 newDiv.appendChild(newContent);
 ```
 
-上面代码新建一个`div`节点和一个文本节点，然后将文本节点插入`div`节点。
+上面程式碼新建一個`div`節點和一個文字節點，然後將文字節點插入`div`節點。
 
-这个方法可以确保返回的节点，被浏览器当作文本渲染，而不是当作 HTML 代码渲染。因此，可以用来展示用户的输入，避免 XSS 攻击。
+這個方法可以確保返回的節點，被瀏覽器當作文字渲染，而不是當作 HTML 程式碼渲染。因此，可以用來展示使用者的輸入，避免 XSS 攻擊。
 
 ```javascript
 var div = document.createElement('div');
@@ -640,9 +640,9 @@ console.log(div.innerHTML)
 // &lt;span&gt;Foo &amp; bar&lt;/span&gt;
 ```
 
-上面代码中，`createTextNode`方法对大于号和小于号进行转义，从而保证即使用户输入的内容包含恶意代码，也能正确显示。
+上面程式碼中，`createTextNode`方法對大於號和小於號進行轉義，從而保證即使使用者輸入的內容包含惡意程式碼，也能正確顯示。
 
-需要注意的是，该方法不对单引号和双引号转义，所以不能用来对 HTML 属性赋值。
+需要注意的是，該方法不對單引號和雙引號轉義，所以不能用來對 HTML 屬性賦值。
 
 ```html
 function escapeHtml(str) {
@@ -658,17 +658,17 @@ div.innerHTML = profileLink;
 // <a href="" onmouseover="alert('derp')" "">Bob</a>
 ```
 
-上面代码中，由于`createTextNode`方法不转义双引号，导致`onmouseover`方法被注入了代码。
+上面程式碼中，由於`createTextNode`方法不轉義雙引號，導致`onmouseover`方法被注入了程式碼。
 
 ### document.createAttribute()
 
-`document.createAttribute`方法生成一个新的属性节点（`Attr`实例），并返回它。
+`document.createAttribute`方法生成一個新的屬性節點（`Attr`例項），並返回它。
 
 ```javascript
 var attribute = document.createAttribute(name);
 ```
 
-`document.createAttribute`方法的参数`name`，是属性的名称。
+`document.createAttribute`方法的引數`name`，是屬性的名稱。
 
 ```javascript
 var node = document.getElementById('div1');
@@ -681,27 +681,27 @@ node.setAttributeNode(a);
 node.setAttribute('my_attrib', 'newVal');
 ```
 
-上面代码为`div1`节点，插入一个值为`newVal`的`my_attrib`属性。
+上面程式碼為`div1`節點，插入一個值為`newVal`的`my_attrib`屬性。
 
 ### document.createComment()
 
-`document.createComment`方法生成一个新的注释节点，并返回该节点。
+`document.createComment`方法生成一個新的註釋節點，並返回該節點。
 
 ```javascript
 var CommentNode = document.createComment(data);
 ```
 
-`document.createComment`方法的参数是一个字符串，会成为注释节点的内容。
+`document.createComment`方法的引數是一個字串，會成為註釋節點的內容。
 
 ### document.createDocumentFragment()
 
-`document.createDocumentFragment`方法生成一个空的文档片段对象（`DocumentFragment`实例）。
+`document.createDocumentFragment`方法生成一個空的文件片段物件（`DocumentFragment`例項）。
 
 ```javascript
 var docFragment = document.createDocumentFragment();
 ```
 
-`DocumentFragment`是一个存在于内存的 DOM 片段，不属于当前文档，常常用来生成一段较复杂的 DOM 结构，然后再插入当前文档。这样做的好处在于，因为`DocumentFragment`不属于当前文档，对它的任何改动，都不会引发网页的重新渲染，比直接修改当前文档的 DOM 有更好的性能表现。
+`DocumentFragment`是一個存在於記憶體的 DOM 片段，不屬於當前文件，常常用來生成一段較複雜的 DOM 結構，然後再插入當前文件。這樣做的好處在於，因為`DocumentFragment`不屬於當前文件，對它的任何改動，都不會引發網頁的重新渲染，比直接修改當前文件的 DOM 有更好的效能表現。
 
 ```javascript
 var docfrag = document.createDocumentFragment();
@@ -716,17 +716,17 @@ var element  = document.getElementById('ul');
 element.appendChild(docfrag);
 ```
 
-上面代码中，文档片断`docfrag`包含四个`<li>`节点，这些子节点被一次性插入了当前文档。
+上面程式碼中，文件片斷`docfrag`包含四個`<li>`節點，這些子節點被一次性插入了當前文件。
 
 ### document.createEvent()
 
-`document.createEvent`方法生成一个事件对象（`Event`实例），该对象可以被`element.dispatchEvent`方法使用，触发指定事件。
+`document.createEvent`方法生成一個事件物件（`Event`例項），該物件可以被`element.dispatchEvent`方法使用，觸發指定事件。
 
 ```javascript
 var event = document.createEvent(type);
 ```
 
-`document.createEvent`方法的参数是事件类型，比如`UIEvents`、`MouseEvents`、`MutationEvents`、`HTMLEvents`。
+`document.createEvent`方法的引數是事件型別，比如`UIEvents`、`MouseEvents`、`MutationEvents`、`HTMLEvents`。
 
 ```javascript
 var event = document.createEvent('Event');
@@ -737,54 +737,54 @@ document.addEventListener('build', function (e) {
 document.dispatchEvent(event);
 ```
 
-上面代码新建了一个名为`build`的事件实例，然后触发该事件。
+上面程式碼新建了一個名為`build`的事件例項，然後觸發該事件。
 
 ### document.addEventListener()，document.removeEventListener()，document.dispatchEvent()
 
-这三个方法用于处理`document`节点的事件。它们都继承自`EventTarget`接口，详细介绍参见《EventTarget 接口》一章。
+這三個方法用於處理`document`節點的事件。它們都繼承自`EventTarget`介面，詳細介紹參見《EventTarget 介面》一章。
 
 ```javascript
-// 添加事件监听函数
+// 新增事件監聽函式
 document.addEventListener('click', listener, false);
 
-// 移除事件监听函数
+// 移除事件監聽函式
 document.removeEventListener('click', listener, false);
 
-// 触发事件
+// 觸發事件
 var event = new Event('click');
 document.dispatchEvent(event);
 ```
 
 ### document.hasFocus()
 
-`document.hasFocus`方法返回一个布尔值，表示当前文档之中是否有元素被激活或获得焦点。
+`document.hasFocus`方法返回一個布林值，表示當前文件之中是否有元素被啟用或獲得焦點。
 
 ```javascript
 var focused = document.hasFocus();
 ```
 
-注意，有焦点的文档必定被激活（active），反之不成立，激活的文档未必有焦点。比如，用户点击按钮，从当前窗口跳出一个新窗口，该新窗口就是激活的，但是不拥有焦点。
+注意，有焦點的文件必定被啟用（active），反之不成立，啟用的文件未必有焦點。比如，使用者點選按鈕，從當前視窗跳出一個新視窗，該新視窗就是啟用的，但是不擁有焦點。
 
 ### document.adoptNode()，document.importNode()
 
-`document.adoptNode`方法将某个节点及其子节点，从原来所在的文档或`DocumentFragment`里面移除，归属当前`document`对象，返回插入后的新节点。插入的节点对象的`ownerDocument`属性，会变成当前的`document`对象，而`parentNode`属性是`null`。
+`document.adoptNode`方法將某個節點及其子節點，從原來所在的文件或`DocumentFragment`裡面移除，歸屬當前`document`物件，返回插入後的新節點。插入的節點物件的`ownerDocument`屬性，會變成當前的`document`物件，而`parentNode`屬性是`null`。
 
 ```javascript
 var node = document.adoptNode(externalNode);
 document.appendChild(node);
 ```
 
-注意，`document.adoptNode`方法只是改变了节点的归属，并没有将这个节点插入新的文档树。所以，还要再用`appendChild`方法或`insertBefore`方法，将新节点插入当前文档树。
+注意，`document.adoptNode`方法只是改變了節點的歸屬，並沒有將這個節點插入新的文件樹。所以，還要再用`appendChild`方法或`insertBefore`方法，將新節點插入當前文件樹。
 
-`document.importNode`方法则是从原来所在的文档或`DocumentFragment`里面，拷贝某个节点及其子节点，让它们归属当前`document`对象。拷贝的节点对象的`ownerDocument`属性，会变成当前的`document`对象，而`parentNode`属性是`null`。
+`document.importNode`方法則是從原來所在的文件或`DocumentFragment`裡面，複製某個節點及其子節點，讓它們歸屬當前`document`物件。複製的節點物件的`ownerDocument`屬性，會變成當前的`document`物件，而`parentNode`屬性是`null`。
 
 ```javascript
 var node = document.importNode(externalNode, deep);
 ```
 
-`document.importNode`方法的第一个参数是外部节点，第二个参数是一个布尔值，表示对外部节点是深拷贝还是浅拷贝，默认是浅拷贝（false）。虽然第二个参数是可选的，但是建议总是保留这个参数，并设为`true`。
+`document.importNode`方法的第一個引數是外部節點，第二個引數是一個布林值，表示對外部節點是深複製還是淺複製，預設是淺複製（false）。雖然第二個引數是可選的，但是建議總是保留這個引數，並設為`true`。
 
-注意，`document.importNode`方法只是拷贝外部节点，这时该节点的父节点是`null`。下一步还必须将这个节点插入当前文档树。
+注意，`document.importNode`方法只是複製外部節點，這時該節點的父節點是`null`。下一步還必須將這個節點插入當前文件樹。
 
 ```javascript
 var iframe = document.getElementsByTagName('iframe')[0];
@@ -793,11 +793,11 @@ var newNode = document.importNode(oldNode, true);
 document.getElementById("container").appendChild(newNode);
 ```
 
-上面代码从`iframe`窗口，拷贝一个指定节点`myNode`，插入当前文档。
+上面程式碼從`iframe`視窗，複製一個指定節點`myNode`，插入當前文件。
 
 ### document.createNodeIterator()
 
-`document.createNodeIterator`方法返回一个子节点遍历器。
+`document.createNodeIterator`方法返回一個子節點遍歷器。
 
 ```javascript
 var nodeIterator = document.createNodeIterator(
@@ -806,16 +806,16 @@ var nodeIterator = document.createNodeIterator(
 );
 ```
 
-上面代码返回`<body>`元素子节点的遍历器。
+上面程式碼返回`<body>`元素子節點的遍歷器。
 
-`document.createNodeIterator`方法第一个参数为所要遍历的根节点，第二个参数为所要遍历的节点类型，这里指定为元素节点（`NodeFilter.SHOW_ELEMENT`）。几种主要的节点类型写法如下。
+`document.createNodeIterator`方法第一個引數為所要遍歷的根節點，第二個引數為所要遍歷的節點型別，這裡指定為元素節點（`NodeFilter.SHOW_ELEMENT`）。幾種主要的節點型別寫法如下。
 
-- 所有节点：NodeFilter.SHOW_ALL
-- 元素节点：NodeFilter.SHOW_ELEMENT
-- 文本节点：NodeFilter.SHOW_TEXT
-- 评论节点：NodeFilter.SHOW_COMMENT
+- 所有節點：NodeFilter.SHOW_ALL
+- 元素節點：NodeFilter.SHOW_ELEMENT
+- 文字節點：NodeFilter.SHOW_TEXT
+- 評論節點：NodeFilter.SHOW_COMMENT
 
-`document.createNodeIterator`方法返回一个“遍历器”对象（`NodeFilter`实例）。该实例的`nextNode()`方法和`previousNode()`方法，可以用来遍历所有子节点。
+`document.createNodeIterator`方法返回一個“遍歷器”物件（`NodeFilter`例項）。該例項的`nextNode()`方法和`previousNode()`方法，可以用來遍歷所有子節點。
 
 ```javascript
 var nodeIterator = document.createNodeIterator(document.body);
@@ -827,7 +827,7 @@ while (currentNode = nodeIterator.nextNode()) {
 }
 ```
 
-上面代码中，使用遍历器的`nextNode`方法，将根节点的所有子节点，依次读入一个数组。`nextNode`方法先返回遍历器的内部指针所在的节点，然后会将指针移向下一个节点。所有成员遍历完成后，返回`null`。`previousNode`方法则是先将指针移向上一个节点，然后返回该节点。
+上面程式碼中，使用遍歷器的`nextNode`方法，將根節點的所有子節點，依次讀入一個數組。`nextNode`方法先返回遍歷器的內部指標所在的節點，然後會將指標移向下一個節點。所有成員遍歷完成後，返回`null`。`previousNode`方法則是先將指標移向上一個節點，然後返回該節點。
 
 ```javascript
 var nodeIterator = document.createNodeIterator(
@@ -841,9 +841,9 @@ var previousNode = nodeIterator.previousNode();
 currentNode === previousNode // true
 ```
 
-上面代码中，`currentNode`和`previousNode`都指向同一个的节点。
+上面程式碼中，`currentNode`和`previousNode`都指向同一個的節點。
 
-注意，遍历器返回的第一个节点，总是根节点。
+注意，遍歷器返回的第一個節點，總是根節點。
 
 ```javascript
 pars[0] === document.body // true
@@ -851,9 +851,9 @@ pars[0] === document.body // true
 
 ### document.createTreeWalker()
 
-`document.createTreeWalker`方法返回一个 DOM 的子树遍历器。它与`document.createNodeIterator`方法基本是类似的，区别在于它返回的是`TreeWalker`实例，后者返回的是`NodeIterator`实例。另外，它的第一个节点不是根节点。
+`document.createTreeWalker`方法返回一個 DOM 的子樹遍歷器。它與`document.createNodeIterator`方法基本是類似的，區別在於它返回的是`TreeWalker`例項，後者返回的是`NodeIterator`例項。另外，它的第一個節點不是根節點。
 
-`document.createTreeWalker`方法的第一个参数是所要遍历的根节点，第二个参数指定所要遍历的节点类型（与`document.createNodeIterator`方法的第二个参数相同）。
+`document.createTreeWalker`方法的第一個引數是所要遍歷的根節點，第二個引數指定所要遍歷的節點型別（與`document.createNodeIterator`方法的第二個引數相同）。
 
 ```javascript
 var treeWalker = document.createTreeWalker(
@@ -868,64 +868,64 @@ while(treeWalker.nextNode()) {
 }
 ```
 
-上面代码遍历`<body>`节点下属的所有元素节点，将它们插入`nodeList`数组。
+上面程式碼遍歷`<body>`節點下屬的所有元素節點，將它們插入`nodeList`陣列。
 
 ### document.execCommand()，document.queryCommandSupported()，document.queryCommandEnabled()
 
 **（1）document.execCommand()**
 
-如果`document.designMode`属性设为`on`，那么整个文档用户可编辑；如果元素的`contenteditable`属性设为`true`，那么该元素可编辑。这两种情况下，可以使用`document.execCommand()`方法，改变内容的样式，比如`document.execCommand('bold')`会使得字体加粗。
+如果`document.designMode`屬性設為`on`，那麼整個文件使用者可編輯；如果元素的`contenteditable`屬性設為`true`，那麼該元素可編輯。這兩種情況下，可以使用`document.execCommand()`方法，改變內容的樣式，比如`document.execCommand('bold')`會使得字型加粗。
 
 ```javascript
 document.execCommand(command, showDefaultUI, input)
 ```
 
-该方法接受三个参数。
+該方法接受三個引數。
 
-- `command`：字符串，表示所要实施的样式。
-- `showDefaultUI`：布尔值，表示是否要使用默认的用户界面，建议总是设为`false`。
-- `input`：字符串，表示该样式的辅助内容，比如生成超级链接时，这个参数就是所要链接的网址。如果第二个参数设为`true`，那么浏览器会弹出提示框，要求用户在提示框输入该参数。但是，不是所有浏览器都支持这样做，为了兼容性，还是需要自己部署获取这个参数的方式。
+- `command`：字串，表示所要實施的樣式。
+- `showDefaultUI`：布林值，表示是否要使用預設的使用者介面，建議總是設為`false`。
+- `input`：字串，表示該樣式的輔助內容，比如生成超級連結時，這個引數就是所要連結的網址。如果第二個引數設為`true`，那麼瀏覽器會彈出提示框，要求使用者在提示框輸入該引數。但是，不是所有瀏覽器都支援這樣做，為了相容性，還是需要自己部署獲取這個引數的方式。
 
 ```javascript
-var url = window.prompt('请输入网址');
+var url = window.prompt('請輸入網址');
 
 if (url) {
   document.execCommand('createlink', false, url);
 }
 ```
 
-上面代码中，先提示用户输入所要链接的网址，然后手动生成超级链接。注意，第二个参数是`false`，表示此时不需要自动弹出提示框。
+上面程式碼中，先提示使用者輸入所要連結的網址，然後手動生成超級連結。注意，第二個引數是`false`，表示此時不需要自動彈出提示框。
 
-`document.execCommand()`的返回值是一个布尔值。如果为`false`，表示这个方法无法生效。
+`document.execCommand()`的返回值是一個布林值。如果為`false`，表示這個方法無法生效。
 
-这个方法大部分情况下，只对选中的内容生效。如果有多个内容可编辑区域，那么只对当前焦点所在的元素生效。
+這個方法大部分情況下，只對選中的內容生效。如果有多個內容可編輯區域，那麼只對當前焦點所在的元素生效。
 
-`document.execCommand()`方法可以执行的样式改变有很多种，下面是其中的一些：bold、insertLineBreak、selectAll、createLink、insertOrderedList、subscript、delete、insertUnorderedList、superscript、formatBlock、insertParagraph、undo、forwardDelete、insertText、unlink、insertImage、italic、unselect、insertHTML、redo。这些值都可以用作第一个参数，它们的含义不难从字面上看出来。
+`document.execCommand()`方法可以執行的樣式改變有很多種，下面是其中的一些：bold、insertLineBreak、selectAll、createLink、insertOrderedList、subscript、delete、insertUnorderedList、superscript、formatBlock、insertParagraph、undo、forwardDelete、insertText、unlink、insertImage、italic、unselect、insertHTML、redo。這些值都可以用作第一個引數，它們的含義不難從字面上看出來。
 
 **（2）document.queryCommandSupported()**
 
-`document.queryCommandSupported()`方法返回一个布尔值，表示浏览器是否支持`document.execCommand()`的某个命令。
+`document.queryCommandSupported()`方法返回一個布林值，表示瀏覽器是否支援`document.execCommand()`的某個命令。
 
 ```javascript
 if (document.queryCommandSupported('SelectAll')) {
-  console.log('浏览器支持选中可编辑区域的所有内容');
+  console.log('瀏覽器支援選中可編輯區域的所有內容');
 }
 ```
 
 **（3）document.queryCommandEnabled()**
 
-`document.queryCommandEnabled()`方法返回一个布尔值，表示当前是否可用`document.execCommand()`的某个命令。比如，`bold`（加粗）命令只有存在文本选中时才可用，如果没有选中文本，就不可用。
+`document.queryCommandEnabled()`方法返回一個布林值，表示當前是否可用`document.execCommand()`的某個命令。比如，`bold`（加粗）命令只有存在文字選中時才可用，如果沒有選中文字，就不可用。
 
 ```javascript
-// HTML 代码为
+// HTML 程式碼為
 // <input type="button" value="Copy" onclick="doCopy()">
 
 function doCopy(){
-  // 浏览器是否支持 copy 命令（选中内容复制到剪贴板）
+  // 瀏覽器是否支援 copy 命令（選中內容複製到剪貼簿）
   if (document.queryCommandSupported('copy')) {
     copyText('你好');
   }else{
-    console.log('浏览器不支持');
+    console.log('瀏覽器不支援');
   }
 }
 
@@ -936,7 +936,7 @@ function copyText(text) {
   input.focus();
   input.select();
 
-  // 当前是否有选中文字
+  // 當前是否有選中文字
   if (document.queryCommandEnabled('copy')) {
     var success = document.execCommand('copy');
     input.remove();
@@ -947,9 +947,9 @@ function copyText(text) {
 }
 ```
 
-上面代码中，先判断浏览器是否支持`copy`命令（允许可编辑区域的选中内容，复制到剪贴板），如果支持，就新建一个临时文本框，里面写入内容“你好”，并将其选中。然后，判断是否选中成功，如果成功，就将“你好”复制到剪贴板，再删除那个临时文本框。
+上面程式碼中，先判斷瀏覽器是否支援`copy`命令（允許可編輯區域的選中內容，複製到剪貼簿），如果支援，就新建一個臨時文字框，裡面寫入內容“你好”，並將其選中。然後，判斷是否選中成功，如果成功，就將“你好”複製到剪貼簿，再刪除那個臨時文字框。
 
 ### document.getSelection()
 
-这个方法指向`window.getSelection()`，参见`window`对象一节的介绍。
+這個方法指向`window.getSelection()`，參見`window`物件一節的介紹。
 

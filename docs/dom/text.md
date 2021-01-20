@@ -1,61 +1,61 @@
-# Text 节点和 DocumentFragment 节点
+# Text 節點和 DocumentFragment 節點
 
-## Text 节点的概念
+## Text 節點的概念
 
-文本节点（`Text`）代表元素节点（`Element`）和属性节点（`Attribute`）的文本内容。如果一个节点只包含一段文本，那么它就有一个文本子节点，代表该节点的文本内容。
+文字節點（`Text`）代表元素節點（`Element`）和屬性節點（`Attribute`）的文字內容。如果一個節點只包含一段文字，那麼它就有一個文字子節點，代表該節點的文字內容。
 
-通常我们使用父节点的`firstChild`、`nextSibling`等属性获取文本节点，或者使用`Document`节点的`createTextNode`方法创造一个文本节点。
+通常我們使用父節點的`firstChild`、`nextSibling`等屬性獲取文字節點，或者使用`Document`節點的`createTextNode`方法創造一個文字節點。
 
 ```javascript
-// 获取文本节点
+// 獲取文字節點
 var textNode = document.querySelector('p').firstChild;
 
-// 创造文本节点
+// 創造文字節點
 var textNode = document.createTextNode('Hi');
 document.querySelector('div').appendChild(textNode);
 ```
 
-浏览器原生提供一个`Text`构造函数。它返回一个文本节点实例。它的参数就是该文本节点的文本内容。
+瀏覽器原生提供一個`Text`建構函式。它返回一個文字節點例項。它的引數就是該文字節點的文字內容。
 
 ```javascript
-// 空字符串
+// 空字串
 var text1 = new Text();
 
-// 非空字符串
+// 非空字串
 var text2 = new Text('This is a text node');
 ```
 
-注意，由于空格也是一个字符，所以哪怕只有一个空格，也会形成文本节点。比如，`<p> </p>`包含一个空格，它的子节点就是一个文本节点。
+注意，由於空格也是一個字元，所以哪怕只有一個空格，也會形成文字節點。比如，`<p> </p>`包含一個空格，它的子節點就是一個文字節點。
 
-文本节点除了继承`Node`接口，还继承了`CharacterData`接口。`Node`接口的属性和方法请参考《Node 接口》一章，这里不再重复介绍了，以下的属性和方法大部分来自`CharacterData`接口。
+文字節點除了繼承`Node`介面，還繼承了`CharacterData`介面。`Node`介面的屬性和方法請參考《Node 介面》一章，這裡不再重複介紹了，以下的屬性和方法大部分來自`CharacterData`介面。
 
-## Text 节点的属性
+## Text 節點的屬性
 
 ### data
 
-`data`属性等同于`nodeValue`属性，用来设置或读取文本节点的内容。
+`data`屬性等同於`nodeValue`屬性，用來設定或讀取文字節點的內容。
 
 ```javascript
-// 读取文本内容
+// 讀取文字內容
 document.querySelector('p').firstChild.data
-// 等同于
+// 等同於
 document.querySelector('p').firstChild.nodeValue
 
-// 设置文本内容
+// 設定文字內容
 document.querySelector('p').firstChild.data = 'Hello World';
 ```
 
 ### wholeText
 
-`wholeText`属性将当前文本节点与毗邻的文本节点，作为一个整体返回。大多数情况下，`wholeText`属性的返回值，与`data`属性和`textContent`属性相同。但是，某些特殊情况会有差异。
+`wholeText`屬性將當前文字節點與毗鄰的文字節點，作為一個整體返回。大多數情況下，`wholeText`屬性的返回值，與`data`屬性和`textContent`屬性相同。但是，某些特殊情況會有差異。
 
-举例来说，HTML 代码如下。
+舉例來說，HTML 程式碼如下。
 
 ```html
 <p id="para">A <em>B</em> C</p>
 ```
 
-这时，文本节点的`wholeText`属性和`data`属性，返回值相同。
+這時，文字節點的`wholeText`屬性和`data`屬性，返回值相同。
 
 ```javascript
 var el = document.getElementById('para');
@@ -63,7 +63,7 @@ el.firstChild.wholeText // "A "
 el.firstChild.data // "A "
 ```
 
-但是，一旦移除`<em>`节点，`wholeText`属性与`data`属性就会有差异，因为这时其实`<p>`节点下面包含了两个毗邻的文本节点。
+但是，一旦移除`<em>`節點，`wholeText`屬性與`data`屬性就會有差異，因為這時其實`<p>`節點下面包含了兩個毗鄰的文字節點。
 
 ```javascript
 el.removeChild(para.childNodes[1]);
@@ -73,7 +73,7 @@ el.firstChild.data // "A "
 
 ### length
 
-`length`属性返回当前文本节点的文本长度。
+`length`屬性返回當前文字節點的文字長度。
 
 ```javascript
 (new Text('Hello')).length // 5
@@ -81,67 +81,67 @@ el.firstChild.data // "A "
 
 ### nextElementSibling，previousElementSibling
 
-`nextElementSibling`属性返回紧跟在当前文本节点后面的那个同级元素节点。如果取不到元素节点，则返回`null`。
+`nextElementSibling`屬性返回緊跟在當前文字節點後面的那個同級元素節點。如果取不到元素節點，則返回`null`。
 
 ```javascript
-// HTML 为
+// HTML 為
 // <div>Hello <em>World</em></div>
 var tn = document.querySelector('div').firstChild;
 tn.nextElementSibling
 // <em>World</em>
 ```
 
-`previousElementSibling`属性返回当前文本节点前面最近的同级元素节点。如果取不到元素节点，则返回`null：`。
+`previousElementSibling`屬性返回當前文字節點前面最近的同級元素節點。如果取不到元素節點，則返回`null：`。
 
-## Text 节点的方法
+## Text 節點的方法
 
 ### appendData()，deleteData()，insertData()，replaceData()，subStringData()
 
-以下5个方法都是编辑`Text`节点文本内容的方法。
+以下5個方法都是編輯`Text`節點文字內容的方法。
 
-- `appendData()`：在`Text`节点尾部追加字符串。
-- `deleteData()`：删除`Text`节点内部的子字符串，第一个参数为子字符串开始位置，第二个参数为子字符串长度。
-- `insertData()`：在`Text`节点插入字符串，第一个参数为插入位置，第二个参数为插入的子字符串。
-- `replaceData()`：用于替换文本，第一个参数为替换开始位置，第二个参数为需要被替换掉的长度，第三个参数为新加入的字符串。
-- `subStringData()`：用于获取子字符串，第一个参数为子字符串在`Text`节点中的开始位置，第二个参数为子字符串长度。
+- `appendData()`：在`Text`節點尾部追加字串。
+- `deleteData()`：刪除`Text`節點內部的子字串，第一個引數為子字串開始位置，第二個引數為子字串長度。
+- `insertData()`：在`Text`節點插入字串，第一個引數為插入位置，第二個引數為插入的子字串。
+- `replaceData()`：用於替換文字，第一個引數為替換開始位置，第二個引數為需要被替換掉的長度，第三個引數為新加入的字串。
+- `subStringData()`：用於獲取子字串，第一個引數為子字串在`Text`節點中的開始位置，第二個引數為子字串長度。
 
 ```javascript
-// HTML 代码为
+// HTML 程式碼為
 // <p>Hello World</p>
 var pElementText = document.querySelector('p').firstChild;
 
 pElementText.appendData('!');
-// 页面显示 Hello World!
+// 頁面顯示 Hello World!
 pElementText.deleteData(7, 5);
-// 页面显示 Hello W
+// 頁面顯示 Hello W
 pElementText.insertData(7, 'Hello ');
-// 页面显示 Hello WHello
+// 頁面顯示 Hello WHello
 pElementText.replaceData(7, 5, 'World');
-// 页面显示 Hello WWorld
+// 頁面顯示 Hello WWorld
 pElementText.substringData(7, 10);
-// 页面显示不变，返回"World "
+// 頁面顯示不變，返回"World "
 ```
 
 ### remove()
 
-`remove`方法用于移除当前`Text`节点。
+`remove`方法用於移除當前`Text`節點。
 
 ```javascript
-// HTML 代码为
+// HTML 程式碼為
 // <p>Hello World</p>
 document.querySelector('p').firstChild.remove()
-// 现在 HTML 代码为
+// 現在 HTML 程式碼為
 // <p></p>
 ```
 
 ### splitText()
 
-`splitText`方法将`Text`节点一分为二，变成两个毗邻的`Text`节点。它的参数就是分割位置（从零开始），分割到该位置的字符前结束。如果分割位置不存在，将报错。
+`splitText`方法將`Text`節點一分為二，變成兩個毗鄰的`Text`節點。它的引數就是分割位置（從零開始），分割到該位置的字元前結束。如果分割位置不存在，將報錯。
 
-分割后，该方法返回分割位置后方的字符串，而原`Text`节点变成只包含分割位置前方的字符串。
+分割後，該方法返回分割位置後方的字串，而原`Text`節點變成只包含分割位置前方的字串。
 
 ```javascript
-// html 代码为 <p id="p">foobar</p>
+// html 程式碼為 <p id="p">foobar</p>
 var p = document.getElementById('p');
 var textnode = p.firstChild;
 
@@ -150,27 +150,27 @@ newText // "bar"
 textnode // "foo"
 ```
 
-父元素节点的`normalize`方法可以将毗邻的两个`Text`节点合并。
+父元素節點的`normalize`方法可以將毗鄰的兩個`Text`節點合併。
 
-接上面的例子，文本节点的`splitText`方法将一个`Text`节点分割成两个，父元素的`normalize`方法可以实现逆操作，将它们合并。
+接上面的例子，文字節點的`splitText`方法將一個`Text`節點分割成兩個，父元素的`normalize`方法可以實現逆操作，將它們合併。
 
 ```javascript
 p.childNodes.length // 2
 
-// 将毗邻的两个 Text 节点合并
+// 將毗鄰的兩個 Text 節點合併
 p.normalize();
 p.childNodes.length // 1
 ```
 
-## DocumentFragment 节点
+## DocumentFragment 節點
 
-`DocumentFragment`节点代表一个文档的片段，本身就是一个完整的 DOM 树形结构。它没有父节点，`parentNode`返回`null`，但是可以插入任意数量的子节点。它不属于当前文档，操作`DocumentFragment`节点，要比直接操作 DOM 树快得多。
+`DocumentFragment`節點代表一個文件的片段，本身就是一個完整的 DOM 樹形結構。它沒有父節點，`parentNode`返回`null`，但是可以插入任意數量的子節點。它不屬於當前文件，操作`DocumentFragment`節點，要比直接操作 DOM 樹快得多。
 
-它一般用于构建一个 DOM 结构，然后插入当前文档。`document.createDocumentFragment`方法，以及浏览器原生的`DocumentFragment`构造函数，可以创建一个空的`DocumentFragment`节点。然后再使用其他 DOM 方法，向其添加子节点。
+它一般用於構建一個 DOM 結構，然後插入當前文件。`document.createDocumentFragment`方法，以及瀏覽器原生的`DocumentFragment`建構函式，可以建立一個空的`DocumentFragment`節點。然後再使用其他 DOM 方法，向其新增子節點。
 
 ```javascript
 var docFrag = document.createDocumentFragment();
-// 等同于
+// 等同於
 var docFrag = new DocumentFragment();
 
 var li = document.createElement('li');
@@ -180,9 +180,9 @@ docFrag.appendChild(li);
 document.querySelector('ul').appendChild(docFrag);
 ```
 
-上面代码创建了一个`DocumentFragment`节点，然后将一个`li`节点添加在它里面，最后将`DocumentFragment`节点移动到原文档。
+上面程式碼建立了一個`DocumentFragment`節點，然後將一個`li`節點新增在它裡面，最後將`DocumentFragment`節點移動到原文件。
 
-注意，`DocumentFragment`节点本身不能被插入当前文档。当它作为`appendChild()`、`insertBefore()`、`replaceChild()`等方法的参数时，是它的所有子节点插入当前文档，而不是它自身。一旦`DocumentFragment`节点被添加进当前文档，它自身就变成了空节点（`textContent`属性为空字符串），可以被再次使用。如果想要保存`DocumentFragment`节点的内容，可以使用`cloneNode`方法。
+注意，`DocumentFragment`節點本身不能被插入當前文件。當它作為`appendChild()`、`insertBefore()`、`replaceChild()`等方法的引數時，是它的所有子節點插入當前文件，而不是它自身。一旦`DocumentFragment`節點被新增進當前文件，它自身就變成了空節點（`textContent`屬性為空字串），可以被再次使用。如果想要儲存`DocumentFragment`節點的內容，可以使用`cloneNode`方法。
 
 ```javascript
 document
@@ -190,9 +190,9 @@ document
   .appendChild(docFrag.cloneNode(true));
 ```
 
-上面这样添加`DocumentFragment`节点进入当前文档，不会清空`DocumentFragment`节点。
+上面這樣新增`DocumentFragment`節點進入當前文件，不會清空`DocumentFragment`節點。
 
-下面是一个例子，使用`DocumentFragment`反转一个指定节点的所有子节点的顺序。
+下面是一個例子，使用`DocumentFragment`反轉一個指定節點的所有子節點的順序。
 
 ```javascript
 function reverse(n) {
@@ -202,9 +202,9 @@ function reverse(n) {
 }
 ```
 
-`DocumentFragment`节点对象没有自己的属性和方法，全部继承自`Node`节点和`ParentNode`接口。也就是说，`DocumentFragment`节点比`Node`节点多出以下四个属性。
+`DocumentFragment`節點物件沒有自己的屬性和方法，全部繼承自`Node`節點和`ParentNode`介面。也就是說，`DocumentFragment`節點比`Node`節點多出以下四個屬性。
 
-- `children`：返回一个动态的`HTMLCollection`集合对象，包括当前`DocumentFragment`对象的所有子元素节点。
-- `firstElementChild`：返回当前`DocumentFragment`对象的第一个子元素节点，如果没有则返回`null`。
-- `lastElementChild`：返回当前`DocumentFragment`对象的最后一个子元素节点，如果没有则返回`null`。
-- `childElementCount`：返回当前`DocumentFragment`对象的所有子元素数量。
+- `children`：返回一個動態的`HTMLCollection`集合物件，包括當前`DocumentFragment`物件的所有子元素節點。
+- `firstElementChild`：返回當前`DocumentFragment`物件的第一個子元素節點，如果沒有則返回`null`。
+- `lastElementChild`：返回當前`DocumentFragment`物件的最後一個子元素節點，如果沒有則返回`null`。
+- `childElementCount`：返回當前`DocumentFragment`物件的所有子元素數量。
